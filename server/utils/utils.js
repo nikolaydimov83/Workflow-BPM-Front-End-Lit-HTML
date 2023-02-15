@@ -1,3 +1,5 @@
+const UserActiveDir = require("../models/UserActiveDir");
+
 function parseError(error){
 if (error.name=='ValidationError'){
 return Object.values(error.errors).map((e)=>e.message).join('/n');
@@ -32,6 +34,14 @@ function renameBodyProperties(req) {
     return instance;
 }
 
-module.exports={parseError,renameBodyProperties,checkUserEnrolled}
+async function checkUserInActiveDirectory(value){
+    let result=await UserActiveDir.findOne({email:value})
+    if(!result){
+        throw new Error('User is no longer employee!')
+    }
+    return result
+}
+
+module.exports={parseError,renameBodyProperties,checkUserEnrolled,checkUserInActiveDirectory}
 
 

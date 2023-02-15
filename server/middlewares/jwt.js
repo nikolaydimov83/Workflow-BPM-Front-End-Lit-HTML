@@ -1,5 +1,5 @@
-const jwt=require('jsonwebtoken');
-const { key, verifyToken } = require('../services/userServices');
+
+const { verifyToken } = require('../services/userServices');
 
 
 module.exports=()=>async (req,res,next)=>{
