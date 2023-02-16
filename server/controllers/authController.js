@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 const { register, login, createResetPassToken, verifyToken, changePassword } = require('../services/userServices');
-const { parseError, checkUserInActiveDirectory } = require('../utils/utils');
+const { parseError } = require('../utils/utils');
 const transporter=require('../emailClient/mail');
 const InvalidToken = require('../models/InvalidToken');
 const passwordLength=3
@@ -32,7 +32,7 @@ authController.post('/login',
     try {
         
         let user=await login(req.body.email,req.body.password);
-        await checkUserInActiveDirectory(req.body.email);
+        
         res.status(202);
         res.json(user);
     } catch (error) {

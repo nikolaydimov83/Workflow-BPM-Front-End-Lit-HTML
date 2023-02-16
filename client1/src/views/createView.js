@@ -67,7 +67,7 @@ async function submitCreateForm(ev){
         let data=loadFormData(ev.target);
         let serverResponseData=post('/data/shoes',data)
 
-        outerCtx.page.redirect('/dashboard')
+        outerCtx.page.redirect('/')
         ev.target.reset();
     } catch (error) {
         errorHandler(error);

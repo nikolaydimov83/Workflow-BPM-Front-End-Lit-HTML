@@ -6,6 +6,12 @@ const userActiveDirSchema=new Schema({
     branchName:{type:String,immutable:true}
 });
 
+userActiveDirSchema.index({email:1},{
+    collation:{
+        locale:'en',
+        strength:2
+    }
+});
 
 const UserActiveDir=model('UserActiveDir', userActiveDirSchema);
 

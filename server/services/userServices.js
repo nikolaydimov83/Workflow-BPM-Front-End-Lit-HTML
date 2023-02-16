@@ -66,7 +66,7 @@ function createToken(user,key){
 async function verifyToken(req,res,tokenString){
     let token=req.headers['x-authorization'];
     if(await InvalidToken.findOne({token:tokenString})||await InvalidToken.findOne({token:token})){
-        return 'Invalid Token'
+        return 'Invalid token'
     }
     if(tokenString){
         try {
@@ -84,7 +84,7 @@ async function verifyToken(req,res,tokenString){
             let user=jwt.verify(token,key);
             return user
         } catch (error) {
-            return 'Invalid Token'
+            return 'Invalid token'
         }
         
     }

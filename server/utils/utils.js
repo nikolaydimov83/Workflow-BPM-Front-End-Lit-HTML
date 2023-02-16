@@ -34,14 +34,8 @@ function renameBodyProperties(req) {
     return instance;
 }
 
-async function checkUserInActiveDirectory(value){
-    let result=await UserActiveDir.findOne({email:value})
-    if(!result){
-        throw new Error('User is no longer employee!')
-    }
-    return result
-}
 
-module.exports={parseError,renameBodyProperties,checkUserEnrolled,checkUserInActiveDirectory}
+
+module.exports={parseError,renameBodyProperties,checkUserEnrolled}
 
 
