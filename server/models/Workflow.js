@@ -15,6 +15,6 @@ workflowSchema.index({workflowName:1},{
 });
 
 
-const Workflow=model('Status', workflowSchema);
+const Workflow=model('Workflow', workflowSchema);
 
 module.exports=Workflow;

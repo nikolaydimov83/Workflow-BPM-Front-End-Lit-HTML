@@ -1,10 +1,10 @@
 const { Schema, model,Types } = require("mongoose");
 
-let arrayOfSubjects=['Чисто УВТ след ипотека','Вписване в ЦРОЗ','Удостоверение по ч. 87']
+//let arrayOfSubjects=['Чисто УВТ след ипотека','Вписване в ЦРОЗ','Удостоверение по ч. 87']
 let arrayOfIApplyChars=['BL','ML']
 const requestSchema=new Schema({
-    subject:{type:String,required:true, enum:arrayOfSubjects},
-    deadLineDate:{type:Date, required:true,validate:{
+    requestWorkflow:{type:Types.ObjectId,ref:'Workflow',required:true},
+    deadlineDate:{type:Date, required:true,validate:{
         validator:async (value)=>{
             let today=new Date()
             today.setHours(0,0,0,0);
@@ -34,7 +34,7 @@ const requestSchema=new Schema({
     clientEGFN:{type:String,required:true,minLength:9,maxLength:10},
     product:{type:String},
     amount:{type:Number, min:1000},
-    ccy:{type:String, enum:['BGN', 'EUR','USD']},
+    ccy:{type:String, enum:['BGN', 'EUR','USD','Other']},
     comments:{type:[Types.ObjectId],ref:'Comment',default:[]}
 
     

@@ -58,7 +58,7 @@ async function changePassword(user,password){
 }
 
 function createToken(user,key){
-    const payload={_id:user._id,email:user.email}
+    const payload={_id:user._id,email:user.email,role:user.role}
     let token=jwt.sign(payload,key);
     return token
 }
