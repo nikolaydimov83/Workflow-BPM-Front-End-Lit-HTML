@@ -11,6 +11,7 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
   <h2>Създай заявка</h2>
   <form @submit=${submitCreateForm} class="create-form">
     <div class="inlineDiv">
+        <label for='iApplyId'>Iapply ID</label>
         <input
           type="text"
           name="iApplyId"
@@ -18,24 +19,24 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
           placeholder="Апликация в I-apply"
           @change=${retrieveIapplyData}
         />
-
+        <label for='subjectName'>Subject</label>
         <select
           name="subjectName"
-          
           id="subjectName">
           ${repeat(serverResponse.subjects,(subject)=>subject._id,(subject)=>html`
-            <option value="${subject.subjectName}" >${subject.subjectName}</option>
+            <option value="${subject._id}" >${subject.subjectName}</option>
             <option value="dummy">Dummy</option>
           `)}
           
         </select>
+        <label for='deadlineDate'>Краен срок</label>
         <input
           type="date"
           name="deadlineDate"
           id="deadlineDate"
           placeholder="Краен срок"
         />
-
+        <label for='clientEGFN'>ЕГН/Булстат</label>
         <input
           type="text"
           name="clientEGFN"
@@ -44,15 +45,12 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
           .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.clientEGFN:''}
           disabled
         />
-        <textarea
-          type="textarea"
-          name="description"
-          id="description"
-          placeholder="Описание"
-        ></textarea>
     </div>
     <div class="inlineDiv">
-        <input
+    <label for='finCenter'>Клон/Рефериращ клон</label>
+      <div>
+      <input
+        class="small"
           type="text"
           name="finCenter"
           id="finCenter"
@@ -61,6 +59,19 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
           .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.finCenter:''}
         />
         <input
+        class="verySmall"
+          type="text"
+          name="refferingFinCenter"
+          id="refferingFinCenter"
+          placeholder="Не"
+          disabled
+          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.refferingFinCenter:''}
+        />
+
+      </div>  
+
+        <label for='clientName'>Клиент</label>
+        <input
           type="text"
           name="clientName"
           id="clientName"
@@ -68,7 +79,7 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
           disabled
           .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.clientName:''}
         />
-
+        <label for='product'>Продукт</label>
         <input
           type="text"
           name="product"
@@ -77,26 +88,35 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
           disabled
           .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.product:''}
         />
+        <label for='amount'>Сума</label>
+            <div>
+            <input
+            class="verySmall"
+              type="text"
+              name="ccy"
+              id="ccy"
+              placeholder="CCY"
+              disabled
+              .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.ccy:''}
+            />
+            <input class="small"
+              type="number"
+              name="amount"
+              id="amount"
+              placeholder="Сума"
+              disabled
+              .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.amount:''}
+  
+            />
 
-        <input
-          type="number"
-          name="amount"
-          id="amount"
-          placeholder="Сума"
-          disabled
-          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.amount:''}
-        />
-
-        <input
-          type="text"
-          name="ccy"
-          id="ccy"
-          placeholder="Валута"
-          disabled
-          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.ccy:''}
-        />
+            </div>
       </div>
-
+      <textarea
+          type="textarea"
+          name="description"
+          id="description"
+          placeholder="Описание"
+        ></textarea>
     <button type="submit">Изпрати</button>
   </form>
 </div>
@@ -119,7 +139,7 @@ async function submitCreateForm(ev){
     ev.preventDefault();
     try {
         let data=loadFormData(ev.target);
-        let serverResponseData=post('/data/shoes',data)
+        let serverResponseData=await post('/data/create',data)
 
         outerCtx.page.redirect('/')
         ev.target.reset();

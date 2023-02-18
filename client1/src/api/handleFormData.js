@@ -1,28 +1,18 @@
 
 const allowedTypes={
-    "username":'make',
-    "model":'string',
-    'title':'string',
-    'description':'string',
-    'imageUrl':'string',
-    'price':'price',
+
+    'description':'description',
     'email':'string',
-    'year':'year',
-    'password':'string',
-    're-password':'string',
-    'username':'username',
-    'name':'name',
-    'logoUrl':'logoUrl',
-    'gender':'string',
-    'brand':'string',
-    "release":'string',
-    "designer":"string",
-    "value":'string',
-    "search":"string",
-    'category':'string', 
-    'requirements':'string', 
-    'salary':'string',
-    'resetCode':'string'
+    'password':'password',
+    're-password':'password',
+    'iApplyId':'iApplyId',
+    'subjectName':'optional',
+    'deadlineDate':'string',
+    'clientEGFN':'string',
+    'finCenter':'string',
+    'finCenterText':'string'
+
+
 }
 export function loadFormData(form){
     
@@ -45,6 +35,7 @@ export function loadFormData(form){
     })
     if (wrongData){
         wrongFieldsObject.message='Invalid input';
+        wrongFieldsObject.frontEndFormChecker=true
         throw wrongFieldsObject
     }
     return formDataObject
@@ -69,6 +60,7 @@ export function loadInputValuesOutsideForm(inputsWrapper){
         })
         if (wrongData){
             wrongFieldsObject.message='Invalid input';
+            wrongFieldsObject.frontEndFormChecker=true
             throw wrongFieldsObject
         }
 return data    
@@ -95,70 +87,41 @@ export function emptyFormData(inputsWrapper){
  function checkInputCorrect(value,allowedTypes,type){
 
    let action={
-    'year':()=>{
-        if ((isNaN(value)||value===''||value<1950||value>2050)){
-        throw new Error('Wrong input')
-    }  
-},
-'price':()=>{
-    if ((isNaN(value)||value===''||value<=0)){
-    throw new Error('Wrong input')
-}  
-},
+    
     'email':()=>{
         let regex=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
         let emailValid=regex.test(value)
         if (!emailValid){
-            throw new Error('Wrong input')
+            throw new Error('Email is not correct')
         }  
     },
     'password':()=>{
         if ((value===''||value.length<3)){
-            throw new Error('Wrong input')
+            throw new Error('Password is not corretct. Should be at least 3 characters long')
         }
     },
-    'username':()=>{
-        if ((value===''||value.length<3)){
-            throw new Error('Wrong input')
-        }
-    },
-
+    
     'string':()=>{
         if ((value==='')){
             throw new Error('Wrong input')
         }
     },
-    'logoUrl':()=>{
-        if ((value==='')){
-            throw new Error('Wrong input')
+    'iApplyId':()=>{
+        let regex=/^[A-Z]{2}[0-9]+$/
+        
+        if ((!regex.test(value))){
+            throw new Error('Wrong input of iApplyId. Should start with 2 capital letters and at least 1 number')
         }
     },
-    'make':()=>{
-        if ((value===''||value.length<4)){
-            throw new Error('Wrong input')
-        }
-    },
-    'img':()=>{
-        if ((value==='')){
-            throw new Error('Wrong input')
-        }
-    },
+   
+   
     'description':()=>{
-        if ((value===''||value.length<=10)){
-            throw new Error('Wrong input')
+        if(value.length<15){
+            throw new Error('Description should be at least 15 chars long');
         }
     },
-    'name':()=>{
-        if ((value===''||value.length<=4)){
-            throw new Error('Wrong input')
-        }
-    },
-    'gender':()=>{
-        if ((value!=='male'&&value!=='female')){
-            throw new Error('Wrong input')
-        }
-    },
-    'material':()=>console.log('material is optional')
+    'optional':()=>console.log('Optional. is optional')
+
 
    }   
     action[allowedTypes[type]]()
