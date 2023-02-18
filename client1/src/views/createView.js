@@ -1,60 +1,114 @@
+
 import { get, post } from '../api/api.js';
 import { loadFormData } from '../api/handleFormData.js';
-import { html,repeat } from '../lib.js';
+import { html,repeat,directive, nothing } from '../lib.js';
 import { setUserData } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 //import { errorHandler } from './errorHandler.js';
 
-let createTemplate=()=>html`<section id="create">
-<div class="form">
-  <h2>Add item</h2>
+let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create">
+<div class="formLarge">
+  <h2>Създай заявка</h2>
   <form @submit=${submitCreateForm} class="create-form">
-    <input
-      type="text"
-      name="brand"
-      id="shoe-brand"
-      placeholder="Brand"
-    />
-    <input
-      type="text"
-      name="model"
-      id="shoe-model"
-      placeholder="Model"
-    />
-    <input
-      type="text"
-      name="imageUrl"
-      id="shoe-img"
-      placeholder="Image url"
-    />
-    <input
-      type="text"
-      name="release"
-      id="shoe-release"
-      placeholder="Release date"
-    />
-    <input
-      type="text"
-      name="designer"
-      id="shoe-designer"
-      placeholder="Designer"
-    />
-    <input
-      type="text"
-      name="value"
-      id="shoe-value"
-      placeholder="Value"
-    />
+    <div class="inlineDiv">
+        <input
+          type="text"
+          name="iApplyId"
+          id="iApplyId"
+          placeholder="Апликация в I-apply"
+          @change=${retrieveIapplyData}
+        />
 
-    <button type="submit">post</button>
+        <select
+          name="subjectName"
+          
+          id="subjectName">
+          ${repeat(serverResponse.subjects,(subject)=>subject._id,(subject)=>html`
+            <option value="${subject.subjectName}" >${subject.subjectName}</option>
+            <option value="dummy">Dummy</option>
+          `)}
+          
+        </select>
+        <input
+          type="date"
+          name="deadlineDate"
+          id="deadlineDate"
+          placeholder="Краен срок"
+        />
+
+        <input
+          type="text"
+          name="clientEGFN"
+          id="clientEGFN"
+          placeholder="ЕГН/Булстат на клиента"
+          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.clientEGFN:''}
+          disabled
+        />
+        <textarea
+          type="textarea"
+          name="description"
+          id="description"
+          placeholder="Описание"
+        ></textarea>
+    </div>
+    <div class="inlineDiv">
+        <input
+          type="text"
+          name="finCenter"
+          id="finCenter"
+          placeholder="Клон"
+          disabled
+          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.finCenter:''}
+        />
+        <input
+          type="text"
+          name="clientName"
+          id="clientName"
+          placeholder="Име на клиента"
+          disabled
+          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.clientName:''}
+        />
+
+        <input
+          type="text"
+          name="product"
+          id="product"
+          placeholder="Продукт"
+          disabled
+          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.product:''}
+        />
+
+        <input
+          type="number"
+          name="amount"
+          id="amount"
+          placeholder="Сума"
+          disabled
+          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.amount:''}
+        />
+
+        <input
+          type="text"
+          name="ccy"
+          id="ccy"
+          placeholder="Валута"
+          disabled
+          .value=${serverResponse.iApplyData!=undefined?serverResponse.iApplyData.ccy:''}
+        />
+      </div>
+
+    <button type="submit">Изпрати</button>
   </form>
 </div>
 </section>`
 let outerCtx=null;
 export async function showCreate(ctx){
     outerCtx=ctx
+  
     try{
-        ctx.renderView(createTemplate());
+      let serverResponse=await get('/data/create');
+      outerCtx.pageState=serverResponse
+      ctx.renderView(createTemplate(serverResponse,retrieveIapplyData));
     }catch(error){
         errorHandler(error);
     }
@@ -75,3 +129,25 @@ async function submitCreateForm(ev){
 
 
 }
+async function retrieveIapplyData(ev){
+  ev.preventDefault();
+  const id=ev.target.value
+  //let selectedSubject=ev.target.parent.
+  try {
+        let serverResponseData=await get(`/iApply/${id}`);
+        Object.assign(outerCtx.pageState,serverResponseData);
+  } catch (error) {
+    errorHandler(error);
+    delete outerCtx.pageState.iApplyData;
+
+  }
+
+  //outerCtx.pageState.iApplyId=serverResponseData;
+  //outerCtx.pageState.subjectSelectedValue=document.getElementById('subjectName').value;
+
+  outerCtx.renderView(createTemplate(outerCtx.pageState,retrieveIapplyData));
+}
+
+//const helloDirective = directive(() => (part) => { part.setValue('Hello') });
+
+//const helloTemplate = html`<div>${helloDirective()}</div>`

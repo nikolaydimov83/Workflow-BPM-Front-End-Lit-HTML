@@ -10,7 +10,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.3em 3em;
+  padding: 0.1em 3em;
   background: #7d7e7e;
 }
 .notification{
@@ -21,7 +21,7 @@ header {
 nav {
   background-color: #7a6e6e;
   height: 0px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   display: flex;
   justify-content: space-between;
   color: aliceblue;

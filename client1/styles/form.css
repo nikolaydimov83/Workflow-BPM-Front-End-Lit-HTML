@@ -5,6 +5,18 @@
   padding: 8% 0 0;
   margin: auto;
 }
+.formLarge {
+  background: #ffffff;
+  max-width: 920px;
+  margin: auto;
+  margin-top: 45px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+
 .form {
   background: #ffffff;
   max-width: 460px;
@@ -16,16 +28,46 @@
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
+
 .form h2 {
   margin-top: 0px;
   margin-bottom: 30px;
   font-size: 30px;
 }
 
+
+
 .form input {
+  display: block;
   font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;
+  height: 50px;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+  text-align: center;
+}
+.form select {
+  display: block;
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  height: 50px;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+  text-align: center;
+}
+.form label{
+  font-family: "Roboto", sans-serif;
+  outline: 0;
   width: 90%;
   height: 50px;
   border: 0;
@@ -36,14 +78,24 @@
   font-size: 14px;
   text-align: center;
 }
+.inlineDiv{
+  border: 1px solid rgb(241, 237, 237);
+  border-radius: 10px;
+  padding: 5px;
+  display: inline-flex;
+  width: 400px;
+  margin-bottom: 5px;
+  flex-direction: column
+}
 .form textarea {
   border: 1px solid rgb(206, 206, 206);
-  width: 90%;
   max-width: 99%;
   min-width: 90%;
   min-height: 50px;
   margin-bottom: 10px;
   background-color: rgb(242, 242, 242);
+  border-radius: 10px;
+  text-align: center;
 }
 .form button {
   font-family: "Roboto", sans-serif;
