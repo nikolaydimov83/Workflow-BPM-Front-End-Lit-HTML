@@ -6,6 +6,8 @@ module.exports = nodemailer.createTransport({
       pass: 'dxvpsakhmnrjdmzg'
     }
   });
+
+  
   
   /*const mailOptions = {
     from: 'hello@example.com',

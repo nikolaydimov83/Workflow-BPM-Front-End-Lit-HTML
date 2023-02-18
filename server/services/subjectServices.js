@@ -8,6 +8,11 @@ async function createSubject(subjectName,workflow,canBeInitiatedByRole){
 async function editSubjectName(subject,subjectName){
     subject.subjectName=subjectName;
     subject.save();
-}   
+}
 
-module.exports={createSubject,editSubjectName}
+async function findWorkflowBySubjectId(subjectId){
+    let subject=await Subject.findById(subjectId).populate('assignedToWorkflow');
+    return subject.assignedToWorkflow
+}
+
+module.exports={createSubject,editSubjectName,findWorkflowBySubjectId}

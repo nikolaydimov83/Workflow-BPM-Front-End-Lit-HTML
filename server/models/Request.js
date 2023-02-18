@@ -14,34 +14,86 @@ const requestSchema=new Schema({
         },
         message:(props)=>{return `${props.value} is past Date!` }
     }},
-    status:{type:Types.ObjectId, ref:'Status'},
-    statusIncomingDate:{type:Date},
-    statusSender:{type:Types.ObjectId,ref:'User'},
-    history:{type:[],default:[]},
-    description:{type:String, required:true, minLength:15},
-    finCenter:{type:Number,required:true,min:100,max:999},
-    iApplyId:{type:String,required:true,validate:{
+    status:{type:Types.ObjectId, ref:'Status',validate:{
         validator:async (value)=>{
-            return arrayOfIApplyChars.includes(value.toString().substring(0,2));
-            
+            console.log(value)
 
         },
-        message:(props)=>{
-            return `${props.value} is not a valid I-apply application Id. Valid ids must start with ${arrayOfIApplyChars.join(', ')}` 
-        }
+        message:(props)=>{return `${props.value} is past Date!` }
     }},
-    clientName:{type:String,required:true},
-    clientEGFN:{type:String,required:true,minLength:9,maxLength:10},
+    statusIncomingDate:{type:Date, required:true},
+    statusSender:{type:String,required:true},
+    history:{type:[],default:[],validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
+    description:{type:String, minLength:15},
+    finCenter:{type:Number,required:true,min:100,max:999,validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
+    refferingFinCenter:{type:Number,validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
+    iApplyId:{type:String,required:true,validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
+    clientName:{type:String,required:true,validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
+    clientEGFN:{type:String,required:true,minLength:9,maxLength:10,validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
     product:{type:String},
-    amount:{type:Number, min:1000},
-    ccy:{type:String, enum:['BGN', 'EUR','USD','Other']},
-    comments:{type:[Types.ObjectId],ref:'Comment',default:[]}
+    amount:{type:Number, min:1000,validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
+    ccy:{type:String, enum:['BGN', 'EUR','USD','Other'],validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }},
+    comments:{type:[Types.ObjectId],ref:'Comment',default:[],validate:{
+        validator:async (value)=>{
+            console.log(value)
+
+        },
+        message:(props)=>{return `${props.value} is past Date!` }
+    }}
 
     
     
 });
 
-requestSchema.index({requestId:1},{
+requestSchema.index({iApplyId:1},{
     collation:{
         locale:'en',
         strength:2

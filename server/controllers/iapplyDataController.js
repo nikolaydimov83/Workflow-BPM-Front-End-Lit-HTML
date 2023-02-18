@@ -1,4 +1,5 @@
 const IApply = require('../models/IApply');
+const { readIapplyData } = require('../services/iapplyServices');
 const { parseError } = require('../utils/utils');
 
 const iApplyConroller=require('express').Router();
@@ -7,9 +8,13 @@ iApplyConroller.get('/:id',async (req,res)=>{
     try {
         console.log('Here')
         let iApplyId=req.params.id
-        let iApplyData=await IApply.findOne({iApplyId})
+        let iApplyData=await readIapplyData(iApplyId)
+    
         if(!iApplyData){
-            throw new Error('I-apply ID not fount!');
+            throw new Error('I-apply ID not found!');
+        }
+        if(!iApplyData.refferingFinCenter){
+            iApplyData.refferingFinCenter='';
         }
         res.status(201);
         res.json({iApplyData});
