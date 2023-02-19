@@ -14,13 +14,7 @@ const requestSchema=new Schema({
         },
         message:(props)=>{return `${props.value} is past Date!` }
     }},
-    status:{type:Types.ObjectId, ref:'Status',validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
+    status:{type:Types.ObjectId, ref:'Status'},
     statusIncomingDate:{type:Date, required:true},
     statusSender:{type:String,required:true},
     history:{type:[],default:[],validate:{
@@ -47,10 +41,11 @@ const requestSchema=new Schema({
     }},
     iApplyId:{type:String,required:true,validate:{
         validator:async (value)=>{
-            console.log(value)
+            const regex=/^[A-Z]{2}[0-9]+$/
+            return regex.test(value)
 
         },
-        message:(props)=>{return `${props.value} is past Date!` }
+        message:(props)=>{return `${props.value} is not a valid I-applyId` }
     }},
     clientName:{type:String,required:true,validate:{
         validator:async (value)=>{

@@ -1,9 +1,9 @@
 const { body } = require('express-validator');
 const { register, login, createResetPassToken, verifyToken, changePassword } = require('../services/userServices');
 const { parseError } = require('../utils/utils');
-const transporter=require('../emailClient/mail');
+const {serverSendMail, emailAdress}=require('../emailClient/mail');
 const InvalidToken = require('../models/InvalidToken');
-const passwordLength=3
+const passwordLength=3;
 
 
 const authController=require('express').Router();
@@ -58,7 +58,7 @@ authController.post('/resetPass',async (req,res)=>{
     try {
         
         let user=await createResetPassToken(req.body.email);
-        const mailOptions = {
+        /*const mailOptions = {
             from: 'hello@example.com',
             to: user.email,
             subject: 'Subject',
@@ -75,9 +75,9 @@ authController.post('/resetPass',async (req,res)=>{
                 console.log('Email sent: ' + info.response);
               // do something useful
             }
-          });
-
-
+          });*/
+    const messageForEmail='Use this token to reset your password: '+ user.resetToken
+    serverSendMail(emailAdress,user.email,'Reset token',messageForEmail)
     } catch (error) {
         res.status(401);
         res.json({message:parseError(error)});
