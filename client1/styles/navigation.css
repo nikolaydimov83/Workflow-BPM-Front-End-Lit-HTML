@@ -1,6 +1,6 @@
 body {
   color: rgb(68, 67, 67);
-  background: rgb(228, 227, 227);
+  background: rgb(234, 243, 246);
   margin: 0;
   padding: 0;
   overflow: auto;
@@ -10,8 +10,8 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.1em 3em;
-  background: #7d7e7e;
+  padding: 0.05em 3em;
+  background: white;
 }
 .notification{
   background-color: red;
@@ -24,7 +24,7 @@ nav {
   margin-bottom: 5px;
   display: flex;
   justify-content: space-between;
-  color: aliceblue;
+  color: rgb(228, 227, 227);
 }
 
 #logo {
@@ -45,7 +45,7 @@ nav a {
 header a {
   padding: 0 10px;
   text-decoration: none;
-  color: aliceblue;
+  color: rgb(150, 150, 150);
 }
 
 header a:hover {
@@ -76,8 +76,8 @@ section {
 #home img {
   display: block;
   margin: auto;
-  height: 30%;
-  width: 30%;
+  height: 45%;
+  width: 45%;
   background-color: transparent;
 }
 

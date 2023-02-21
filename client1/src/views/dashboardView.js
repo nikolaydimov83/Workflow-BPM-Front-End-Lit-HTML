@@ -27,7 +27,7 @@ ${data.length>0?html`<ul class="card-wrapper">
 
 export async function showCatalog(ctx){
     try{
-        let data=await get('/data/shoes');
+        let data=await get('/data/catalog');
         console.log(data)
         ctx.renderView(catalogTemplate(data));
     }catch(error){

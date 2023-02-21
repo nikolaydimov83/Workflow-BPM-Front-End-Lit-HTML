@@ -58,7 +58,7 @@ function renderNav(){
 if(getUserData()){
     user.style.display='';
     guest.style.display='none';
-    //user.querySelector('span').textContent=`Welcome, ${getUserData().email}`;
+    document.getElementById('profile').textContent=`${getUserData().email}`;
 }else{
     user.style.display='none';
     guest.style.display=''
