@@ -28,7 +28,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
 function prepareMailContent(request){
   return `
-  Soulmates заявка с id: ${request._id} 
+  Plan B заявка с id: ${request._id} 
   По апликация ${request.iApplyId} 
   На клиент ${request.clientName}, 
   ЕГФН:${request.clientEGFN} беше прехвърлена на статус ${request.status.statusName}`

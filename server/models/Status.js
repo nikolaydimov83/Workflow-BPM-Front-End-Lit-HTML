@@ -1,14 +1,14 @@
 //{statusName,statusDate,nextStatuses:[],statusSender:User}
 
 const { Schema, model,Types } = require("mongoose");
-let roles=['LA', 'Branch','Closed']
+let types=['LA', 'Branch','Closed']
 
 
 const requestSchema=new Schema({
     statusName:{type:String, required:true},
     nextStatuses:{type:[Types.ObjectId],ref:'Status'},
     statusCreateDate:{type:Date,default:Date.now,immutable:true},
-    statusType:{type:String,enum:roles}
+    statusType:{type:String,enum:types}
 });
 
 requestSchema.index({statusName:1},{

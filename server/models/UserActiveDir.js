@@ -12,6 +12,11 @@ userActiveDirSchema.index({email:1},{
         strength:2
     }
 });
+userActiveDirSchema.pre('save',()=>{
+console.log(`ПИПАШ В АКТИВНАТА ЮЗЪРСКА ДИРЕКТОРИЯ!!!!!!!!!!!!
+ВИЖ ЗАЩО СЕ СЛУЧВА ТАКА.
+НЕ Е ОК!!!!!!!`)
+})
 
 const UserActiveDir=model('UserActiveDir', userActiveDirSchema);
 

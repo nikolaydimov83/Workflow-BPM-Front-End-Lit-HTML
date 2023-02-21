@@ -20,7 +20,8 @@ const userSchema=new Schema({
     }},
     hashedPass:{type:String,required:true},
     userStaticInfo:{type:Types.ObjectId,ref:'UserActiveDir'},
-    role:{type:String}
+    role:{type:String},
+    finCenter:{type:Number,min:1,max:999}
  
 });
 
@@ -31,6 +32,8 @@ userSchema.pre('save', async function() {
       this.userStaticInfo = user.id
       this.userStatus='Active';
       this.role=user.branchNumber==101?'LA':'Branch'
+      this.finCenter=user.branchNumber;
+      
       
     }else{
         this.userStatus='Inactive';

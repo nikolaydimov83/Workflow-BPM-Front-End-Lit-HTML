@@ -17,28 +17,10 @@ const requestSchema=new Schema({
     status:{type:Types.ObjectId, ref:'Status'},
     statusIncomingDate:{type:Date, required:true},
     statusSender:{type:String,required:true},
-    history:{type:[],default:[],validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
+    history:{type:[],default:[]},
     description:{type:String, minLength:15},
-    finCenter:{type:Number,required:true,min:100,max:999,validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
-    refferingFinCenter:{type:Number,validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
+    finCenter:{type:Number,required:true,min:1,max:999},
+    refferingFinCenter:{type:Number,min:1,max:999},
     iApplyId:{type:String,required:true,validate:{
         validator:async (value)=>{
             const regex=/^[A-Z]{2}[0-9]+$/
@@ -47,42 +29,12 @@ const requestSchema=new Schema({
         },
         message:(props)=>{return `${props.value} is not a valid I-applyId` }
     }},
-    clientName:{type:String,required:true,validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
-    clientEGFN:{type:String,required:true,minLength:9,maxLength:10,validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
-    product:{type:String},
-    amount:{type:Number, min:1000,validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
-    ccy:{type:String, enum:['BGN', 'EUR','USD','Other'],validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }},
-    comments:{type:[Types.ObjectId],ref:'Comment',default:[],validate:{
-        validator:async (value)=>{
-            console.log(value)
-
-        },
-        message:(props)=>{return `${props.value} is past Date!` }
-    }}
+    clientName:{type:String,required:true},
+    clientEGFN:{type:String,required:true,minLength:9,maxLength:10},
+    product:{type:String,required:true},
+    amount:{type:Number, min:1000},
+    ccy:{type:String, enum:['BGN', 'EUR','USD','Other']},
+    comments:{type:[Types.ObjectId],ref:'Comment',default:[]}
 
     
     
@@ -94,6 +46,38 @@ requestSchema.index({iApplyId:1},{
         strength:2
     }
 });
+
+requestSchema.index({finCenter:1},{
+    collation:{
+        locale:'en',
+        strength:2
+    }
+});
+
+requestSchema.index({refferingFinCenter:1},{
+    collation:{
+        locale:'en',
+        strength:2
+    }
+});
+
+
+ /*requestSchema.post('find', async function(docs) {
+    for (const doc of docs) {
+        await doc.populate({path:'status',populate: { path: 'nextStatuses' }})
+
+    }
+    
+})*/
+
+requestSchema.post('findOne', async function(doc) {
+   
+        await doc.populate({path:'status',populate: { path: 'nextStatuses' }});
+    
+})
+
+
+
 
 
 const Request=model('Request', requestSchema);
