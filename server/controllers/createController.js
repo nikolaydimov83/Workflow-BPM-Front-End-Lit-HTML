@@ -51,7 +51,7 @@ async function prepareBodyForRequestCreate(req) {
     body.requestWorkflow = requestWorkflow.id;
     let status = requestWorkflow.allowedStatuses[0];
     body.status = status.id.toString('hex');
-    body.statusIncomingDate = new Date();
+    body.statusIncomingDate = (new Date())
     body.statusSender = req.user.email;
 
     body.history = [];

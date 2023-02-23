@@ -62,22 +62,19 @@ requestSchema.index({refferingFinCenter:1},{
 });
 
 
- /*requestSchema.post('find', async function(docs) {
+/*requestSchema.post('find', async function(docs) {
     for (const doc of docs) {
-        await doc.populate({path:'status',populate: { path: 'nextStatuses' }})
+        await doc.populate('status requestWorkflow')
 
     }
     
-})*/
+});*/
 
 requestSchema.post('findOne', async function(doc) {
    
         await doc.populate({path:'status',populate: { path: 'nextStatuses' }});
     
 })
-
-
-
 
 
 const Request=model('Request', requestSchema);

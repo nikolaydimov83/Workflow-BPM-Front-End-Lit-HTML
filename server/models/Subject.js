@@ -10,7 +10,7 @@ const subjectSchema=new Schema({
 
 subjectSchema.index({subjectName:1},{
     collation:{
-        locale:'bg',
+        locale:'en',
         strength:2
     }
 });

@@ -34,10 +34,43 @@ function renameBodyProperties(req) {
     return instance;
 }
 
+function sortWithType(array,sortType,sortProperty,sortIndex){
+    if(sortIndex!=-1){
+        sortIndex=1
+    }
+    let sortTypes={
+        'String':(array,sortProperty)=>{
+           let a=  array.sort((a, b) => (a[sortProperty] > b[sortProperty] ? sortIndex*1 : sortIndex*-1));
+           return a
+        },
+        'Number':(array)=>{
+            return array.sort((a,b)=>{
+                return sortIndex*(a[sortProperty] - b[sortProperty])
+            })
+        },
+        'Date':(array)=>{
+            return array.sort((a,b)=>{
+                return sortIndex*((new Date(a[sortProperty]) - new Date(b[sortProperty])));
+            })
+        },
+        'ObjectID':(array)=>{
+            
+            let a=  array.sort((a, b) =>{ 
+                let keys=Object.keys(a[sortProperty]);
+                innerProperty=keys.find(a=>a.includes('Name'));
+                (a[sortProperty].innerProperty > b[sortProperty].innerProperty ? sortIndex*1 : sortIndex*-1)
+           
+        });
+        return a
+        }
+    }
+    return {sortedData:sortTypes[sortType](array,sortProperty),newSortIndex:-sortIndex}
+}
 
 
 
 
-module.exports={parseError,renameBodyProperties,checkUserEnrolled}
+
+module.exports={parseError,renameBodyProperties,checkUserEnrolled,sortWithType}
 
 

@@ -9,7 +9,7 @@ const workflowSchema=new Schema({
 
 workflowSchema.index({workflowName:1},{
     collation:{
-        locale:'bg',
+        locale:'en',
         strength:2
     }
 });

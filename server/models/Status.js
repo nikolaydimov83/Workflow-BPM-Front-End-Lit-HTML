@@ -1,7 +1,7 @@
 //{statusName,statusDate,nextStatuses:[],statusSender:User}
 
 const { Schema, model,Types } = require("mongoose");
-let types=['LA', 'Branch','Closed']
+let types=['LA', 'Branch','Closed','LA-ML']
 
 
 const requestSchema=new Schema({
@@ -13,7 +13,7 @@ const requestSchema=new Schema({
 
 requestSchema.index({statusName:1},{
     collation:{
-        locale:'bg',
+        locale:'en',
         strength:2
     }
 });
