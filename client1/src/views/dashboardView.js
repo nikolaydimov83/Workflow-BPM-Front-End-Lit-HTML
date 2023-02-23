@@ -1,37 +1,83 @@
-import { get } from '../api/api.js';
+import { get,post } from '../api/api.js';
+import { getTableCriteriaSortIndex, setTableCriteriaSortIndex } from '../api/dashboard.js';
 import { html,repeat } from '../lib.js';
+import { stringifyDates } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 
-let catalogTemplate=(data)=>html`<section id="dashboard">
-<h2>Collectibles</h2>
-${data.length>0?html`<ul class="card-wrapper">
-  <!-- Display a li with information about every post (if any)-->
-  ${repeat(data,(shoePair)=>shoePair._id,(shoePair)=>html`<li class="card">
-    <img src=${shoePair.imageUrl} alt="travis" />
-    <p>
-      <strong>Brand: </strong><span class="brand">${shoePair.brand}</span>
-    </p>
-    <p>
-      <strong>Model: </strong
-      ><span class="model">${shoePair.model}</span>
-    </p>
-    <p><strong>Value:</strong><span class="value">${shoePair.value}</span>$</p>
-    <a class="details-btn" href="/dashboard/${shoePair._id}">Details</a>
-  </li>`)}
 
-</ul>`:html`<h2>There are no items added yet.</h2>`}
+let catalogTemplate=(data)=>html`
+<div class="tableLarge">
+<table>
+<thead>
+  <tr @click=${sortTableBy}>
+    <th ><a id="iApplyId"href="#">IApplyId</a></th>
+    <th ><a id="clientName"href="#">Име на клиента</a></th>
+    <th ><a id="clientEGFN"href="#">EGFN</a></th>
+    <th ><a id="finCenter"href="#">ФЦ</a></th>
+    <th ><a id="refferingFinCenter"href="#">Рефериращ</a></th>
+    <th ><a id="requestWorkflow"href="#">Subject</a></th>
+    <th ><a id="status"href="#">Статус</a></th>
+    <th ><a id="statusIncomingDate"href="#">Дата на постъпване</a></th>
+    <th ><a id="deadlineDate"href="#">Deadline</a></th>
+    <th ><a id="details"href="#">Детайли</a></th>
+  </tr>
+ </thead>
+ <tbody>
+ ${repeat(data,(request)=>request._id,(request)=>html`<tr>
+     <td>${request.iApplyId}</td>
+     <td>${request.clientName}</td>
+     <td>${request.clientEGFN}</td>
+     <td>${request.finCenter}</td>
+     <td>${request.refferingFinCenter}</td>
+     <td>${request.requestWorkflow.workflowName}</td>
+     <td>${request.status.statusName}</td>
+     <td>${request.statusIncomingDate}</td>
+     <td>${request.deadlineDate}</td>
+     <td><a href="/dashboard/${request._id}">Покажи</a></td>
+</tr>`)}
+</tbody>
+</table>
+</div>`
 
-<!-- Display an h2 if there are no posts -->
-
-</section>`
-
+let outerCtx=null;
 export async function showCatalog(ctx){
+  outerCtx=ctx
     try{
         let data=await get('/data/catalog');
-        console.log(data)
-        ctx.renderView(catalogTemplate(data));
+        let dataStringifiedDates=stringifyDates(data);
+        
+        //console.log(data)
+        ctx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy));
     }catch(error){
         errorHandler(error);
     }
 
+}
+
+
+
+async function sortTableBy(ev){
+  ev.preventDefault();
+  let sortCriteria=ev.target.id;
+
+
+  
+  try {
+        if(sortCriteria!='details'){
+          let sortIndex=getTableCriteriaSortIndex(sortCriteria);
+          let data=await post('/data/catalog',{sortCriteria:sortCriteria,sortIndex});
+          setTableCriteriaSortIndex(sortCriteria,data.newSortIndex);
+          let dataStringifiedDates=stringifyDates(data.sortedData);
+          outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy));
+        }
+  } catch (error) {
+    errorHandler(error);
+  
+
+  }
+
+  //outerCtx.pageState.iApplyId=serverResponseData;
+  //outerCtx.pageState.subjectSelectedValue=document.getElementById('subjectName').value;
+
+  outerCtx.renderView(createTemplate(outerCtx.pageState,retrieveIapplyData));
 }
