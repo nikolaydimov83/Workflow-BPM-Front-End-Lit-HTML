@@ -34,7 +34,8 @@ const requestSchema=new Schema({
     product:{type:String,required:true},
     amount:{type:Number, min:1000},
     ccy:{type:String, enum:['BGN', 'EUR','USD','Other']},
-    comments:{type:[Types.ObjectId],ref:'Comment',default:[]}
+    comments:{type:[Types.ObjectId],ref:'Comment',default:[]},
+    subjectId:{type:Types.ObjectId, ref:'Subject',req:true}
 
     
     
@@ -70,11 +71,11 @@ requestSchema.index({refferingFinCenter:1},{
     
 });*/
 
-requestSchema.post('findOne', async function(doc) {
+/*requestSchema.post('findOne', async function(doc) {
    
         await doc.populate({path:'status',populate: { path: 'nextStatuses' }});
     
-})
+})*/
 
 
 const Request=model('Request', requestSchema);

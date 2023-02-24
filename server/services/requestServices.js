@@ -12,7 +12,7 @@ async function getAllUserPendingRequests(user,sortCriteria){
     const allStatusesRelatedToUserRole=await Status.find({statusType:userRole})
     
     if(!(userRole.includes('Branch'))){
-        let result= await Request.find({}).where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow').lean();
+        let result= await Request.find({}).where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId').lean();
         
         result.sort((a,b)=>{
             return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
@@ -22,7 +22,7 @@ async function getAllUserPendingRequests(user,sortCriteria){
     }else{
         const result = await Request.find({})
         .or([{finCenter:userFinCenter},{refferingFinCenter:userFinCenter}])
-        .where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow').lean();
+        .where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId').lean();
 
         result.sort((a,b)=>{
             return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
@@ -40,6 +40,24 @@ async function sortTable(user, sortProperty,sortIndex){
     return result
 }
 
+async function getRequestById(id){
+    return await Request.findById(id)
+        .populate({path:'status',populate: { path: 'nextStatuses' }})
+        .populate('requestWorkflow')
+        .populate('comments').populate('subjectId')
+        .lean()
+}
+async function editRequestStatus(requestId,newStatusId,email){
+    let request = await Request.findById(requestId);
+    request.status=newStatusId;
+    request.statusIncomingDate = (new Date())
+    request.statusSender = email;
+    let historyEntry = { status:newStatusId, incomingDate: request.statusIncomingDate, statusSender: email };
+    request.history.push(historyEntry);
+    request.save();
+    return request
+}
 
 
-module.exports={createRequest,getAllUserPendingRequests,sortTable}
+
+module.exports={createRequest,getAllUserPendingRequests,sortTable,getRequestById,editRequestStatus}

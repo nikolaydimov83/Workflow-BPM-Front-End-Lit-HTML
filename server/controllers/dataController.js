@@ -1,6 +1,6 @@
 const Request = require('../models/Request');
 const Workflow = require('../models/Workflow');
-const { getAllUserPendingRequests, getAllUserPendingRequests1, sortTable } = require('../services/requestServices');
+const { getAllUserPendingRequests, getAllUserPendingRequests1, sortTable, getRequestById } = require('../services/requestServices');
 
 const dataController=require('express').Router();
 
@@ -30,6 +30,23 @@ dataController.post('/',async (req,res)=>{
     let sortedData=await sortTable(user,sortProperty,sortIndex)
     res.status(201);    
     res.json(sortedData);
+   
+    
+   } catch (error) {
+   console.log(error)
+   }
+
+});
+
+dataController.get('/:id',async (req,res)=>{
+    
+    let id=req.params.id
+
+   try {
+
+    let request=await getRequestById(id)
+    res.status(201);    
+    res.json(request);
    
     
    } catch (error) {

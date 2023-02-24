@@ -47,7 +47,10 @@ module.exports=createController;
 async function prepareBodyForRequestCreate(req) {
     let body = req.body;
     let iApplyId = body.iApplyId;
-    let requestWorkflow = await findWorkflowBySubjectId(body.subjectName);
+    let requestWorkflow = await findWorkflowBySubjectId(body.subjectId);
+    if (!requestWorkflow){
+        throw new Error('The subject you are chising does not correspond to any Workflow!')
+    }
     body.requestWorkflow = requestWorkflow.id;
     let status = requestWorkflow.allowedStatuses[0];
     body.status = status.id.toString('hex');
