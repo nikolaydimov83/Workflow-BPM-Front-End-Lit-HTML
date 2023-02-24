@@ -4,7 +4,7 @@ import { page,render } from "./lib.js";
 import { getUserData } from "./utils.js";
 import { showCreate } from "./views/createView.js";
 import { showCatalog } from "./views/dashboardView.js";
-import { showshoesDetails } from "./views/detailsView.js";
+import { showRequestDetails } from "./views/detailsView.js";
 import { showMemeEdit } from "./views/editView.js";
 import { showHome } from "./views/homeView.js";
 import { showLogin } from "./views/loginView.js";
@@ -23,7 +23,7 @@ renderNav();
 
 page(decorateCtx);
 page('/dashboard',showCatalog);
-page('/dashboard/:shoesId',showshoesDetails);
+page('/dashboard/:requestId',showRequestDetails);
 page('/create',showCreate);
 /*page('/profile',showMyProfile);*/
 page('/login',showLogin);

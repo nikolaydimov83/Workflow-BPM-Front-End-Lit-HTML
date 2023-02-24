@@ -6,8 +6,8 @@
   margin: auto;
 }
 .formLarge {
-  background: #ffffff;
-  max-width: 920px;
+  background: rgb(233,242,242);
+  max-width: 95%;
   margin: auto;
   margin-top: 45px;
   padding: 20px;
@@ -33,15 +33,22 @@
   margin-top: 0px;
   margin-bottom: 30px;
   font-size: 30px;
+  margin-block-start: 1em;
+}
+
+.formLarge h1 {
+
+  font-size: 30px;
 }
 
 
 
 .formLarge input {
+
   display: block;
   font-family: "Roboto", sans-serif;
   outline: 0;
-  background: #f2f2f2;
+  background: white;
   height: 50px;
   border: 0;
   margin: 0 0 15px;
@@ -50,7 +57,10 @@
   box-sizing: border-box;
   font-size: 14px;
   text-align: center;
+  border: 2px solid rgb(242,242,242);
+ 
 }
+
 input.small{
 width: 84%;
 display: inline-block;
@@ -63,7 +73,7 @@ input.verySmall{
   display: block;
   font-family: "Roboto", sans-serif;
   outline: 0;
-  background: #f2f2f2;
+
   height: 50px;
   border: 0;
   margin: 0 0 15px;
@@ -72,6 +82,8 @@ input.verySmall{
   box-sizing: border-box;
   font-size: 14px;
   text-align: center;
+  background-color: white;
+  border: 2px solid rgb(242,242,242);
 }
 .formLarge label{
   font-family: "Roboto", sans-serif;
@@ -87,23 +99,28 @@ input.verySmall{
   text-align: left;
 }
 .inlineDiv{
-  border: 1px solid rgb(241, 237, 237);
+  
   border-radius: 10px;
-  padding: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
   display: inline-flex;
   width: 400px;
-  margin-bottom: 5px;
-  flex-direction: column
+  margin-bottom: 10px;
+  margin-right: 5px;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.24);
+ 
 }
 .formLarge textarea {
-  border: 1px solid rgb(206, 206, 206);
-  max-width: 99%;
-  min-width: 90%;
+ 
+  min-width: 800px;
   min-height: 50px;
   margin-bottom: 10px;
-  background-color: rgb(242, 242, 242);
   border-radius: 10px;
   text-align: center;
+  background-color: white;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 .formLarge button {
   font-family: "Roboto", sans-serif;

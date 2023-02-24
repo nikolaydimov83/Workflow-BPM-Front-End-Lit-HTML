@@ -21,7 +21,7 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
         />
         <label for='subjectName'>Subject</label>
         <select
-          name="subjectName"
+          name="subjectId"
           id="subjectName">
           ${repeat(serverResponse.subjects,(subject)=>subject._id,(subject)=>html`
             <option value="${subject._id}" >${subject.subjectName}</option>
@@ -111,12 +111,15 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
 
             </div>
       </div>
-      <textarea
+
+        <textarea
           type="textarea"
           name="description"
           id="description"
           placeholder="Описание"
         ></textarea>
+
+
     <button type="submit">Изпрати</button>
   </form>
 </div>

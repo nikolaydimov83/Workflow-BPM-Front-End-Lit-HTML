@@ -6,11 +6,12 @@ const allowedTypes={
     'password':'password',
     're-password':'password',
     'iApplyId':'iApplyId',
-    'subjectName':'optional',
+    'subjectId':'optional',
     'deadlineDate':'string',
     'clientEGFN':'string',
     'finCenter':'string',
-    'finCenterText':'string'
+    'finCenterText':'string',
+    'nextStatus':'string'
 
 
 }
