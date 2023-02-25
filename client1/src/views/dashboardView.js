@@ -13,12 +13,12 @@ let catalogTemplate=(data)=>html`
     <th ><a id="iApplyId"href="#">IApplyId</a></th>
     <th ><a id="clientName"href="#">Име на клиента</a></th>
     <th ><a id="clientEGFN"href="#">EGFN</a></th>
-    <th ><a id="finCenter"href="#">ФЦ</a><button class="filter">F</button></th>
-    <th ><a id="refferingFinCenter"href="#">Рефериращ</a><button class="filter">F</button></th>
-    <th ><a id="subjectId"href="#">Subject</a><button class="filter">F</button></th>
-    <th ><a id="status"href="#">Статус</a><button class="filter">F</button></th>
-    <th ><a id="statusIncomingDate"href="#">Дата на постъпване</a><button class="filter">F</button></th>
-    <th ><a id="deadlineDate"href="#">Deadline</a><button class="filter">F</button></th>
+    <th ><a id="finCenter"href="#">ФЦ</a></th>
+    <th ><a id="refferingFinCenter"href="#">Рефериращ</a></th>
+    <th ><a id="subjectId"href="#">Subject</a></th>
+    <th ><a id="status"href="#">Статус</a></th>
+    <th ><a id="statusIncomingDate"href="#">Дата на постъпване</a></th>
+    <th ><a id="deadlineDate"href="#">Deadline</a></th>
     <th ><a id="details"href="#">Детайли</a></th>
   </tr>
  </thead>

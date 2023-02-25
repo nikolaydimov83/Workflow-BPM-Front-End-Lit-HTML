@@ -36,10 +36,7 @@
   margin-block-start: 1em;
 }
 
-.formLarge h1 {
 
-  font-size: 30px;
-}
 
 
 
@@ -48,7 +45,7 @@
   display: block;
   font-family: "Roboto", sans-serif;
   outline: 0;
-  background: white;
+  background: rgb(240,247,249);
   height: 50px;
   border: 0;
   margin: 0 0 15px;
@@ -101,10 +98,11 @@ input.verySmall{
 .inlineDiv{
   
   border-radius: 10px;
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
   display: inline-flex;
   width: 400px;
+  height: 501px;
   margin-bottom: 10px;
   margin-right: 5px;
   flex-direction: column;

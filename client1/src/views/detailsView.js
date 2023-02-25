@@ -4,7 +4,7 @@ import { html,repeat,nothing } from '../lib.js';
 import { getUserData, stringifyDates } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 
-let shoesDetailsTemplate=(data,isOwner,changeStatus,addComment)=>html`<section id="details">
+let detailsTemplate=(data,changeStatus)=>html`<section id="details">
 
 
 <div class="formLarge">
@@ -38,14 +38,16 @@ let shoesDetailsTemplate=(data,isOwner,changeStatus,addComment)=>html`<section i
   <p class="details-property-info"><span>Status</span>:  ${data.status.statusName}</p>
   <p class="details-property-info"><span>Изпратен от</span>:  ${data.statusSender}</p>
   <p class="details-property-info"><span>Изпратен на дата</span>:  ${data.statusIncomingDate}</p>
-  <form @submit=${changeStatus}>
+  
+  ${data.checkUserCanEditRequest?html`<form @submit=${changeStatus}>
         <select class="details-property-info" name="nextStatus">
     ${repeat(data.status.nextStatuses,(nextStatus)=>nextStatus._id,(nextStatus)=>html`
             <option value="${nextStatus._id}" >${nextStatus.statusName}</option>
           `)}
     </select>
     <button>Смени Статус</button>
-  </form>
+  </form>`:''}
+
 
   </div>
 
@@ -66,7 +68,7 @@ export async function showRequestDetails(ctx){
         let isOwner=isUserOwner(data)
         let dataStringifiedDates=stringifyDates([data]);
         dataStringifiedDates=dataStringifiedDates[0]
-        ctx.renderView(shoesDetailsTemplate(dataStringifiedDates,isOwner,changeStatus,addComment));
+        ctx.renderView(detailsTemplate(dataStringifiedDates,changeStatus,addComment));
     }catch(error){
       errorHandler(error);
     }
