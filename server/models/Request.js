@@ -35,7 +35,8 @@ const requestSchema=new Schema({
     amount:{type:Number, min:1000},
     ccy:{type:String, enum:['BGN', 'EUR','USD','Other']},
     comments:{type:[Types.ObjectId],ref:'Comment',default:[]},
-    subjectId:{type:Types.ObjectId, ref:'Subject',req:true}
+    subjectId:{type:Types.ObjectId, ref:'Subject',req:true},
+    requestCreatorEmail:{type:String,ref:'User',req:true}
 
     
     

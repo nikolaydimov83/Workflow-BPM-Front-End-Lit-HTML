@@ -1,27 +1,45 @@
+const { prepareMailContent, serverSendMail, emailAdress } = require('../emailClient/mail');
 const Request = require('../models/Request');
+const Status = require('../models/Status');
+const User = require('../models/User');
 const Workflow = require('../models/Workflow');
-const { getAllUserPendingRequests, getAllUserPendingRequests1, sortTable, getRequestById, editRequestStatus } = require('../services/requestServices');
+const { getRequestById, editRequestStatus, userCanEditRequest } = require('../services/requestServices');
 const { parseError } = require('../utils/utils');
 
 const changeStatusController=require('express').Router();
-
+const emailSubjectForChangeStatus='PlanB Status Changed!'
 changeStatusController.post('/:id',async (req,res)=>{
     let requestId=req.params.id;
-    let newStatusId=req.body.nextStatus
+    let newStatusId=req.body.nextStatus;
     let user=req.user;
-    
-    
+  
+
 
    try {
     let databaseRequest=await getRequestById(requestId);
-    if((databaseRequest.status.nextStatuses.filter((s)=>s._id==newStatusId)).length==0){
-        throw new Error('You are trying to assign status that is not allowed in this workflow step!')
-    }
+
+    if(!userCanEditRequest(databaseRequest, user,newStatusId)){
+        throw new Error('You are not allowed to change the status of the request!')
+    };
+
+    
+
     let response=await editRequestStatus(requestId,newStatusId,user.email)
 
     res.status(201);    
     res.json(response);
-   
+
+    let emailContent=prepareMailContent(response)
+    let userListForEmail=await User.find({})
+        .or([{finCenter:response.finCenter},{finCenter:response.refferingFinCenter}])
+        .lean();
+        userListForEmail.forEach((user)=>{
+
+            serverSendMail(emailAdress,user.email,emailSubjectForChangeStatus,emailContent)
+        })
+    if(response.requestCreatorEmail!=user.email){
+        serverSendMail(emailAdress,response.requestCreatorEmail,emailSubjectForChangeStatus,emailContent)
+    }
     
    } catch (error) {
     res.status(400);
@@ -32,3 +50,5 @@ changeStatusController.post('/:id',async (req,res)=>{
 
 
 module.exports=changeStatusController;
+
+

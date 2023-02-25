@@ -1,6 +1,6 @@
 const Request = require('../models/Request');
 const Workflow = require('../models/Workflow');
-const { getAllUserPendingRequests, getAllUserPendingRequests1, sortTable, getRequestById } = require('../services/requestServices');
+const { getAllUserPendingRequests, sortTable, getRequestById, userCanEditRequest } = require('../services/requestServices');
 
 const dataController=require('express').Router();
 
@@ -45,6 +45,8 @@ dataController.get('/:id',async (req,res)=>{
    try {
 
     let request=await getRequestById(id)
+    let checkUserCanEditRequest=userCanEditRequest(request,req.user);
+    request.checkUserCanEditRequest=checkUserCanEditRequest;
     res.status(201);    
     res.json(request);
    

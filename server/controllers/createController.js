@@ -3,13 +3,14 @@ const { serverSendMail, emailAdress, prepareMailContent } = require('../emailCli
 
 const Request = require('../models/Request');
 const Subject = require('../models/Subject');
+const User = require('../models/User');
 const { readIapplyData } = require('../services/iapplyServices');
 const { createRequest } = require('../services/requestServices');
 const { findWorkflowBySubjectId } = require('../services/subjectServices');
 const { parseError } = require('../utils/utils');
 const createController=require('express').Router();
 
-const emailSubjectForCreate='New Request Created'
+const emailSubjectForCreate='PlanB New Request Created'
 
 createController.get('/',async (req,res)=>{
     try {
@@ -71,5 +72,6 @@ async function prepareBodyForRequestCreate(req) {
     body.iApplyId = iApplyData.iApplyId;
     body.product = iApplyData.product;
     body.refferingFinCenter = iApplyData.refferingFinCenter;
+    body.requestCreatorEmail=req.user.email;
     return body;
 }

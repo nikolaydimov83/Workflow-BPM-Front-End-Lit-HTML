@@ -1,6 +1,7 @@
 const Request = require("../models/Request");
 const Status=require('../models/Status');
 const { sortWithType } = require("../utils/utils");
+const { createCommnet } = require("./commentServices");
 
 async function createRequest(requestObject){
     return await (await Request.create(requestObject)).populate('status');
@@ -44,7 +45,7 @@ async function getRequestById(id){
     return await Request.findById(id)
         .populate({path:'status',populate: { path: 'nextStatuses' }})
         .populate('requestWorkflow')
-        .populate('comments').populate('subjectId')
+        .populate('comments').populate('subjectId').populate({path:'comments',populate: { path: 'commentOwner' }})
         .lean()
 }
 async function editRequestStatus(requestId,newStatusId,email){
@@ -58,6 +59,41 @@ async function editRequestStatus(requestId,newStatusId,email){
     return request
 }
 
+function userCanEditRequest(databaseRequest, user,newStatusId) {
+    if(newStatusId){
+        if ((databaseRequest.status.nextStatuses.filter((s) => s._id == newStatusId)).length == 0) {
+            return false
+    }
+    }
 
 
-module.exports={createRequest,getAllUserPendingRequests,sortTable,getRequestById,editRequestStatus}
+    if (databaseRequest.status.statusType != user.role) {
+        return false
+    }
+
+    if (user.role.includes('Branch')) {
+        if (user.finCenter != databaseRequest.finCenter && user.finCenter != databaseRequest.refferingFinCenter) {
+            return false
+        }
+
+    }
+    return true
+}
+
+async function addCommentToRequest(requestId,body,user){
+    let commnet=await createCommnet(body,user);
+    let request=await Request.findById(requestId);
+    request.comments.push(commnet.id)
+    console.log()
+}
+
+
+module.exports={
+                    createRequest,
+                    getAllUserPendingRequests,
+                    sortTable,
+                    getRequestById,
+                    editRequestStatus,
+                    userCanEditRequest,
+                    addCommentToRequest
+                }

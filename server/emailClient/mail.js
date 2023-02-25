@@ -27,13 +27,26 @@ transporter.sendMail(mailOptions, function(error, info){
 }
 
 function prepareMailContent(request){
+  let lastComment=''
+  if (request.comments){
+    if(request.comments.lenght>0){
+      if(request.comments[request.comments.length-1].body){
+                  lastComment=`
+Последен коментар:${request.comments[request.comments.length-1]}`
+        }
+
+      }
+    }
+
   return `
   Plan B заявка с id: ${request._id} 
   По апликация ${request.iApplyId} 
   На клиент ${request.clientName}, 
-  ЕГФН:${request.clientEGFN} беше прехвърлена на статус ${request.status.statusName}`
-}
+  ЕГФН:${request.clientEGFN} 
+  Статус ${request.status.statusName}${lastComment}`
   
+}
+
   /*const mailOptions = {
     from: 'hello@example.com',
     to: 'ndimov@postbank.bg',
