@@ -25,7 +25,6 @@ let createTemplate=(serverResponse,retrieveIapplyData)=>html`<section id="create
           id="subjectName">
           ${repeat(serverResponse.subjects,(subject)=>subject._id,(subject)=>html`
             <option value="${subject._id}" >${subject.subjectName}</option>
-            <option value="dummy">Dummy</option>
           `)}
           
         </select>
@@ -144,7 +143,7 @@ async function submitCreateForm(ev){
         let data=loadFormData(ev.target);
         let serverResponseData=await post('/data/create',data)
 
-        outerCtx.page.redirect('/')
+        outerCtx.page.redirect('/dashboard')
         ev.target.reset();
     } catch (error) {
         errorHandler(error);

@@ -11,10 +11,11 @@ th {
 }
 
 td {
-    padding: 0.25em;
+    padding: 0.1em;
     border-right: 1px solid rgb(160, 160, 160);
     border-bottom: 1px solid rgb(160, 160, 160);
     text-align: left;
+    min-width: 95px;
 }
 
 .tableLarge {

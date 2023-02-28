@@ -11,7 +11,8 @@ const allowedTypes={
     'clientEGFN':'string',
     'finCenter':'string',
     'finCenterText':'string',
-    'nextStatus':'string'
+    'nextStatus':'string',
+    'commentText':'string'
 
 
 }

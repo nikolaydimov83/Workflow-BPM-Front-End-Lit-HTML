@@ -2,6 +2,7 @@
 import { logout } from "./api/users.js";
 import { page,render } from "./lib.js";
 import { getUserData } from "./utils.js";
+import { showCreateCommnet } from "./views/createCommentView.js";
 import { showCreate } from "./views/createView.js";
 import { showCatalog } from "./views/dashboardView.js";
 import { showRequestDetails } from "./views/detailsView.js";
@@ -32,7 +33,8 @@ page('/',showHome);
 page('/edit/:shoesId',showMemeEdit);
 page('/search',showsearch);
 page('/resetPass',showResetPass);
-page('/resetPass/:id',showResetPassChange)
+page('/resetPass/:id',showResetPassChange);
+page('/comment/create/:id',showCreateCommnet);
 page.start();
 
 function decorateCtx(ctx,next){

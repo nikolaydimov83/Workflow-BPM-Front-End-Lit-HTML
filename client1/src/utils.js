@@ -15,6 +15,9 @@ export function stringifyDates(data) {
       data.forEach(element => {
         element.statusIncomingDate = new Date(element.statusIncomingDate).toLocaleDateString('bg-BG');
         element.deadlineDate = new Date(element.deadlineDate).toLocaleDateString('bg-BG');
+        element.comments.forEach((comment)=>{
+          comment.commentDate=new Date(comment.commentDate).toLocaleDateString('bg-BG');
+        })
       });
     }
     return data

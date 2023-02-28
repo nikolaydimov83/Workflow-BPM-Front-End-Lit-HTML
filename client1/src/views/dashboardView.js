@@ -79,5 +79,5 @@ async function sortTableBy(ev){
   //outerCtx.pageState.iApplyId=serverResponseData;
   //outerCtx.pageState.subjectSelectedValue=document.getElementById('subjectName').value;
 
-  outerCtx.renderView(createTemplate(outerCtx.pageState,retrieveIapplyData));
+
 }
