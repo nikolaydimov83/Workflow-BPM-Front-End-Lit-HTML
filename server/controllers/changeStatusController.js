@@ -26,8 +26,7 @@ changeStatusController.post('/:id',async (req,res)=>{
 
     let response=await editRequestStatus(requestId,newStatusId,user.email)
 
-    res.status(201);    
-    res.json(response);
+    
 
     let emailContent=prepareMailContent(response)
     let userListForEmail=await User.find({})
@@ -40,7 +39,8 @@ changeStatusController.post('/:id',async (req,res)=>{
     if(response.requestCreatorEmail!=user.email){
         serverSendMail(emailAdress,response.requestCreatorEmail,emailSubjectForChangeStatus,emailContent)
     }
-    
+    res.status(201);    
+    res.json(response);
    } catch (error) {
     res.status(400);
     res.json({message:parseError(error)});

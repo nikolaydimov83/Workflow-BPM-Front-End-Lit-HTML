@@ -13,7 +13,7 @@ async function getAllUserPendingRequests(user,sortCriteria){
     const allStatusesRelatedToUserRole=await Status.find({statusType:userRole})
     
     if(!(userRole.includes('Branch'))){
-        let result= await Request.find({}).where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId').lean();
+        let result= await Request.find({}).where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId comments').lean();
         
         result.sort((a,b)=>{
             return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
@@ -23,7 +23,7 @@ async function getAllUserPendingRequests(user,sortCriteria){
     }else{
         const result = await Request.find({})
         .or([{finCenter:userFinCenter},{refferingFinCenter:userFinCenter}])
-        .where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId').lean();
+        .where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId comments').lean();
 
         result.sort((a,b)=>{
             return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
@@ -49,15 +49,19 @@ async function getRequestById(id){
         .lean()
 }
 async function editRequestStatus(requestId,newStatusId,email){
-    let request = await Request.findById(requestId);
-    request.status=newStatusId;
-    request.statusIncomingDate = (new Date())
-    request.statusSender = email;
-    let historyEntry = { status:newStatusId, incomingDate: request.statusIncomingDate, statusSender: email };
-    request.history.push(historyEntry);
-    request.save();
+    let statusIncomingDate = (new Date());
+    let historyEntry = { status:newStatusId, incomingDate: statusIncomingDate, statusSender: email };
+    let request=await Request.findByIdAndUpdate(requestId,{   
+                        $push: { history: historyEntry },
+                        $set:{
+                            status:newStatusId,
+                            statusIncomingDate:statusIncomingDate,
+                            statusSender:email}})
+                        .populate('status')
+                        .populate('comments');
     return request
 }
+
 
 function userCanEditRequest(databaseRequest, user,newStatusId) {
     if(newStatusId){
@@ -80,11 +84,14 @@ function userCanEditRequest(databaseRequest, user,newStatusId) {
     return true
 }
 
-async function addCommentToRequest(requestId,body,user){
-    let commnet=await createCommnet(body,user);
-    let request=await Request.findById(requestId);
-    request.comments.push(commnet.id)
-    console.log()
+async function addCommentToRequest(requestId,commentText,user){
+    let commnet=await createCommnet(commentText,user);
+    let request=await Request.findByIdAndUpdate(requestId,{ 
+                        $push: { comments: commnet.id } })
+                        .populate('status')
+                        .populate('comments')
+    return request
+
 }
 
 

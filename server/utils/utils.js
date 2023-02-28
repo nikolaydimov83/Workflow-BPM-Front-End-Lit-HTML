@@ -37,6 +37,8 @@ function renameBodyProperties(req) {
 function sortWithType(array,sortType,sortProperty,sortIndex){
     if(sortIndex!=-1){
         sortIndex=1
+    }else{
+        sortIndex=-1
     }
     let sortTypes={
         'String':(array,sortProperty)=>{
@@ -58,7 +60,7 @@ function sortWithType(array,sortType,sortProperty,sortIndex){
             let a=  array.sort((a, b) =>{ 
                 let keys=Object.keys(a[sortProperty]);
                 innerProperty=keys.find(a=>a.includes('Name'));
-                (a[sortProperty].innerProperty > b[sortProperty].innerProperty ? sortIndex*1 : sortIndex*-1)
+                return (a[sortProperty][innerProperty] > b[sortProperty][innerProperty] ? sortIndex*1 : sortIndex*-1)
            
         });
         return a

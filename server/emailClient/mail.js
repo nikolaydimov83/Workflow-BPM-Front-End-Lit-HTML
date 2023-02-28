@@ -29,10 +29,10 @@ transporter.sendMail(mailOptions, function(error, info){
 function prepareMailContent(request){
   let lastComment=''
   if (request.comments){
-    if(request.comments.lenght>0){
+    if(request.comments.length>0){
       if(request.comments[request.comments.length-1].body){
                   lastComment=`
-Последен коментар:${request.comments[request.comments.length-1]}`
+Последен коментар: ${request.comments[request.comments.length-1].body}`
         }
 
       }
@@ -43,7 +43,7 @@ function prepareMailContent(request){
   По апликация ${request.iApplyId} 
   На клиент ${request.clientName}, 
   ЕГФН:${request.clientEGFN} 
-  Статус ${request.status.statusName}${lastComment}`
+  Статус: ${request.status.statusName}${lastComment}`
   
 }
 
