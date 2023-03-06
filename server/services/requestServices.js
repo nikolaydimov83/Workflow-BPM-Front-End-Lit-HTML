@@ -2,12 +2,13 @@ const Request = require("../models/Request");
 const Status=require('../models/Status');
 const { sortWithType } = require("../utils/utils");
 const { createCommnet } = require("./commentServices");
+const { getWorkflowById, checkUserRoleIsPriviliged } = require("./workflowServices");
 
 async function createRequest(requestObject){
     return await (await Request.create(requestObject)).populate('status');
 }
 
-async function getAllUserPendingRequests(user,sortCriteria){
+async function getAllUserPendingRequests(user){
     let userFinCenter=user.finCenter;
     let userRole=user.role;
     const allStatusesRelatedToUserRole=await Status.find({statusType:userRole})
@@ -34,8 +35,10 @@ async function getAllUserPendingRequests(user,sortCriteria){
 
 }
 
-async function sortTable(user, sortProperty,sortIndex){
-    let data=await getAllUserPendingRequests(user);
+async function sortTable(data, sortProperty,sortIndex){
+    if(!sortProperty){
+        sortProperty='statusIncomingDate';
+    }
     let type= Request.schema.path(sortProperty).instance
     let result=sortWithType(data,type,sortProperty,sortIndex)
     return result
@@ -47,6 +50,16 @@ async function getRequestById(id){
         .populate('requestWorkflow')
         .populate('comments').populate('subjectId').populate({path:'comments',populate: { path: 'commentOwner' }})
         .lean()
+}
+async function getRequestsByClientEGFN(clientEGFN){
+    let result= await Request.find({clientEGFN:clientEGFN})
+        .populate({path:'status',populate: { path: 'nextStatuses' }})
+        .populate('requestWorkflow')
+        .populate('comments').populate('subjectId').populate({path:'comments',populate: { path: 'commentOwner' }})
+        .lean()
+        return result.sort((a,b)=>{
+            return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
+        })
 }
 async function editRequestStatus(requestId,newStatusId,email){
     let statusIncomingDate = (new Date());
@@ -63,25 +76,33 @@ async function editRequestStatus(requestId,newStatusId,email){
 }
 
 
-function userCanEditRequest(databaseRequest, user,newStatusId) {
-    if(newStatusId){
-        if ((databaseRequest.status.nextStatuses.filter((s) => s._id == newStatusId)).length == 0) {
-            return false
-    }
+async function getUserRights(databaseRequest, user,newStatusId) {
+    
+    if (await checkUserRoleIsPriviliged(databaseRequest.requestWorkflow._id,user)){
+        return {userCanEdit:true, userPrivileged:true}
     }
 
+    if(newStatusId){
+
+        if ((databaseRequest.status.nextStatuses.filter((s) => s._id == newStatusId)).length == 0) {
+            return {userCanEdit:false, userPrivileged:false}
+    }
+
+    }
 
     if (databaseRequest.status.statusType != user.role) {
-        return false
+        return {userCanEdit:false, userPrivileged:false}
     }
 
     if (user.role.includes('Branch')) {
         if (user.finCenter != databaseRequest.finCenter && user.finCenter != databaseRequest.refferingFinCenter) {
-            return false
+            return {userCanEdit:false, userPrivileged:false}
         }
 
     }
-    return true
+
+    return {userCanEdit:true, userPrivileged:false}
+
 }
 
 async function addCommentToRequest(requestId,commentText,user){
@@ -101,6 +122,7 @@ module.exports={
                     sortTable,
                     getRequestById,
                     editRequestStatus,
-                    userCanEditRequest,
-                    addCommentToRequest
+                    getUserRights,
+                    addCommentToRequest,
+                    getRequestsByClientEGFN
                 }

@@ -31,7 +31,25 @@ async function removeAllowedStatus(status,workflowName){
 
 }
 
+async function getWorkflowById(workflowId){
+    return await Workflow.findById(workflowId).populate('rolesAllowedToFinishRequest').populate('allowedStatuses');
+
+}
+
+async function checkUserRoleIsPriviliged(workflowId,user){
+    let dbWorkFlow=await getWorkflowById(workflowId);
+    if(dbWorkFlow.rolesAllowedToFinishRequest.findIndex((a)=>a==user.role)>-1){
+        return true
+    }else{
+        return false
+    }
+}
+
+
+    
+ 
+ 
 
 
 
-module.exports={createWorkflow,addAllowedStatus,removeAllowedStatus}
+module.exports={createWorkflow,addAllowedStatus,removeAllowedStatus,getWorkflowById,checkUserRoleIsPriviliged}

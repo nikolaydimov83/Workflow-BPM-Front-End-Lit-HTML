@@ -40,6 +40,7 @@ function sortWithType(array,sortType,sortProperty,sortIndex){
     }else{
         sortIndex=-1
     }
+
     let sortTypes={
         'String':(array,sortProperty)=>{
            let a=  array.sort((a, b) => (a[sortProperty] > b[sortProperty] ? sortIndex*1 : sortIndex*-1));

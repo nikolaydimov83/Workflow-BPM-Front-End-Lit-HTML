@@ -6,7 +6,6 @@ const iApplyConroller=require('express').Router();
 
 iApplyConroller.get('/:id',async (req,res)=>{
     try {
-        console.log('Here')
         let iApplyId=req.params.id
         let iApplyData=await readIapplyData(iApplyId)
     

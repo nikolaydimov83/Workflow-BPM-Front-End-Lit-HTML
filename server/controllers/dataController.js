@@ -1,6 +1,7 @@
 const Request = require('../models/Request');
 const Workflow = require('../models/Workflow');
-const { getAllUserPendingRequests, sortTable, getRequestById, userCanEditRequest } = require('../services/requestServices');
+const { getAllUserPendingRequests, sortTable, getRequestById, getUserRights } = require('../services/requestServices');
+const { getWorkflowById } = require('../services/workflowServices');
 
 const dataController=require('express').Router();
 
@@ -27,7 +28,8 @@ dataController.post('/',async (req,res)=>{
     
 
    try {
-    let sortedData=await sortTable(user,sortProperty,sortIndex)
+    data=await getAllUserPendingRequests(user);
+    let sortedData=await sortTable(data,sortProperty,sortIndex)
     res.status(201);    
     res.json(sortedData);
    
@@ -45,8 +47,18 @@ dataController.get('/:id',async (req,res)=>{
    try {
 
     let request=await getRequestById(id)
-    let checkUserCanEditRequest=userCanEditRequest(request,req.user);
-    request.checkUserCanEditRequest=checkUserCanEditRequest;
+    let userRigths=(await getUserRights(request,req.user));
+    if(userRigths.userPrivileged&&request.status.statusType!='Closed'){
+        const workflowFromDB=await getWorkflowById(request.requestWorkflow)
+        const additionalNextStatuses=workflowFromDB.allowedStatuses.filter((status)=>status.statusType=='Closed')
+        additionalNextStatuses.forEach((newNextStat)=>{
+            if((request.status.nextStatuses.filter((status)=>status._id==newNextStat.id)).length==0){
+                request.status.nextStatuses.push(newNextStat)
+            }
+            
+        })
+    }
+    request.checkUserCanEditRequest=userRigths.userCanEdit;
     res.status(201);    
     res.json(request);
    
