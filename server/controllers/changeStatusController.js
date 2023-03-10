@@ -1,9 +1,7 @@
 const { prepareMailContent, serverSendMail, emailAdress } = require('../emailClient/mail');
-const Request = require('../models/Request');
-const Status = require('../models/Status');
+
 const User = require('../models/User');
-const Workflow = require('../models/Workflow');
-const { getRequestById, editRequestStatus, userCanEditRequest, getUserRights } = require('../services/requestServices');
+const { getRequestById, editRequestStatus, getUserRights } = require('../services/requestServices');
 const { parseError } = require('../utils/utils');
 
 const changeStatusController=require('express').Router();
@@ -18,7 +16,7 @@ changeStatusController.post('/:id',async (req,res)=>{
    try {
     let databaseRequest=await getRequestById(requestId);
 
-    if(!(await(getUserRights(databaseRequest, user,newStatusId))).userCanEdit){
+    if(!(await(getUserRights(databaseRequest, user,newStatusId))).userCanChangeStatus){
         throw new Error('You are not allowed to change the status of the request!')
     };
     if(databaseRequest.status.statusType=='Closed'){

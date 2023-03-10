@@ -58,7 +58,8 @@ dataController.get('/:id',async (req,res)=>{
             
         })
     }
-    request.checkUserCanEditRequest=userRigths.userCanEdit;
+    request.checkUserCanChangeStatus=userRigths.userCanChangeStatus;
+    request.privilegedUser=userRigths.userPrivileged;
     res.status(201);    
     res.json(request);
    

@@ -1,13 +1,10 @@
 const express=require('express');
-
 const app=express();
 const cors=require('cors');
-
 const mongoose=require('mongoose');
 const verifyToken=require('./middlewares/jwt');
 const routesConfig=require('./routes');
 const corsOptions =require('./middlewares/cors');
-const { script } = require('./supportScripts');
 
 const CONNECTION_STRING='mongodb://localhost:27017/eurobankApp2'
 start();

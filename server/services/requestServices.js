@@ -35,6 +35,34 @@ async function getAllUserPendingRequests(user){
 
 }
 
+async function getAllPassedDeadlineUsrPndngReqs(user){
+    let userFinCenter=user.finCenter;
+    let userRole=user.role;
+    let currentDate = new Date().toISOString();
+    const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
+    
+    if(!(userRole.includes('Branch'))){
+        let result= await Request.find({}).where('status').in(allRelevantStatuses).where('deadlineDate').lte(currentDate).populate('status requestWorkflow subjectId comments').lean();
+        
+        result.sort((a,b)=>{
+            return ((new Date(b.deadlineDate) - new Date(a.deadlineDate)));
+        })
+
+        return result
+    }else{
+        const result = await Request.find({})
+        .or([{finCenter:userFinCenter},{refferingFinCenter:userFinCenter}]).where('status').in(allRelevantStatuses)
+        .where('deadlineDate').lte(currentDate).populate('status requestWorkflow subjectId comments').lean();
+
+        result.sort((a,b)=>{
+            return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
+        })
+
+        return result
+    }
+
+}
+
 async function sortTable(data, sortProperty,sortIndex){
     if(!sortProperty){
         sortProperty='statusIncomingDate';
@@ -75,33 +103,46 @@ async function editRequestStatus(requestId,newStatusId,email){
     return request
 }
 
+async function changeRequestDeadline(requestId,newData, user){
+    let comment=await addCommentToRequest(requestId,newData.newComment,user);
+
+
+    let request=await Request.findByIdAndUpdate(requestId,{   
+            
+                        $set:{deadlineDate:newData.newDeadline}
+                    })
+                        .populate('status')
+                        .populate('comments');
+    return request
+}
+
 
 async function getUserRights(databaseRequest, user,newStatusId) {
     
     if (await checkUserRoleIsPriviliged(databaseRequest.requestWorkflow._id,user)){
-        return {userCanEdit:true, userPrivileged:true}
+        return {userCanChangeStatus:true, userPrivileged:true}
     }
 
     if(newStatusId){
 
         if ((databaseRequest.status.nextStatuses.filter((s) => s._id == newStatusId)).length == 0) {
-            return {userCanEdit:false, userPrivileged:false}
+            return {userCanChangeStatus:false, userPrivileged:false}
     }
 
     }
 
     if (databaseRequest.status.statusType != user.role) {
-        return {userCanEdit:false, userPrivileged:false}
+        return {userCanChangeStatus:false, userPrivileged:false}
     }
 
     if (user.role.includes('Branch')) {
         if (user.finCenter != databaseRequest.finCenter && user.finCenter != databaseRequest.refferingFinCenter) {
-            return {userCanEdit:false, userPrivileged:false}
+            return {userCanChangeStatus:false, userPrivileged:false}
         }
 
     }
 
-    return {userCanEdit:true, userPrivileged:false}
+    return {userCanChangeStatus:true, userPrivileged:false}
 
 }
 
@@ -119,9 +160,11 @@ async function addCommentToRequest(requestId,commentText,user){
 module.exports={
                     createRequest,
                     getAllUserPendingRequests,
+                    getAllPassedDeadlineUsrPndngReqs,
                     sortTable,
                     getRequestById,
                     editRequestStatus,
+                    changeRequestDeadline,
                     getUserRights,
                     addCommentToRequest,
                     getRequestsByClientEGFN
