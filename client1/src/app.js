@@ -6,10 +6,11 @@ import { showCreateCommnet } from "./views/createCommentView.js";
 import { showCreate } from "./views/createView.js";
 import { showCatalog } from "./views/dashboardView.js";
 import { showRequestDetails } from "./views/detailsView.js";
-import { showMemeEdit } from "./views/editView.js";
+import { showEditRequest } from "./views/editView.js";
 import { showHome } from "./views/homeView.js";
 import { showLogin } from "./views/loginView.js";
 import { showRegister } from "./views/registerView.js";
+import { showDefauaultReport } from "./views/reportsView.js";
 import { showResetPassChange } from "./views/resetPassChange.js";
 import { showResetPass } from "./views/resetPassView.js";
 import { showsearch } from "./views/searchView.js";
@@ -17,7 +18,7 @@ import { showsearch } from "./views/searchView.js";
 let main=document.querySelector('main');
 let user=document.querySelector('.user');
 let guest=document.querySelector('.guest');
-let logoutA=user.querySelectorAll('a')[1];
+let logoutA=document.getElementById('logout');
 logoutA.addEventListener('click',logoutUser);
 //document.getElementById('notifications').style.display='none';
 renderNav();
@@ -30,11 +31,12 @@ page('/create',showCreate);
 page('/login',showLogin);
 page('/register',showRegister);
 page('/',showHome);
-page('/edit/:shoesId',showMemeEdit);
+page('/edit/:id',showEditRequest);
 page('/search',showsearch);
 page('/resetPass',showResetPass);
 page('/resetPass/:id',showResetPassChange);
 page('/comment/create/:id',showCreateCommnet);
+page('/reports',showDefauaultReport)
 page.start();
 
 function decorateCtx(ctx,next){

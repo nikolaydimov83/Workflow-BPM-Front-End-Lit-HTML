@@ -19,6 +19,7 @@ let createCommentTemplate=(data,lastCommnet,submitCreateCommentForm)=>html`<sect
     <p class="details-cretae-comment"><span>Status</span>:  ${data.status.statusName}</p>
     <p class="details-cretae-comment"><span>Изпратен от</span>:  ${data.statusSender}</p>
     <p class="details-cretae-comment"><span>Изпратен на дата</span>:  ${data.statusIncomingDate}</p>
+    <p class="details-cretae-comment"><span>Краен срок</span>:  ${data.deadlineDate}</p>
     <p class="details-cretae-comment"><span>Последен коментар</span>:  ${lastCommnet}</p>
   </div>
 

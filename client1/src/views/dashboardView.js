@@ -1,11 +1,34 @@
 import { get,post } from '../api/api.js';
-import { getTableCriteriaSortIndex, setTableCriteriaSortIndex } from '../api/dashboard.js';
+import { getDashBoardContext, getTableCriteriaSortIndex, setDashBoardContext, setTableCriteriaSortIndex } from '../api/dashboard.js';
+import { loadFormData } from '../api/handleFormData.js';
 import { html,repeat } from '../lib.js';
 import { stringifyDates } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 
 
-let catalogTemplate=(data)=>html`
+export let catalogTemplate=(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm)=>html`
+<div class="search-wrapper-div">
+ <form @submit=${submitsearchEGFNForm} class="search-wrapper cf">
+  <input
+    id="#search-input"
+    type="text"
+    name="searchData"
+    placeholder="Търсене по ЕГФН"
+    required
+  />
+  <button type="submit">Search</button>
+</form> 
+<form @submit=${submitsearchForm} class="search-wrapper cf">
+  <input
+    id="#search-input"
+    type="text"
+    name="searchString"
+    placeholder="Търсене..."
+    required
+  />
+  <button type="submit">Search</button>
+</form> 
+</div>
 <div class="tableLarge">
 <table>
 <thead>
@@ -23,7 +46,7 @@ let catalogTemplate=(data)=>html`
   </tr>
  </thead>
  <tbody>
- ${repeat(data,(request)=>request._id,(request)=>html`<tr>
+ ${repeat(dataStringifiedDates,(request)=>request._id,(request)=>html`<tr>
      <td>${request.iApplyId}</td>
      <td>${request.clientName}</td>
      <td>${request.clientEGFN}</td>
@@ -39,15 +62,15 @@ let catalogTemplate=(data)=>html`
 </table>
 </div>`
 
-let outerCtx=null;
+export let outerCtx=null;
 export async function showCatalog(ctx){
   outerCtx=ctx
+  setDashBoardContext({path:'/data/catalog'})
+  let dashboardContext=getDashBoardContext()
     try{
-        let data=await get('/data/catalog');
+        let data=await get(getDashBoardContext().path);
         let dataStringifiedDates=stringifyDates(data);
-        
-        //console.log(data)
-        ctx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy));
+        ctx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
     }catch(error){
         errorHandler(error);
     }
@@ -56,19 +79,16 @@ export async function showCatalog(ctx){
 
 
 
-async function sortTableBy(ev){
+export async function sortTableBy(ev){
   ev.preventDefault();
   let sortCriteria=ev.target.id;
-
-
-  
   try {
         if(sortCriteria!='details'){
           let sortIndex=getTableCriteriaSortIndex(sortCriteria);
-          let data=await post('/data/catalog',{sortCriteria:sortCriteria,sortIndex});
+          let data=await post(getDashBoardContext().path,{sortCriteria:sortCriteria,sortIndex,searchData:getDashBoardContext().searchData});
           setTableCriteriaSortIndex(sortCriteria,data.newSortIndex);
           let dataStringifiedDates=stringifyDates(data.sortedData);
-          outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy));
+          outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
         }
   } catch (error) {
     errorHandler(error);
@@ -76,8 +96,33 @@ async function sortTableBy(ev){
 
   }
 
-  //outerCtx.pageState.iApplyId=serverResponseData;
-  //outerCtx.pageState.subjectSelectedValue=document.getElementById('subjectName').value;
+}
 
+export async function submitsearchEGFNForm(ev){
+  ev.preventDefault();
+  try {
+      let data=loadFormData(ev.target);
+      setDashBoardContext({path:'/search/EGFN',searchData:data.searchData})
+      let dashboardContext=getDashBoardContext()
+      let serverResponseData=await post(getDashBoardContext().path,data)
+      let dataStringifiedDates=stringifyDates(serverResponseData.sortedData);
+      outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
+  } catch (error) {
+      errorHandler(error);
+  }
+}
 
+export async function submitsearchForm(ev){
+ev.preventDefault();
+setDashBoardContext('/search/all');
+try {
+    let data=loadFormData(ev.target);
+    let serverResponseData=await post(getDashBoardContext(),data)
+    let dataStringifiedDates=stringifyDates(serverResponseData);
+    outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
+    
+  
+} catch (error) {
+    errorHandler(error);
+}
 }

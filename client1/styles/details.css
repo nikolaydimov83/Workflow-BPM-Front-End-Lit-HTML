@@ -158,6 +158,13 @@ height: 250px;
 text-align: left;
 padding: 5px;
 }
+.create-comment-form input{
+  display: inline;
+  width: 150px;
+  height: 25px;
+  text-align: left;
+  padding: 3px;
+  }
 .comment-body-history{
   text-align: left;
 }

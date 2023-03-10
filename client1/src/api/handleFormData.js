@@ -8,11 +8,13 @@ const allowedTypes={
     'iApplyId':'iApplyId',
     'subjectId':'optional',
     'deadlineDate':'string',
+    'newDeadline':'string',
     'clientEGFN':'string',
     'finCenter':'string',
     'finCenterText':'string',
     'nextStatus':'string',
-    'commentText':'string'
+    'commentText':'string',
+    'searchData':'string'
 
 
 }

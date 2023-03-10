@@ -41,7 +41,7 @@ let detailsTemplate=(data,changeStatus,lastCommnet)=>html`<section id="details">
   <p class="details-property-info"><span>Изпратен от</span>:  ${data.statusSender}</p>
   <p class="details-property-info"><span>Изпратен на дата</span>:  ${data.statusIncomingDate}</p>
   
-  ${data.checkUserCanEditRequest?html`<form @submit=${changeStatus}>
+  ${data.checkUserCanChangeStatus?html`<form @submit=${changeStatus}>
         <select class="details-property-info" name="nextStatus">
     ${repeat(data.status.nextStatuses,(nextStatus)=>nextStatus._id,(nextStatus)=>html`
             <option value="${nextStatus._id}" >${nextStatus.statusName}</option>
@@ -49,7 +49,10 @@ let detailsTemplate=(data,changeStatus,lastCommnet)=>html`<section id="details">
     </select>
     <button>Смени Статус</button>
     <a href="/comment/create/${data._id}">Добави коментар</a>
-  </form>`:''}
+    ${data.privilegedUser?html`<a href="/edit/${data._id}">Промени Данни</a>`:''}
+  </form>
+  
+  `:html`<a href="/comment/create/${data._id}">Добави коментар</a>`}
   
 
   </div>
@@ -100,13 +103,6 @@ export async function showRequestDetails(ctx){
       }
     }
 
-    async function addComment(ev){
-      try {
-        
-      
-      } catch (error) {
-        errorHandler(error);
-      }
-    }
+
 }
 

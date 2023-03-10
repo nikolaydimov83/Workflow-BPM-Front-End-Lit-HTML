@@ -1,69 +1,54 @@
 import { del, get, put } from '../api/api.js';
 import { loadFormData } from '../api/handleFormData.js';
 import { html,repeat,nothing } from '../lib.js';
-import { getUserData } from '../utils.js';
+import { getUserData,stringifyDates } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 
-let memeEditTemplate=(data,submitEditForm)=>html`<section id="edit">
-<div class="form">
-  <h2>Edit item</h2>
-  <form @submit=${submitEditForm} class="edit-form">
-    <input
-      type="text"
-      name="brand"
-      id="shoe-brand"
-      placeholder="Brand"
-      .value=${data.brand}
-    />
-    <input
-      type="text"
-      name="model"
-      id="shoe-model"
-      placeholder="Model"
-      .value=${data.model}
-    />
-    <input
-      type="text"
-      name="imageUrl"
-      id="shoe-img"
-      placeholder="Image url"
-      .value=${data.imageUrl}
-    />
-    <input
-      type="text"
-      name="release"
-      id="shoe-release"
-      placeholder="Release date"
-      .value=${data.release}
-    />
-    <input
-      type="text"
-      name="designer"
-      id="shoe-designer"
-      placeholder="Designer"
-      .value=${data.designer}
-    />
-    <input
-      type="text"
-      name="value"
-      id="shoe-value"
-      placeholder="Value"
-      .value=${data.value}
-    />
+let editTemplate=(data,lastCommnet,submitEditForm)=>html`<section id="create">
+<div class="formLarge">
+  <h4>Добавяне на коментар</h4>
+  <div class="comment-request-details">
+    <p class="details-cretae-comment"><span>ФЦ/Рефериращ ФЦ</span>:  ${data.finCenter}/${data.refferingFinCenter?data.refferingFinCenter:html`Няма рефериращ`}</p>
+    <p class="details-cretae-comment"><span>ID</span>:  ${data.iApplyId}</p>
+    <p class="details-cretae-comment"><span>EGFN</span>:   ${data.clientEGFN}</p>
+    <p class="details-cretae-comment"><span>Клиент</span>:   ${data.clientName}</p>
+    <p class="details-cretae-comment"><span>Продукт</span>:    ${data.product}</p>
+    <p class="details-cretae-comment"><span>Сума</span>:  ${data.ccy} ${data.amount}</p>
+    <p class="details-cretae-comment"><span>Status</span>:  ${data.status.statusName}</p>
+    <p class="details-cretae-comment"><span>Изпратен от</span>:  ${data.statusSender}</p>
+    <p class="details-cretae-comment"><span>Изпратен на дата</span>:  ${data.statusIncomingDate}</p>
+    <p class="details-cretae-comment"><span>Последен коментар</span>:  ${lastCommnet}</p>
+  </div>
 
-    <button type="submit">post</button>
-  </form>
+    <h3>Промени данни по заявката</h3>
+    <form @submit=${submitEditForm} class="create-comment-form">
+    <p class="details-cretae-comment"><span>Краен срок</span>:  ${data.deadlineDate} 
+    <span>Нов краен срок</span> <input type="date" name="newDeadline" placeholder="Enter new Deadline" .value=${data.deadlineDate}></p>
+        
+        <textarea type="textarea" name="commentText" id="description" placeholder="Описание"></textarea>
+        <button type="submit">Изпрати</button>
+    </form>
+      
+
+  
 </div>
 </section>`
+
 let outerCtx=null;
-export async function showMemeEdit(ctx){
+export async function showEditRequest(ctx){
     try{
         outerCtx=ctx
-        let id=ctx.params.shoesId
-        let data=await get(`/data/shoes/${id}`);
+        let id=ctx.params.id
+        let data=await get(`/data/catalog/${id}`);
+        let dataStringifiedDates=stringifyDates([data]);
+        dataStringifiedDates=dataStringifiedDates[0];
+        let lastCommnet;
+        if(data.comments.length){
+          lastCommnet=data.comments[data.comments.length-1].body
+        }
         console.log(data);
         
-        ctx.renderView(memeEditTemplate(data,submitEditForm));
+        ctx.renderView(editTemplate(dataStringifiedDates,lastCommnet, submitEditForm));
     }catch(error){
         errorHandler(error);
     }
@@ -72,7 +57,7 @@ export async function showMemeEdit(ctx){
         ev.preventDefault();
         try {
             let data=loadFormData(ev.target);
-            let serverResponseData=await put(`/data/shoes/${outerCtx.params.shoesId}`,data);
+            let serverResponseData=await put(`/data/edit/${outerCtx.params.id}`,data);
             outerCtx.page.redirect(`/dashboard`)
             ev.target.reset();
         } catch (error) {

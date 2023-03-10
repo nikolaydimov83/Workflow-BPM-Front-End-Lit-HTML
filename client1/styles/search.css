@@ -1,4 +1,4 @@
-#search-container {
+.search-wrapper-div {
   width: 95%;
   margin: auto;
   display: flex;
@@ -28,18 +28,18 @@
 }
 
 .search-wrapper {
-  width: 450px;
+  width: 31%;
   padding: 15px;
   margin: auto;
   background: rgba(0, 0, 0, 0.2);
-  height: 45px;
-  border-radius: 10px;
+  height: 35px;
+  border-radius: 5px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4) inset,
     0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .search-wrapper input {
-  width: 330px;
+  width: 70%;
   height: 20px;
   padding: 10px 5px;
   float: left;
@@ -67,7 +67,7 @@
   padding: 0;
   cursor: pointer;
   height: 40px;
-  width: 110px;
+  width: 80px;
   font: bold 15px/40px "lucida sans", "trebuchet MS", "Tahoma";
   color: #fff;
   text-transform: uppercase;
