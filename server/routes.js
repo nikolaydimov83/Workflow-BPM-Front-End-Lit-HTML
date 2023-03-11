@@ -7,6 +7,7 @@ const editController = require("./controllers/editController");
 const iApplyConroller = require("./controllers/iapplyDataController");
 const reportsContoller = require("./controllers/reportsController");
 const searchController = require("./controllers/searchController");
+const unknownController = require("./controllers/unknownController");
 
 module.exports=(app)=>{
     app.use('/users',authController);
@@ -18,6 +19,7 @@ module.exports=(app)=>{
     app.use('/comments',commentsController);
     app.use('/search',searchController);
     app.use('/reportsController',reportsContoller);
+    app.use('*',unknownController)
     
 
 }

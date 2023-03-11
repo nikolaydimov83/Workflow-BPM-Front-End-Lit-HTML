@@ -13,7 +13,7 @@ const mailOptions={
   from: from,
   to: to,
   subject: mailSubject,
-  text: content
+  html: content
 }
 
 transporter.sendMail(mailOptions, function(error, info){
@@ -39,11 +39,12 @@ function prepareMailContent(request){
     }
 
   return `
-  Plan B заявка с id: ${request._id} 
+  <div><a href=http://localhost:3000/dashboard/${request._id}>Plan B заявка с id:  <a/>
   По апликация ${request.iApplyId} 
   На клиент ${request.clientName}, 
   ЕГФН:${request.clientEGFN} 
-  Статус: ${request.status.statusName}${lastComment}`
+  Статус: ${request.status.statusName}${lastComment}
+  </div>`
   
 }
 
