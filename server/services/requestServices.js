@@ -89,6 +89,27 @@ async function getRequestsByClientEGFN(clientEGFN){
             return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
         })
 }
+async function getRequestsBySearchString(searchString){
+    
+    const iApplyRegex=/^[A-Z]{2}[0-9]+$/
+    const EGFNRegex=/^[0-9]{9,10}$/
+    const finCenter=/^[0-9]{1,3}$/
+    let searchType;
+    
+    if(iApplyRegex.test(searchString)){
+        searchType='iApplyId'
+    }
+
+    let result= await Request.find({})
+        .where(searchType).equals(searchString)
+        .populate({path:'status',populate: { path: 'nextStatuses' }})
+        .populate('requestWorkflow')
+        .populate('comments').populate('subjectId').populate({path:'comments',populate: { path: 'commentOwner' }})
+        .lean()
+        return result.sort((a,b)=>{
+            return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
+        })
+}
 async function editRequestStatus(requestId,newStatusId,email){
     let statusIncomingDate = (new Date());
     let historyEntry = { status:newStatusId, incomingDate: statusIncomingDate, statusSender: email };
@@ -167,5 +188,6 @@ module.exports={
                     changeRequestDeadline,
                     getUserRights,
                     addCommentToRequest,
-                    getRequestsByClientEGFN
+                    getRequestsByClientEGFN,
+                    getRequestsBySearchString
                 }
