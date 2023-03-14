@@ -25,9 +25,9 @@ searchController.post('/all',async (req,res)=>{
         
         const searchString=req.body.searchString;
         let serverResponseData=await getRequestsBySearchString(searchString)
-        let sortedData=await sortTable(serverResponseData,req.body.sortCriteria,req.body.sortIndex)
+        //let sortedData=await sortTable(serverResponseData.result,req.body.sortCriteria,req.body.sortIndex)
         res.status(201);
-        res.json(sortedData);
+        res.json(serverResponseData);
     } catch (error) {
         res.status(400);
         res.json({message:parseError(error)});

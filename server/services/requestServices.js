@@ -1,6 +1,7 @@
 const Request = require("../models/Request");
 const Status=require('../models/Status');
-const { sortWithType } = require("../utils/utils");
+const Subject = require("../models/Subject");
+const { sortWithType, escapeRegExp } = require("../utils/utils");
 const { createCommnet } = require("./commentServices");
 const { getWorkflowById, checkUserRoleIsPriviliged } = require("./workflowServices");
 
@@ -12,7 +13,7 @@ async function getAllUserPendingRequests(user){
     let userFinCenter=user.finCenter;
     let userRole=user.role;
     const allStatusesRelatedToUserRole=await Status.find({statusType:userRole})
-    
+    let searchContextString='Заявки за изпълнение';
     if(!(userRole.includes('Branch'))){
         let result= await Request.find({}).where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId comments').lean();
         
@@ -20,7 +21,7 @@ async function getAllUserPendingRequests(user){
             return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
         })
 
-        return result
+        return {result,searchContextString}
     }else{
         const result = await Request.find({})
         .or([{finCenter:userFinCenter},{refferingFinCenter:userFinCenter}])
@@ -29,8 +30,8 @@ async function getAllUserPendingRequests(user){
         result.sort((a,b)=>{
             return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
         })
-
-        return result
+        let searchContextString='Заявки за изпълнение';
+        return {result,searchContextString}
     }
 
 }
@@ -39,6 +40,7 @@ async function getAllPassedDeadlineUsrPndngReqs(user){
     let userFinCenter=user.finCenter;
     let userRole=user.role;
     let currentDate = new Date().toISOString();
+    let searchContextString='Забавени заявки';
     const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
     
     if(!(userRole.includes('Branch'))){
@@ -48,7 +50,7 @@ async function getAllPassedDeadlineUsrPndngReqs(user){
             return ((new Date(b.deadlineDate) - new Date(a.deadlineDate)));
         })
 
-        return result
+        return {result,searchContextString}
     }else{
         const result = await Request.find({})
         .or([{finCenter:userFinCenter},{refferingFinCenter:userFinCenter}]).where('status').in(allRelevantStatuses)
@@ -57,8 +59,8 @@ async function getAllPassedDeadlineUsrPndngReqs(user){
         result.sort((a,b)=>{
             return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
         })
-
-        return result
+        
+        return {result,searchContextString}
     }
 
 }
@@ -85,19 +87,69 @@ async function getRequestsByClientEGFN(clientEGFN){
         .populate('requestWorkflow')
         .populate('comments').populate('subjectId').populate({path:'comments',populate: { path: 'commentOwner' }})
         .lean()
-        return result.sort((a,b)=>{
+        result.sort((a,b)=>{
             return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
         })
+        let searchContextString='Намерени по Булстат/ЕГН: '+clientEGFN;
+        return {result,searchContextString}
 }
 async function getRequestsBySearchString(searchString){
     
-    const iApplyRegex=/^[A-Z]{2}[0-9]+$/
-    const EGFNRegex=/^[0-9]{9,10}$/
-    const finCenter=/^[0-9]{1,3}$/
+    const iApplyRegex=/^[A-Z]{2}[0-9]+$/;
+    const EGFNRegex=/^[0-9]{9,10}$/;
+    const finCenterRegex=/^[0-9]{1,3}$/;
+    const emailRegex=/^[A-Za-z0-9]+@postbank.bg$/
     let searchType;
-    
+    let searchContextString;
+    let regexSanitizedSearchString=escapeRegExp(searchString);
     if(iApplyRegex.test(searchString)){
-        searchType='iApplyId'
+        searchType='iApplyId';
+        searchContextString='Намерени по iApplyId: '+searchString;
+    }else if(EGFNRegex.test(searchString)){
+        searchType='clientEGFN';
+        searchContextString='Намерени по Булстат/ЕГН: '+searchString;
+    }else if(finCenterRegex.test(searchString)){
+        searchType='finCenter';
+        searchContextString='Намерени по ФЦ/Рефериращ ФЦ: '+searchString;
+    }else if(emailRegex.test(searchString)){
+        searchType='requestCreatorEmail';
+        searchContextString='Намерени по E-mail:'+searchString;
+    }else{
+        searchType='other';
+        searchContextString='Намерено в имена, Статуси и Subject: '+searchString;
+    }
+
+    if (searchType=='finCenter'){
+        const result = await Request.find({})
+        .or([{finCenter:searchString},{refferingFinCenter:searchString}])
+        .populate('status requestWorkflow subjectId comments').lean();
+   
+        result.sort((a,b)=>{
+            return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
+        })
+
+        return {result,searchContextString}
+    }
+    if (searchType=='other'){
+        let result={}
+        
+        let statusesLikeSearchString=await Status.find({statusName:{$regex:'.*' + regexSanitizedSearchString + '.*',$options:'i'}});
+        let subjectsLikeSearchString=await Subject.find({subjectName:{$regex:'.*' + regexSanitizedSearchString + '.*',$options:'i'}})
+        let workflowsLikeSearchString=subjectsLikeSearchString.map((subject)=>subject.assignedToWorkflow);
+        let requestwithStatusMatch=await Request.find({})
+            .or([
+                {status:{$in:statusesLikeSearchString}},
+                {requestWorkflow:{$in:workflowsLikeSearchString}},
+                {clientName:{$regex:'.*' + regexSanitizedSearchString + '.*',$options:'i'}}
+            ])
+            .populate({path:'status',populate: { path: 'nextStatuses' }})
+            .populate('requestWorkflow')
+            .populate('comments').populate('subjectId').populate({path:'comments',populate: { path: 'commentOwner' }})
+            .lean()
+        
+            return {result:requestwithStatusMatch,searchContextString}
+
+       
     }
 
     let result= await Request.find({})
@@ -106,9 +158,11 @@ async function getRequestsBySearchString(searchString){
         .populate('requestWorkflow')
         .populate('comments').populate('subjectId').populate({path:'comments',populate: { path: 'commentOwner' }})
         .lean()
-        return result.sort((a,b)=>{
+        
+        result.sort((a,b)=>{
             return ((new Date(b.statusIncomingDate) - new Date(a.statusIncomingDate)));
         })
+        return {result,searchContextString}
 }
 async function editRequestStatus(requestId,newStatusId,email){
     let statusIncomingDate = (new Date());
