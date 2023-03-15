@@ -10,10 +10,9 @@ import { showEditRequest } from "./views/editView.js";
 import { showHome } from "./views/homeView.js";
 import { showLogin } from "./views/loginView.js";
 import { showRegister } from "./views/registerView.js";
-import { showDefauaultReport } from "./views/reportsView.js";
 import { showResetPassChange } from "./views/resetPassChange.js";
 import { showResetPass } from "./views/resetPassView.js";
-import { showsearch } from "./views/searchView.js";
+
 
 let main=document.querySelector('main');
 let user=document.querySelector('.user');
@@ -32,11 +31,9 @@ page('/login',showLogin);
 page('/register',showRegister);
 page('/',showHome);
 page('/edit/:id',showEditRequest);
-page('/search',showsearch);
 page('/resetPass',showResetPass);
 page('/resetPass/:id',showResetPassChange);
 page('/comment/create/:id',showCreateCommnet);
-page('/reports',showDefauaultReport)
 page.start();
 
 function decorateCtx(ctx,next){
