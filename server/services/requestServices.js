@@ -35,12 +35,68 @@ async function getAllUserPendingRequests(user){
     }
 
 }
+async function getAllActiveReqs(user){
+    let userFinCenter=user.finCenter;
+    let userRole=user.role;
+    let contextAddition=userFinCenter>=111?` за клон ${userFinCenter}`:''
+    let searchContextString='Всички активни заявки'+contextAddition;
+    const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
+    if(!(userRole.includes('Branch'))){
+        let result= await Request.find({})
+        .where('status').in(allRelevantStatuses)
+        .populate('status requestWorkflow subjectId comments').lean();
+        
+        result.sort((a,b)=>{
+            return ((new Date(b.deadlineDate) - new Date(a.deadlineDate)));
+        })
 
+        return {result,searchContextString}
+    }else{
+        const result = await Request.find({})
+        .or([{finCenter:userFinCenter},{refferingFinCenter:userFinCenter}]).where('status').in(allRelevantStatuses)
+        .populate('status requestWorkflow subjectId comments').lean();
+
+        result.sort((a,b)=>{
+            return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
+        })
+        
+        return {result,searchContextString}
+    }
+}
+
+async function getAllReqs(user){
+    let userFinCenter=user.finCenter;
+    let userRole=user.role;
+    let contextAddition=userFinCenter>=111?` за клон ${userFinCenter}`:''
+    let searchContextString='Всички заявки - активни и неактивни'+contextAddition;
+    
+    if(!(userRole.includes('Branch'))){
+        let result= await Request.find({})
+        .populate('status requestWorkflow subjectId comments').lean();
+        
+        result.sort((a,b)=>{
+            return ((new Date(b.deadlineDate) - new Date(a.deadlineDate)));
+        })
+
+        return {result,searchContextString}
+    }else{
+        const result = await Request.find({})
+        .or([{finCenter:userFinCenter},{refferingFinCenter:userFinCenter}])
+        .populate('status requestWorkflow subjectId comments').lean();
+
+        result.sort((a,b)=>{
+            return ((new Date(a.deadlineDate) - new Date(b.deadlineDate)));
+        })
+        
+        return {result,searchContextString}
+    }
+}
 async function getAllPassedDeadlineUsrPndngReqs(user){
     let userFinCenter=user.finCenter;
     let userRole=user.role;
     let currentDate = new Date().toISOString();
-    let searchContextString='Забавени заявки';
+    let contextAddition=userFinCenter>=111?` за клон ${userFinCenter}`:''
+    let searchContextString='Забавени заявки '+contextAddition;
     const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
     
     if(!(userRole.includes('Branch'))){
@@ -243,5 +299,7 @@ module.exports={
                     getUserRights,
                     addCommentToRequest,
                     getRequestsByClientEGFN,
-                    getRequestsBySearchString
+                    getRequestsBySearchString,
+                    getAllActiveReqs,
+                    getAllReqs
                 }

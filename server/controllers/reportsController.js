@@ -1,5 +1,5 @@
 
-const { getAllUserPendingRequests, sortTable, getRequestById, getUserRights, getAllPassedDeadlineUsrPndngReqs } = require('../services/requestServices');
+const { getAllUserPendingRequests, sortTable, getRequestById, getUserRights, getAllPassedDeadlineUsrPndngReqs, getAllActiveReqs, getAllReqs } = require('../services/requestServices');
 const { getWorkflowById } = require('../services/workflowServices');
 
 const reportsContoller=require('express').Router();
@@ -20,18 +20,30 @@ reportsContoller.get('/',async (req,res)=>{
 
 });
 
-reportsContoller.post('/',async (req,res)=>{
+reportsContoller.get('/active',async (req,res)=>{
     let user=req.user;
-    let sortProperty=req.body.sortCriteria;
-    let sortIndex=req.body.sortIndex
-    
     
 
    try {
-    data=await getAllPassedDeadlineUsrPndngReqs(user);
-    let sortedData=await sortTable(data,sortProperty,sortIndex)
+    let data=await getAllActiveReqs(user);
     res.status(201);    
-    res.json(sortedData);
+    res.json(data);
+   
+    
+   } catch (error) {
+   console.log(error)
+   }
+
+});
+
+reportsContoller.get('/all',async (req,res)=>{
+    let user=req.user;
+    
+
+   try {
+    let data=await getAllReqs(user);
+    res.status(201);    
+    res.json(data);
    
     
    } catch (error) {
