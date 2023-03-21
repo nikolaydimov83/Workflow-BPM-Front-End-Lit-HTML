@@ -7,7 +7,7 @@ import { showCreate } from "./views/createView.js";
 import { showCatalog } from "./views/dashboardView.js";
 import { showRequestDetails } from "./views/detailsView.js";
 import { showEditRequest } from "./views/editView.js";
-import { showHome } from "./views/homeView.js";
+import { sendIapply, showHome } from "./views/homeView.js";
 import { showLogin } from "./views/loginView.js";
 import { showRegister } from "./views/registerView.js";
 import { showResetPassChange } from "./views/resetPassChange.js";
@@ -34,6 +34,7 @@ page('/edit/:id',showEditRequest);
 page('/resetPass',showResetPass);
 page('/resetPass/:id',showResetPassChange);
 page('/comment/create/:id',showCreateCommnet);
+page('/changeIApply',sendIapply);
 page.start();
 
 function decorateCtx(ctx,next){

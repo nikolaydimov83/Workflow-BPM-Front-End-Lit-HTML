@@ -28,18 +28,18 @@ export let catalogTemplate=(dataStringifiedDates,sortTableBy,submitsearchForm,se
 <div class="tableLarge">
 <table id="dashboard" class="no-footer dataTable" role="grid" aria-describedby="dashboard_info">
 <thead >
-  <tr @click=${sortTableBy}>
-  <th ><a id="iApplyId"href="#">Creator</a></th>
-    <th ><a id="iApplyId"href="#">IApplyId</a></th>
-    <th ><a id="clientName"href="#">Име на клиента</a></th>
-    <th ><a id="clientEGFN"href="#">EGFN</a></th>
-    <th ><a id="finCenter"href="#">ФЦ</a></th>
-    <th ><a id="refferingFinCenter"href="#">Рефериращ</a></th>
-    <th ><a id="subjectId"href="#">Subject</a></th>
-    <th ><a id="status"href="#">Статус</a></th>
-    <th ><a id="statusIncomingDate"href="#">Дата на постъпване</a></th>
-    <th ><a id="deadlineDate"href="#">Deadline</a></th>
-    <th ><a id="details"href="#">Детайли</a></th>
+  <tr >
+  <th ><a id="creator"href="javascript:void(0)">Creator</a></th>
+    <th ><a id="iApplyId"href="javascript:void(0)">IApplyId</a></th>
+    <th ><a id="clientName"href="javascript:void(0)">Име на клиента</a></th>
+    <th ><a id="clientEGFN"href="javascript:void(0)">EGFN</a></th>
+    <th ><a id="finCenter"href="javascript:void(0)">ФЦ</a></th>
+    <th ><a id="refferingFinCenter"href="javascript:void(0)">Рефериращ</a></th>
+    <th ><a id="subjectId"href="javascript:void(0)">Subject</a></th>
+    <th ><a id="status"href="javascript:void(0)">Статус</a></th>
+    <th ><a id="statusIncomingDate"href="javascript:void(0)">Дата на постъпване</a></th>
+    <th ><a id="deadlineDate"href="javascript:void(0)">Deadline</a></th>
+    <th ><a id="details"href="javascript:void(0)">Детайли</a></th>
   </tr>
  </thead>
  <tbody>
