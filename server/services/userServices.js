@@ -71,6 +71,9 @@ async function verifyToken(req,res,tokenString){
     if(tokenString){
         try {
             let user=jwt.verify(tokenString,resetKey);
+            if(!User.find({email:user.email})){
+                throw new Error('Invalid token')
+            }
             return user
         } catch (error) {
             throw error
@@ -82,6 +85,9 @@ async function verifyToken(req,res,tokenString){
     }else{
         try {
             let user=jwt.verify(token,key);
+            if((await User.find({email:user.email})).length==0){
+                throw new Error('Invalid token')
+            }
             return user
         } catch (error) {
             return 'Invalid token'

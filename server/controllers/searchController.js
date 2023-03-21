@@ -9,9 +9,9 @@ searchController.post('/EGFN',async (req,res)=>{
         
         const EGFN=req.body.searchData;
         let serverResponseData=await getRequestsByClientEGFN(EGFN)
-        let sortedData=await sortTable(serverResponseData,req.body.sortCriteria,req.body.sortIndex)
+        //let sortedData=await sortTable(serverResponseData,req.body.sortCriteria,req.body.sortIndex)
         res.status(201);
-        res.json(sortedData);
+        res.json(serverResponseData);
     } catch (error) {
         res.status(400);
         res.json({message:parseError(error)});

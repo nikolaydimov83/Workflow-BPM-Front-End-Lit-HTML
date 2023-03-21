@@ -1,4 +1,5 @@
 const authController = require("./controllers/authController");
+const changeIapplyController = require("./controllers/changeIapplyController");
 const changeStatusController = require("./controllers/changeStatusController");
 const commentsController = require("./controllers/commentsController");
 const createController = require("./controllers/createController");
@@ -19,6 +20,7 @@ module.exports=(app)=>{
     app.use('/comments',commentsController);
     app.use('/search',searchController);
     app.use('/reportsController',reportsContoller);
+    app.use('/changeIApply',changeIapplyController);
     app.use('*',unknownController)
     
 

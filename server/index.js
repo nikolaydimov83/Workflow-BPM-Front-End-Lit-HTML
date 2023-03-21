@@ -5,8 +5,10 @@ const mongoose=require('mongoose');
 const verifyToken=require('./middlewares/jwt');
 const routesConfig=require('./routes');
 const corsOptions =require('./middlewares/cors');
+const cron = require('node-cron');
+const { replaceIapplyTable } = require('./importExternalFiles/csvImports');
 
-const CONNECTION_STRING='mongodb://localhost:27017/eurobankApp2'
+const CONNECTION_STRING='mongodb://localhost:27017,localhost:27018,localhost:27019/eurobankApp2?replicaSet=myReplicaSet'
 start();
 
 async function start(){
@@ -21,7 +23,19 @@ async function start(){
         console.error(error.message);
         process.exit(1)
     }
-
+    cron.schedule('16 16 * * *', async () => {
+        console.log('Running replaceIapplyTable() function...');
+        try {
+          await replaceIapplyTable();
+          console.log('IApply table replaced successfully!');
+        } catch (error) {
+          console.log(error.message);
+        }
+      }, {
+        scheduled: true,
+        timezone: 'Europe/Sofia' // Replace with your timezone
+      });
+      
     app.use(express.json());
     app.use(cors(corsOptions));
     app.use(verifyToken())

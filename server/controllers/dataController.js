@@ -29,9 +29,9 @@ dataController.post('/',async (req,res)=>{
 
    try {
     data=await getAllUserPendingRequests(user);
-    let sortedData=await sortTable(data,sortProperty,sortIndex)
+    //let sortedData=await sortTable(data,sortProperty,sortIndex)
     res.status(201);    
-    res.json(sortedData);
+    res.json(data);
    
     
    } catch (error) {
