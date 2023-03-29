@@ -8,7 +8,7 @@ const corsOptions =require('./middlewares/cors');
 const cron = require('node-cron');
 const { replaceIapplyTable } = require('./importExternalFiles/csvImports');
 
-const CONNECTION_STRING='mongodb://localhost:27017,localhost:27018,localhost:27019/eurobankApp2?replicaSet=myReplicaSet'
+const CONNECTION_STRING='mongodb://localhost:27217,localhost:27218,localhost:27219/eurobankApp2?replicaSet=myReplicaSet1'
 start();
 
 async function start(){
