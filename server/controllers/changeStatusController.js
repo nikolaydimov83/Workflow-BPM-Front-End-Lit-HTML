@@ -10,8 +10,6 @@ changeStatusController.post('/:id',async (req,res)=>{
     let requestId=req.params.id;
     let newStatusId=req.body.nextStatus;
     let user=req.user;
-  
-
 
    try {
     let databaseRequest=await getRequestById(requestId);

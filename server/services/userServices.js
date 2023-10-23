@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const InvalidToken = require("../models/InvalidToken");
+const UserActiveDir = require("../models/UserActiveDir");
 const key='QwD457808756_A_D!@#cckznn%$*';
 const resetKey='BHJBHJxmal7y7887#NJIU$^(';
 
@@ -18,7 +19,7 @@ async function register(email,password){
     let createdUser=await User.create({email,hashedPass});
     let token=createToken(createdUser,key);
 
-    return {_id:createdUser._id,accessToken:token,email:createdUser.email}
+    return {_id:createdUser._id,accessToken:token,email:createdUser.email,role:createdUser.role}
 
 }
 
@@ -32,7 +33,11 @@ async function login(email,password){
         throw new Error('Wrong username or password!')
     }
     let token=createToken(user,key);
-    return{_id:user._id,accessToken:token,email:user.email}
+    await user.save();
+    if (user.userStatus=='Inactive'){
+        throw new Error('User is not active. Please contact administrator!')
+    }
+    return{_id:user._id,accessToken:token,email:user.email,role:user.role}
 }
 
 async function createResetPassToken(email){
@@ -41,7 +46,7 @@ async function createResetPassToken(email){
         throw new Error('Your email does not exist in the database!')
     }
     let token=createToken(user,resetKey);
-    return {resetToken:token,email:user.email,_id:user._id}
+    return {resetToken:token,email:user.email,_id:user._id,role:user.role}
 }
 
 async function changePassword(user,password){
@@ -54,7 +59,7 @@ async function changePassword(user,password){
     userDB.save();
     let token=createToken(userDB,key);
 
-    return {_id:userDB._id,accessToken:token,email:userDB.email}
+    return {_id:userDB._id,accessToken:token,email:userDB.email,role:userDB.role}
 }
 
 function createToken(user,key){
@@ -70,9 +75,14 @@ async function verifyToken(req,res,tokenString){
     }
     if(tokenString){
         try {
-            let user=jwt.verify(tokenString,resetKey);
-            if(!User.find({email:user.email})){
+            let userDataFromToken=jwt.verify(tokenString,resetKey);
+            let user=User.find({email:userDataFromToken.email});
+            if(!user){
                 throw new Error('Invalid token')
+            }
+            await user.save();
+            if (user.userStatus=='Inactive'){
+                throw new Error ('User is no longer active. Please contact admin.')
             }
             return user
         } catch (error) {
@@ -84,10 +94,16 @@ async function verifyToken(req,res,tokenString){
         return 'No user'
     }else{
         try {
-            let user=jwt.verify(token,key);
+            let userDataFromToken=jwt.verify(token,key);
+            let user=await User.findOne({email:userDataFromToken.email});
             if((await User.find({email:user.email})).length==0){
                 throw new Error('Invalid token')
             }
+            //This save send makes the app to goto User Model-save, where the pre-save hook is triggered and fetches data between User and User active dir
+           await user.save();
+           if (user.userStatus=='Inactive'){
+            throw new Error ('User is no longer active. Please contact admin.')
+        }
             return user
         } catch (error) {
             return 'Invalid token'

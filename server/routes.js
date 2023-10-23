@@ -1,3 +1,4 @@
+const adminUsersRightsControler = require("./controllers/adminUsersRightsControler");
 const authController = require("./controllers/authController");
 const changeIapplyController = require("./controllers/changeIapplyController");
 const changeStatusController = require("./controllers/changeStatusController");
@@ -21,6 +22,7 @@ module.exports=(app)=>{
     app.use('/search',searchController);
     app.use('/reportsController',reportsContoller);
     app.use('/changeIApply',changeIapplyController);
+    app.use('/admin',adminUsersRightsControler);
     app.use('*',unknownController)
     
 

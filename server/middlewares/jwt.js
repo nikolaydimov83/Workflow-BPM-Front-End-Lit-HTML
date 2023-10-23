@@ -4,12 +4,17 @@ const { parseError } = require('../utils/utils');
 
 const guestAllowedAdresses=['login','register','resetPass'];
 module.exports=()=>async (req,res,next)=>{
+    emailToLowerCase(req);
     const result=await verifyToken(req,res);
     const requestType=req.originalUrl.split('/')[2];
+    const isAdmin=req.originalUrl.split('/')[1]=='admin'?true:false;
     try {
     if(result!=='No user'&&result!=='Invalid token'){
         req.user=result;
         req.user.isGuest=false;
+        if (isAdmin&&result.role!="Admin"){
+            throw new Error('You are not admin!');
+        }
 
         if (guestAllowedAdresses.includes(requestType)&&requestType!='resetPass'){
             throw new Error('You are already logged!');
@@ -23,7 +28,7 @@ module.exports=()=>async (req,res,next)=>{
 
         req.user={isGuest:true}
     }
-
+   
     next();
 
     } catch (error) {
@@ -33,3 +38,10 @@ module.exports=()=>async (req,res,next)=>{
 
 }
 
+function emailToLowerCase(req){
+    if (req.body){
+        if (req.body.email){
+            req.body.email=req.body.email.toLowerCase();
+        }
+    }
+}

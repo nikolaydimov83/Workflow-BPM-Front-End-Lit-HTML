@@ -1,6 +1,7 @@
 const { Schema, model,Types } = require("mongoose");
 
 const UserActiveDir = require("./UserActiveDir");
+let rolesMap={1:'Admin',101:'LA', 102:'ML-LA'}
 
 async function getId(email){
 
@@ -21,38 +22,48 @@ const userSchema=new Schema({
     hashedPass:{type:String,required:true},
     userStaticInfo:{type:Types.ObjectId,ref:'UserActiveDir'},
     role:{type:String},
-    finCenter:{type:Number,min:1,max:999}
+    finCenter:{type:Number,min:1,max:999},
+    userStatus:{type:String}
  
 });
 
 userSchema.pre('save', async function() {
     let email=this.email
-    let user=await getId(email)
+    let user=await getId(email);
+
     if (user) {
-      this.userStaticInfo = user.id
-      this.userStatus='Active';
-      this.role=user.branchNumber==101?'LA':'Branch'
+        this.userStaticInfo = user.id;
+        this.userStatus=user.userStatus;
+        this.finCenter=user.branchNumber;
+        let userRole=rolesMap[this.finCenter];
+        if (this.finCenter>=111){
+            this.role='Branch'
+        }else{
+            this.role=userRole;
+        }
+       
+      }else{
+          this.userStatus='Inactive';
+          throw new Error('User Inactive!!!!')
+      }
+    });
+    /*if (user) {
+      this.userStaticInfo = user.id;
+      this.userStatus=user.userStatus;
       this.finCenter=user.branchNumber;
-      
-      
+      if (user.branchNumber==1){
+        this.role='Admin'
+        
+      }else{
+        this.role=user.branchNumber==101?'LA':'Branch'
+        
+      }
+     
     }else{
         this.userStatus='Inactive';
-        throw new Error('User is no longer employee!');
+        throw new Error('User Inactive!!!!')
     }
-  });
-  
-  userSchema.post('init', async function() {
-    let email=this.email
-    let userId=await getId(email)
-    if (userId) {
-      this.userStaticInfo = userId
-      this.userStatus='Active';
-      
-    }else{
-        this.userStatus='Inactive';
-        throw new Error('User is no longer employee!');
-    }
-  });
+  });*/
 
 userSchema.index({email:1},{
     collation:{

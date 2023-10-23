@@ -5,7 +5,7 @@ const subjectSchema=new Schema({
     subjectName:{type:String, required:true, unique:true},
     subjectCreateDate:{type:Date,default:Date.now,immutable:true},
     assignedToWorkflow:{type:Types.ObjectId,ref:'Workflow'},
-    canBeInitiatedByRole:{type:String, required:true,enum:['LA','Branch','COKS']}
+    canBeInitiatedByRole:{type:String, required:true,enum:['LA','Branch','LA-ML']}
 });
 
 subjectSchema.index({subjectName:1},{
