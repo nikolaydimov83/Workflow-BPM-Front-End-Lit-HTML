@@ -6,7 +6,14 @@ import { stringifyDates } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 
 export let clearDashboardTemplate=()=>html``;
-export let catalogTemplate=(dataStringifiedDates,sortTableBy,submitsearchForm,searchContextString,showCatalog,showDelayedReport,showAllActive,showAll)=>html`
+export let catalogTemplate=(dataStringifiedDates,
+                            sortTableBy,
+                            submitsearchForm,
+                            searchContextString,
+                            showCatalog,
+                            showDelayedReport,
+                            showAllActive,
+                            showAll)=>html`
 
 <div class="search-wrapper-div">
 <form @submit=${submitsearchForm} class="search-wrapper cf">
@@ -72,7 +79,7 @@ export async function showCatalog(ctx){
         let dataStringifiedDates=stringifyDates(data.result);
         outerCtx.renderView(clearDashboardTemplate());
         outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,data.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
-        decorateDashboardWithDataTable();
+        decorateDashboardWithDataTable(9,8);
     }catch(error){
         errorHandler(error);
     }
@@ -89,7 +96,7 @@ export async function showDelayedReport(ctx){
         outerCtx.renderView(clearDashboardTemplate());
         outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,data.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
         
-    decorateDashboardWithDataTable()
+    decorateDashboardWithDataTable(9,8)
     }catch(error){
         errorHandler(error);
     }
@@ -105,7 +112,7 @@ export async function showAllActive(ev){
       let dataStringifiedDates=stringifyDates(serverResponseData.result);
           outerCtx.renderView(clearDashboardTemplate());
           outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,serverResponseData.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
-          decorateDashboardWithDataTable();
+          decorateDashboardWithDataTable(9,8);
       
     
   } catch (error) {
@@ -122,7 +129,7 @@ export async function showAllActive(ev){
         let dataStringifiedDates=stringifyDates(serverResponseData.result);
             outerCtx.renderView(clearDashboardTemplate());
             outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,serverResponseData.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
-            decorateDashboardWithDataTable();
+            decorateDashboardWithDataTable(9,8);
         
       
     } catch (error) {
@@ -140,7 +147,7 @@ export async function submitsearchForm(ev){
       let dataStringifiedDates=stringifyDates(serverResponseData.result);
           outerCtx.renderView(clearDashboardTemplate());
           outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,serverResponseData.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
-          decorateDashboardWithDataTable();
+          decorateDashboardWithDataTable(9,8);
       
     
   } catch (error) {
@@ -148,12 +155,12 @@ export async function submitsearchForm(ev){
   }
   }
 
-export function decorateDashboardWithDataTable() {
+export function decorateDashboardWithDataTable(orderBy1,orderBy2) {
   $(document).ready(function () {
     $.fn.dataTable.moment('DD-MM-YYYY');
     $('#dashboard').DataTable({ 
         dom: 'lBfrtip',
-        "order": [[9, 'asc'], [8, 'asc']],
+        "order": [[orderBy1, 'asc'], [orderBy2, 'asc']],
         "lengthMenu": [[5,25, 50, 100, -1], [5,25, 50, 100, "All"]],
         "oLanguage": {
           "sSearch": "Filter:"

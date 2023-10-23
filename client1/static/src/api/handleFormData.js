@@ -15,7 +15,10 @@ const allowedTypes={
     'nextStatus':'string',
     'commentText':'string',
     'searchData':'string',
-    'searchString':'string'
+    'searchString':'string',
+    'branchNumber':'string',
+    'branchName':'string',
+    'userStatus':'string'
 
 
 }
