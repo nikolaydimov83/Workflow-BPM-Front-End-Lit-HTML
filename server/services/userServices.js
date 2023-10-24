@@ -76,7 +76,7 @@ async function verifyToken(req,res,tokenString){
     if(tokenString){
         try {
             let userDataFromToken=jwt.verify(tokenString,resetKey);
-            let user=User.find({email:userDataFromToken.email});
+            let user=await User.findOne({email:userDataFromToken.email});
             if(!user){
                 throw new Error('Invalid token')
             }

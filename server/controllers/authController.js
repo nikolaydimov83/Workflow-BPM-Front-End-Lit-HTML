@@ -78,6 +78,8 @@ authController.post('/resetPass',async (req,res)=>{
           });*/
     const messageForEmail='Use this token to reset your password: '+ user.resetToken
     serverSendMail(emailAdress,user.email,'Reset token',messageForEmail)
+    res.status(201);
+    res.json(user)
     } catch (error) {
         res.status(401);
         res.json({message:parseError(error)});
@@ -109,7 +111,7 @@ authController.post('/resetPass/:id',async (req,res)=>{
         if(userFromRequest=='Invalid Token'||userFromRequest=='No user'){
             throw new Error('Invalid token');
         }
-        let returnedUser=changePassword(userFromRequest,req.body.password);
+        let returnedUser=await changePassword(userFromRequest,req.body.password);
         await InvalidToken.create({token:token});
         res.status(202);
         res.json(returnedUser);
