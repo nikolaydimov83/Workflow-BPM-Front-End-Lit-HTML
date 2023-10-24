@@ -26,7 +26,10 @@ async function editUserById(id,newUser){
     user.userStatus=newUser.userStatus;
     let userFromUsers=await User.findOne({email:user.email});
     await user.save();
-    await userFromUsers.save();
+    if (userFromUsers){
+        await userFromUsers.save();
+    }
+    
    
 }
 
