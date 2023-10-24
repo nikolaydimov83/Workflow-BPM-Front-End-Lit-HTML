@@ -167,3 +167,7 @@ input.verySmall{
   color: #535353;
   text-decoration: none;
 }
+
+#editUsrBtn{
+  width: 100%;
+}

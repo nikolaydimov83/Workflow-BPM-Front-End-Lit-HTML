@@ -1,25 +1,30 @@
 export function getUserData(){
-return JSON.parse(sessionStorage.getItem('userData'))
+return JSON.parse(localStorage.getItem('userData'))
 }
 
 export function setUserData(data){
-    sessionStorage.setItem('userData',JSON.stringify(data))
+    localStorage.setItem('userData',JSON.stringify(data))
 }
 
 export function clearUserData(){
-    sessionStorage.removeItem('userData')
+    localStorage.removeItem('userData')
 }
 
 export function stringifyDates(data) {
     if (data.length > 0) {
       data.forEach(element => {
-        element.statusIncomingDate = new Date(element.statusIncomingDate).toLocaleDateString('bg-BG');
-        element.deadlineDate = new Date(element.deadlineDate).toLocaleDateString('bg-BG');
+        element.statusIncomingDate = dateToString(element.statusIncomingDate);
+        element.deadlineDate = dateToString(element.deadlineDate);
         element.comments.forEach((comment)=>{
-          comment.commentDate=new Date(comment.commentDate).toLocaleDateString('bg-BG');
+          comment.commentDate=dateToString(comment.commentDate);
         })
       });
     }
     return data
+  }
+
+  function dateToString(date){
+    let mom=moment(date).format('DD-MM-YYYY');
+    return moment(date).format('DD-MM-YYYY');
   }
   

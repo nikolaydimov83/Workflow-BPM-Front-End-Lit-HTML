@@ -5,19 +5,17 @@ import { html,repeat } from '../lib.js';
 import { stringifyDates } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 
+export let clearDashboardTemplate=()=>html``;
+export let catalogTemplate=(dataStringifiedDates,
+                            sortTableBy,
+                            submitsearchForm,
+                            searchContextString,
+                            showCatalog,
+                            showDelayedReport,
+                            showAllActive,
+                            showAll)=>html`
 
-export let catalogTemplate=(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm)=>html`
 <div class="search-wrapper-div">
- <form @submit=${submitsearchEGFNForm} class="search-wrapper cf">
-  <input
-    id="#search-input"
-    type="text"
-    name="searchData"
-    placeholder="Търсене по ЕГФН"
-    required
-  />
-  <button type="submit">Search</button>
-</form> 
 <form @submit=${submitsearchForm} class="search-wrapper cf">
   <input
     id="#search-input"
@@ -28,25 +26,32 @@ export let catalogTemplate=(dataStringifiedDates,sortTableBy,submitsearchEGFNFor
   />
   <button type="submit">Search</button>
 </form> 
+<button @click=${showCatalog} class="pre-set-report">Dashboard</button>
+<button @click=${showDelayedReport} class="pre-set-report">Delayed</button>
+<button @click=${showAllActive} class="pre-set-report">Active</button>
+<button @click=${showAll} class="pre-set-report">All</button>
 </div>
+<h2>${searchContextString}</h2>
 <div class="tableLarge">
-<table>
-<thead>
-  <tr @click=${sortTableBy}>
-    <th ><a id="iApplyId"href="#">IApplyId</a></th>
-    <th ><a id="clientName"href="#">Име на клиента</a></th>
-    <th ><a id="clientEGFN"href="#">EGFN</a></th>
-    <th ><a id="finCenter"href="#">ФЦ</a></th>
-    <th ><a id="refferingFinCenter"href="#">Рефериращ</a></th>
-    <th ><a id="subjectId"href="#">Subject</a></th>
-    <th ><a id="status"href="#">Статус</a></th>
-    <th ><a id="statusIncomingDate"href="#">Дата на постъпване</a></th>
-    <th ><a id="deadlineDate"href="#">Deadline</a></th>
-    <th ><a id="details"href="#">Детайли</a></th>
+<table id="dashboard" class="no-footer dataTable" role="grid" aria-describedby="dashboard_info">
+<thead >
+  <tr >
+  <th ><a id="creator"href="javascript:void(0)">Creator</a></th>
+    <th ><a id="iApplyId"href="javascript:void(0)">IApplyId</a></th>
+    <th ><a id="clientName"href="javascript:void(0)">Име на клиента</a></th>
+    <th ><a id="clientEGFN"href="javascript:void(0)">EGFN</a></th>
+    <th ><a id="finCenter"href="javascript:void(0)">ФЦ</a></th>
+    <th ><a id="refferingFinCenter"href="javascript:void(0)">Рефериращ</a></th>
+    <th ><a id="subjectId"href="javascript:void(0)">Subject</a></th>
+    <th ><a id="status"href="javascript:void(0)">Статус</a></th>
+    <th ><a id="statusIncomingDate"href="javascript:void(0)">Дата на постъпване</a></th>
+    <th ><a id="deadlineDate"href="javascript:void(0)">Deadline</a></th>
+    <th ><a id="details"href="javascript:void(0)">Детайли</a></th>
   </tr>
  </thead>
  <tbody>
  ${repeat(dataStringifiedDates,(request)=>request._id,(request)=>html`<tr>
+     <td>${request.requestCreatorEmail}</td>
      <td>${request.iApplyId}</td>
      <td>${request.clientName}</td>
      <td>${request.clientEGFN}</td>
@@ -64,20 +69,120 @@ export let catalogTemplate=(dataStringifiedDates,sortTableBy,submitsearchEGFNFor
 
 export let outerCtx=null;
 export async function showCatalog(ctx){
-  outerCtx=ctx
+  if(!outerCtx){
+    outerCtx=ctx
+  }
   setDashBoardContext({path:'/data/catalog'})
-  let dashboardContext=getDashBoardContext()
+  
     try{
         let data=await get(getDashBoardContext().path);
-        let dataStringifiedDates=stringifyDates(data);
-        ctx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
+        let dataStringifiedDates=stringifyDates(data.result);
+        outerCtx.renderView(clearDashboardTemplate());
+        outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,data.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
+        decorateDashboardWithDataTable(9,8);
     }catch(error){
         errorHandler(error);
     }
 
 }
 
+export async function showDelayedReport(ctx){
 
+  setDashBoardContext({path:'/reportsController'})
+  let dashboardContext=getDashBoardContext()
+    try{
+        let data=await get(dashboardContext.path);
+        let dataStringifiedDates=stringifyDates(data.result);
+        outerCtx.renderView(clearDashboardTemplate());
+        outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,data.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
+        
+    decorateDashboardWithDataTable(9,8)
+    }catch(error){
+        errorHandler(error);
+    }
+
+}
+
+export async function showAllActive(ev){
+  ev.preventDefault();
+  setDashBoardContext({path:'/reportsController/active'})
+  try {
+      
+      let serverResponseData=await get(getDashBoardContext().path)
+      let dataStringifiedDates=stringifyDates(serverResponseData.result);
+          outerCtx.renderView(clearDashboardTemplate());
+          outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,serverResponseData.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
+          decorateDashboardWithDataTable(9,8);
+      
+    
+  } catch (error) {
+      errorHandler(error);
+  }
+  }
+
+  export async function showAll(ev){
+    ev.preventDefault();
+    setDashBoardContext({path:'/reportsController/all'})
+    try {
+        
+        let serverResponseData=await get(getDashBoardContext().path)
+        let dataStringifiedDates=stringifyDates(serverResponseData.result);
+            outerCtx.renderView(clearDashboardTemplate());
+            outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,serverResponseData.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
+            decorateDashboardWithDataTable(9,8);
+        
+      
+    } catch (error) {
+        errorHandler(error);
+    }
+    }
+
+export async function submitsearchForm(ev){
+  ev.preventDefault();
+  let data=loadFormData(ev.target);
+  setDashBoardContext({path:'/search/all',searchData:data.searchData})
+  try {
+      
+      let serverResponseData=await post(getDashBoardContext().path,data)
+      let dataStringifiedDates=stringifyDates(serverResponseData.result);
+          outerCtx.renderView(clearDashboardTemplate());
+          outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm,serverResponseData.searchContextString,showCatalog,showDelayedReport,showAllActive,showAll));
+          decorateDashboardWithDataTable(9,8);
+      
+    
+  } catch (error) {
+      errorHandler(error);
+  }
+  }
+
+export function decorateDashboardWithDataTable(orderBy1,orderBy2) {
+  $(document).ready(function () {
+    $.fn.dataTable.moment('DD-MM-YYYY');
+    $('#dashboard').DataTable({ 
+        dom: 'lBfrtip',
+        "order": [[orderBy1, 'asc'], [orderBy2, 'asc']],
+        "lengthMenu": [[5,25, 50, 100, -1], [5,25, 50, 100, "All"]],
+        "oLanguage": {
+          "sSearch": "Filter:"
+          },
+        buttons: [
+          {
+            extend: 'excel',
+            title:function(){
+              return document.querySelector('h2').textContent
+            },
+            text: 'Excel',
+            exportOptions: {
+                modifier: {
+                    page: 'current'
+                }
+            }
+        }
+        ]
+      });
+
+  });
+}
 
 export async function sortTableBy(ev){
   ev.preventDefault();
@@ -88,7 +193,7 @@ export async function sortTableBy(ev){
           let data=await post(getDashBoardContext().path,{sortCriteria:sortCriteria,sortIndex,searchData:getDashBoardContext().searchData});
           setTableCriteriaSortIndex(sortCriteria,data.newSortIndex);
           let dataStringifiedDates=stringifyDates(data.sortedData);
-          outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
+          outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchForm));
         }
   } catch (error) {
     errorHandler(error);
@@ -98,31 +203,4 @@ export async function sortTableBy(ev){
 
 }
 
-export async function submitsearchEGFNForm(ev){
-  ev.preventDefault();
-  try {
-      let data=loadFormData(ev.target);
-      setDashBoardContext({path:'/search/EGFN',searchData:data.searchData})
-      let dashboardContext=getDashBoardContext()
-      let serverResponseData=await post(getDashBoardContext().path,data)
-      let dataStringifiedDates=stringifyDates(serverResponseData.sortedData);
-      outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
-  } catch (error) {
-      errorHandler(error);
-  }
-}
 
-export async function submitsearchForm(ev){
-ev.preventDefault();
-setDashBoardContext('/search/all');
-try {
-    let data=loadFormData(ev.target);
-    let serverResponseData=await post(getDashBoardContext(),data)
-    let dataStringifiedDates=stringifyDates(serverResponseData);
-    outerCtx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
-    
-  
-} catch (error) {
-    errorHandler(error);
-}
-}

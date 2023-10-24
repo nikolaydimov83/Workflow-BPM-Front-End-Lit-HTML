@@ -51,7 +51,7 @@ let adminCreateUserTemplate=(submitCreateActiveUsrForm)=>html`<section id="creat
          
         />
 
-<button type="submit">Изпрати</button>
+<button type="submit" id="editUsrBtn">Изпрати</button>
 
             </div>
             

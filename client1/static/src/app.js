@@ -23,8 +23,12 @@ let guest=document.querySelector('.guest');
 let admin=document.querySelector('.admin');
 let loagoutUser=document.getElementById('logout');
 loagoutUser.addEventListener('click',logoutUser);
+
 let logoutAdmin=document.getElementById('logoutAdmin');
-logoutAdmin.addEventListener('click', logoutUser);
+if (logoutAdmin){
+    logoutAdmin.addEventListener('click', logoutUser);
+}
+
 //document.getElementById('notifications').style.display='none';
 renderNav();
 

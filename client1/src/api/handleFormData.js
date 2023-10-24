@@ -14,7 +14,12 @@ const allowedTypes={
     'finCenterText':'string',
     'nextStatus':'string',
     'commentText':'string',
-    'searchData':'string'
+    'searchData':'string',
+    'searchString':'string',
+    'branchNumber':'string',
+    'branchName':'string',
+    'userStatus':'string',
+    'resetCode':'string'
 
 
 }

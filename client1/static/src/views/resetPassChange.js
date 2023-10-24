@@ -15,7 +15,7 @@ let resetPassTemplate=()=>html`<section id="login">
 
     <input type="text" name="resetCode" placeholder="Type your reset code here"/>
     
-    <button type="submit">Reset Pass</button>
+    <button type="submit" id="resetPassBtn">Reset Pass</button>
     <p class="message">
       Not registered? <a href="/register">Create an account</a>
     </p>
