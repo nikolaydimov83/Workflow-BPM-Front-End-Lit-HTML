@@ -1,6 +1,7 @@
 const Request = require("../models/Request");
 const Status=require('../models/Status');
 const Subject = require("../models/Subject");
+const Workflow = require("../models/Workflow");
 const { sortWithType, escapeRegExp } = require("../utils/utils");
 const { createCommnet } = require("./commentServices");
 const { getWorkflowById, checkUserRoleIsPriviliged } = require("./workflowServices");
@@ -41,9 +42,12 @@ async function getAllActiveReqs(user){
     let contextAddition=userFinCenter>=111?` за клон ${userFinCenter}`:''
     let searchContextString='Всички активни заявки'+contextAddition;
     const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
+
     if(!(userRole.includes('Branch'))){
+        let allRelevantWorkflows=await getRelevantWorkflowsByUsrRole(userRole);
         let result= await Request.find({})
         .where('status').in(allRelevantStatuses)
+        .where('requestWorkflow').in(allRelevantWorkflows)
         .populate('status requestWorkflow subjectId comments').lean();
         
         result.sort((a,b)=>{
@@ -100,7 +104,12 @@ async function getAllPassedDeadlineUsrPndngReqs(user){
     const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
     
     if(!(userRole.includes('Branch'))){
-        let result= await Request.find({}).where('status').in(allRelevantStatuses).where('deadlineDate').lte(currentDate).populate('status requestWorkflow subjectId comments').lean();
+        let allRelevantWorkflows=await getRelevantWorkflowsByUsrRole(userRole);
+        let result= await Request.find({})
+        .where('status').in(allRelevantStatuses)
+        .where('deadlineDate').lte(currentDate)
+        .where('requestWorkflow').in(allRelevantWorkflows)
+        .populate('status requestWorkflow subjectId comments').lean();
         
         result.sort((a,b)=>{
             return ((new Date(b.deadlineDate) - new Date(a.deadlineDate)));
@@ -287,7 +296,11 @@ async function addCommentToRequest(requestId,commentText,user){
 
 }
 
-
+async function getRelevantWorkflowsByUsrRole(userRole){
+    const statusesInTheWorkflow=await Status.find({}).where('statusType').equals(userRole);
+    const allRelevantWorkflows=await Workflow.find({}).where('allowedStatuses').in(statusesInTheWorkflow)
+    return allRelevantWorkflows
+}
 module.exports={
                     createRequest,
                     getAllUserPendingRequests,

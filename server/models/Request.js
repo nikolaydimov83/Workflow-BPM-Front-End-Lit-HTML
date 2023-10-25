@@ -1,7 +1,7 @@
 const { Schema, model,Types } = require("mongoose");
 
 //let arrayOfSubjects=['Чисто УВТ след ипотека','Вписване в ЦРОЗ','Удостоверение по ч. 87']
-let arrayOfIApplyChars=['BL','ML']
+
 const requestSchema=new Schema({
     requestWorkflow:{type:Types.ObjectId,ref:'Workflow',required:true},
     deadlineDate:{type:Date, required:true,validate:{
