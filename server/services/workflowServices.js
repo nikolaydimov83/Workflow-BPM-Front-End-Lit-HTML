@@ -1,4 +1,18 @@
+const Role = require("../models/Role");
 const Workflow = require("../models/Workflow");
+
+async function createRole(roleInfo){
+    let result=await Role.create(roleInfo)
+    
+    return result
+}
+s
+async function editRole(roleInfo,id){
+    let result=await Role.updateOne({id:id},roleInfo)
+    return result
+}
+
+
 
 async function createWorkflow(workflowName,allowedStatuses=[]){
 
@@ -52,4 +66,9 @@ async function checkUserRoleIsPriviliged(workflowId,user){
 
 
 
-module.exports={createWorkflow,addAllowedStatus,removeAllowedStatus,getWorkflowById,checkUserRoleIsPriviliged}
+module.exports={createWorkflow,
+                addAllowedStatus,
+                removeAllowedStatus,
+                getWorkflowById,
+                checkUserRoleIsPriviliged,
+                createRole,editRole}

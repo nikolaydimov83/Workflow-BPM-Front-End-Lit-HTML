@@ -29,8 +29,7 @@ async function editUserById(id,newUser){
     if (userFromUsers){
         await userFromUsers.save();
     }
-    
-   
+       
 }
 
 module.exports={getAllActiveDirUsers,getActiveDirUserByID,editUserById,createUser}

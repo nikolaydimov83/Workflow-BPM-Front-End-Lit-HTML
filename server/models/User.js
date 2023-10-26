@@ -32,6 +32,7 @@ userSchema.pre('save', async function() {
     let user=await getId(email);
 
     if (user) {
+        
         this.userStaticInfo = user.id;
         this.userStatus=user.userStatus;
         this.finCenter=user.branchNumber;

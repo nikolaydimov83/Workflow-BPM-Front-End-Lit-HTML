@@ -8,12 +8,16 @@ module.exports=()=>async (req,res,next)=>{
     const result=await verifyToken(req,res);
     const requestType=req.originalUrl.split('/')[2];
     const isAdmin=req.originalUrl.split('/')[1]=='admin'?true:false;
+    const isWorkflow=req.originalUrl.split('/')[1]=='workflow'?true:false;
     try {
     if(result!=='No user'&&result!=='Invalid token'){
         req.user=result;
         req.user.isGuest=false;
         if (isAdmin&&result.role!="Admin"){
             throw new Error('You are not admin!');
+        }
+        if (isWorkflow&&result.role!="Workflow"){
+            throw new Error('You are not Workflow Designer!');
         }
 
         if (guestAllowedAdresses.includes(requestType)&&requestType!='resetPass'){
