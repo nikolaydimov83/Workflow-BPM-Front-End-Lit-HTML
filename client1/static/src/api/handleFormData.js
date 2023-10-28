@@ -18,7 +18,8 @@ const allowedTypes={
     'searchString':'string',
     'branchNumber':'string',
     'branchName':'string',
-    'userStatus':'string'
+    'userStatus':'string',
+    'roleName':'optional'
 
 
 }
