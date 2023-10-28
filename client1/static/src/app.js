@@ -15,19 +15,21 @@ import { showLogin } from "./views/loginView.js";
 import { showRegister } from "./views/registerView.js";
 import { showResetPassChange } from "./views/resetPassChange.js";
 import { showResetPass } from "./views/resetPassView.js";
+import { showRoles } from "./views/rolesView.js";
 
 
 let main=document.querySelector('main');
 let user=document.querySelector('.user');
 let guest=document.querySelector('.guest');
 let admin=document.querySelector('.admin');
+let workflow=document.querySelector('.workflow');
+
 let loagoutUser=document.getElementById('logout');
 loagoutUser.addEventListener('click',logoutUser);
-
 let logoutAdmin=document.getElementById('logoutAdmin');
-if (logoutAdmin){
-    logoutAdmin.addEventListener('click', logoutUser);
-}
+logoutAdmin.addEventListener('click', logoutUser);
+let logoutWorkflow=document.getElementById('logoutWorkflow');
+logoutWorkflow.addEventListener('click',logoutUser)
 
 //document.getElementById('notifications').style.display='none';
 renderNav();
@@ -48,6 +50,7 @@ page('/changeIApply',sendIapply);
 page('/admin', listActiveDir);
 page('/admin/:id',showAdminEdtUsr);
 page('/createUser',showAdminCreateUsr);
+page('/roles',showRoles)
 page.start();
 
 function decorateCtx(ctx,next){
@@ -74,17 +77,26 @@ if(!userData){
     user.style.display='none';
     guest.style.display='';
     admin.style.display='none';
+    workflow.style.display='none';
 }else{
 
-    if(userData.role!='Admin'){
-        user.style.display='';
+    if(userData.role=='Admin'){
+        user.style.display='none';
         guest.style.display='none';
+        workflow.style.display='none'
+        admin.style.display='';
+        document.getElementById('profile').textContent=`${getUserData().email}`;
+    }else if(userData.role=='Workflow'){
+        user.style.display='none';
+        guest.style.display='none';
+        workflow.style.display=''
         admin.style.display='none';
         document.getElementById('profile').textContent=`${getUserData().email}`;
     }else{
-        user.style.display='none';
+        user.style.display='';
         guest.style.display='none';
-        admin.style.display='';
+        admin.style.display='none';
+        workflow.style.display='none'
         document.getElementById('profile').textContent=`${getUserData().email}`;
     }
 
