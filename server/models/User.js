@@ -1,7 +1,7 @@
 const { Schema, model,Types } = require("mongoose");
 
 const UserActiveDir = require("./UserActiveDir");
-let rolesMap={1:'Admin',101:'LA', 102:'LA-ML'}
+let rolesMap={1:'Admin',101:'LA', 102:'LA-ML', 103:'Workflow'}
 
 async function getId(email){
 

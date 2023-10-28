@@ -13,10 +13,13 @@ rolesSchema.pre('save', async function(){
         
         let roleNameRoot=this.roleName.replace('Branch','');
         if(!roleNameRoot){
-            roleNameRoot=branchNumber+'All';
+            roleNameRoot='All';
         }
         this.role='Branch'+roleNameRoot;
     }else{
+        if(!this.roleName){
+            throw new Error('Missing role name! You cannot save role without rolename!')
+        }
         this.role=this.roleName;
     }
 })

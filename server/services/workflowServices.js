@@ -6,9 +6,14 @@ async function createRole(roleInfo){
     
     return result
 }
-s
+
 async function editRole(roleInfo,id){
     let result=await Role.updateOne({id:id},roleInfo)
+    return result
+}
+
+async function getAllRoles(){
+    let result=await Role.find({})
     return result
 }
 
@@ -71,4 +76,4 @@ module.exports={createWorkflow,
                 removeAllowedStatus,
                 getWorkflowById,
                 checkUserRoleIsPriviliged,
-                createRole,editRole}
+                createRole,editRole,getAllRoles}

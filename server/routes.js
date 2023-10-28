@@ -10,6 +10,7 @@ const iApplyConroller = require("./controllers/iapplyDataController");
 const reportsContoller = require("./controllers/reportsController");
 const searchController = require("./controllers/searchController");
 const unknownController = require("./controllers/unknownController");
+const workflowController = require("./controllers/workflowController");
 
 module.exports=(app)=>{
     app.use('/users',authController);
@@ -23,7 +24,8 @@ module.exports=(app)=>{
     app.use('/reportsController',reportsContoller);
     app.use('/changeIApply',changeIapplyController);
     app.use('/admin',adminUsersRightsControler);
-    app.use('*',unknownController)
+    app.use('/workflow',workflowController);
+    app.use('*',unknownController);
     
 
 }
