@@ -13,11 +13,21 @@ export function clearUserData(){
 export function stringifyDates(data) {
     if (data.length > 0) {
       data.forEach(element => {
-        element.statusIncomingDate = dateToString(element.statusIncomingDate);
-        element.deadlineDate = dateToString(element.deadlineDate);
-        element.comments.forEach((comment)=>{
-          comment.commentDate=dateToString(comment.commentDate);
+        if (element.statusIncomingDate){
+          element.statusIncomingDate = dateToString(element.statusIncomingDate);
+        }
+        if (element.deadlineDate){
+          element.deadlineDate = dateToString(element.deadlineDate);
+        }
+        if (element.comments){
+            element.comments.forEach((comment)=>{
+              comment.commentDate=dateToString(comment.commentDate);
         })
+        }
+        if (element.roleCreateDate){
+          element.roleCreateDate=dateToString(element.roleCreateDate)
+        }
+
       });
     }
     return data
