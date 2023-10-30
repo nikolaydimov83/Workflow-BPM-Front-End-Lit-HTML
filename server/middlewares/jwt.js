@@ -17,7 +17,12 @@ module.exports=()=>async (req,res,next)=>{
             throw new Error('You are not admin!');
         }
         if (isWorkflow&&result.role!="Workflow"){
-            throw new Error('You are not Workflow Designer!');
+            if(req.method=='GET'&&req.originalUrl=='/workflow/roles'&&result.role=='Admin'){
+
+            }else{
+                throw new Error('You are not Workflow Designer!');
+            }
+            
         }
 
         if (guestAllowedAdresses.includes(requestType)&&requestType!='resetPass'){
