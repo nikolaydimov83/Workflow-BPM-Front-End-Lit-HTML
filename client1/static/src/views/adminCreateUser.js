@@ -6,7 +6,7 @@ import { setUserData } from '../utils.js';
 import { errorHandler } from './errorHandler.js';
 //import { errorHandler } from './errorHandler.js';
 
-let adminCreateUserTemplate=(submitCreateActiveUsrForm)=>html`<section id="create">
+let adminCreateUserTemplate=(submitCreateActiveUsrForm,rolesList)=>html`<section id="create">
 <div class="formLarge">
   <h2>Създай потребител</h2>
   <form @submit=${submitCreateActiveUsrForm} class="create-form">
@@ -20,14 +20,12 @@ let adminCreateUserTemplate=(submitCreateActiveUsrForm)=>html`<section id="creat
          
          
         />
-
-        <label for='branchName'>Branch Name or Role</label>
+        <label for='branchName'>Branch Name</label>
         <input
           type="text"
           name="branchName"
           id="branchName"
           placeholder="Въведе име на клон или роля в ЦУ"
-          
          
         />
 
@@ -38,10 +36,17 @@ let adminCreateUserTemplate=(submitCreateActiveUsrForm)=>html`<section id="creat
           name="email"
           id="email"
           placeholder="Мейл на потребителя"
-          
          
         />
 
+        <label for='role'>Role</label>
+        <select class="details-property-info" name="role">
+          ${repeat(rolesList,(role)=>role._id,(role)=>html`
+            <option value="${role._id}" >${role.role}</option>
+          `)}
+        </select>
+
+        <label for='userStatus'>Role</label>
         <input
           
           type="text"
@@ -65,8 +70,8 @@ export async function showAdminCreateUsr(ctx){
     outerCtx=ctx
     let id=ctx.params.id
     try{
-      
-      ctx.renderView(adminCreateUserTemplate(submitCreateActiveUsrForm));
+      let rolesList=await get('/workflow/roles');
+      ctx.renderView(adminCreateUserTemplate(submitCreateActiveUsrForm,rolesList));
     }catch(error){
         errorHandler(error);
     }
