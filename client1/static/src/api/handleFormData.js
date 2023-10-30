@@ -19,7 +19,10 @@ const allowedTypes={
     'branchNumber':'string',
     'branchName':'string',
     'userStatus':'string',
-    'roleName':'optional'
+    'roleName':'optional',
+    'role':'optional',
+    'roleType':'string'
+    
 
 
 }
