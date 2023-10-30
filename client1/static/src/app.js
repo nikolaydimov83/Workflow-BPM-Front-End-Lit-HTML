@@ -15,6 +15,7 @@ import { showLogin } from "./views/loginView.js";
 import { showRegister } from "./views/registerView.js";
 import { showResetPassChange } from "./views/resetPassChange.js";
 import { showResetPass } from "./views/resetPassView.js";
+import { showEditRole } from "./views/rolesEditView.js";
 import { showRoles } from "./views/rolesView.js";
 
 
@@ -50,7 +51,8 @@ page('/changeIApply',sendIapply);
 page('/admin', listActiveDir);
 page('/admin/:id',showAdminEdtUsr);
 page('/createUser',showAdminCreateUsr);
-page('/roles',showRoles)
+page('/roles',showRoles);
+page('/editRoles/:id',showEditRole);
 page.start();
 
 function decorateCtx(ctx,next){
