@@ -19,12 +19,9 @@ async function getActiveDirUserByID(id){
 }
 
 async function editUserById(id,newUser){
-    let user=await getActiveDirUserByID(id);
-    user.email=newUser.email;
-    user.branchNumber=newUser.branchNumber;
-    user.branchName=newUser.branchName;
-    user.userStatus=newUser.userStatus;
-    let userFromUsers=await User.findOne({email:user.email});
+    let user=await UserActiveDir.findByIdAndUpdate(id,newUser)
+
+    let userFromUsers=await User.findOne({email:newUser.email});
     await user.save();
     if (userFromUsers){
         await userFromUsers.save();
@@ -32,4 +29,24 @@ async function editUserById(id,newUser){
        
 }
 
-module.exports={getAllActiveDirUsers,getActiveDirUserByID,editUserById,createUser}
+async function editAllUsersWithRole(role){
+    let users=await UserActiveDir.find({role:role});
+    let updatedUsers=users.forEach(async (user)=>{
+        user.role=role;
+        let userFromUsers=await User.findOne({email:user.email});
+    await user.save();
+    if (userFromUsers){
+        await userFromUsers.save();
+    }
+    })
+
+    return updatedUsers
+       
+}
+
+module.exports={getAllActiveDirUsers,
+                getActiveDirUserByID,
+                editUserById,
+                createUser,
+                editAllUsersWithRole
+            }

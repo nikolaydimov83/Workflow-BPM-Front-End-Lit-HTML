@@ -1,10 +1,13 @@
 const Request = require("../models/Request");
+const Role = require("../models/Role");
 const Status=require('../models/Status');
 const Subject = require("../models/Subject");
+const UserActiveDir = require("../models/UserActiveDir");
 const Workflow = require("../models/Workflow");
 const { sortWithType, escapeRegExp } = require("../utils/utils");
+const { getActiveDirUserByID } = require("./adminServices");
 const { createCommnet } = require("./commentServices");
-const { getWorkflowById, checkUserRoleIsPriviliged } = require("./workflowServices");
+const { getWorkflowById, checkUserRoleIsPriviliged, getRoleById } = require("./workflowServices");
 
 async function createRequest(requestObject){
     return await (await Request.create(requestObject)).populate('status');
@@ -13,7 +16,11 @@ async function createRequest(requestObject){
 async function getAllUserPendingRequests(user){
     let userFinCenter=user.finCenter;
     let userRole=user.role;
-    const allStatusesRelatedToUserRole=await Status.find({statusType:userRole})
+    
+    let activeDirUser=await getActiveDirUserByID(user.userStaticInfo.toString());
+    let activeDirUserRoleId=activeDirUser.role;
+    
+    const allStatusesRelatedToUserRole=await Status.find({statusType:activeDirUserRoleId})
     let searchContextString='Заявки за изпълнение';
     if(!(userRole.includes('Branch'))){
         let result= await Request.find({}).where('status').in(allStatusesRelatedToUserRole).populate('status requestWorkflow subjectId comments').lean();
@@ -41,7 +48,8 @@ async function getAllActiveReqs(user){
     let userRole=user.role;
     let contextAddition=userFinCenter>=111?` за клон ${userFinCenter}`:''
     let searchContextString='Всички активни заявки'+contextAddition;
-    const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
+    let closedRole=await Role.findOne({role:'Closed'});
+    const allRelevantStatuses=await Status.find({}).where('statusType').ne(closedRole.id);
 
     if(!(userRole.includes('Branch'))){
         let allRelevantWorkflows=await getRelevantWorkflowsByUsrRole(userRole);
@@ -101,7 +109,8 @@ async function getAllPassedDeadlineUsrPndngReqs(user){
     let currentDate = new Date().toISOString();
     let contextAddition=userFinCenter>=111?` за клон ${userFinCenter}`:''
     let searchContextString='Забавени заявки '+contextAddition;
-    const allRelevantStatuses=await Status.find({}).where('statusType').ne('Closed');
+    let closedRole=await Role.findOne({role:'Closed'});
+    const allRelevantStatuses=await Status.find({}).where('statusType').ne(closedRole.id);
     
     if(!(userRole.includes('Branch'))){
         let allRelevantWorkflows=await getRelevantWorkflowsByUsrRole(userRole);
@@ -258,7 +267,7 @@ async function changeRequestDeadline(requestId,newData, user){
 
 
 async function getUserRights(databaseRequest, user,newStatusId) {
-    
+    let activeDirUser=await getActiveDirUserByID(user.userStaticInfo.toString());
     if (await checkUserRoleIsPriviliged(databaseRequest.requestWorkflow._id,user)){
         return {userCanChangeStatus:true, userPrivileged:true}
     }
@@ -271,7 +280,7 @@ async function getUserRights(databaseRequest, user,newStatusId) {
 
     }
 
-    if (databaseRequest.status.statusType != user.role) {
+    if (databaseRequest.status.statusType.toString() != activeDirUser.role.toString()) {
         return {userCanChangeStatus:false, userPrivileged:false}
     }
 
@@ -297,7 +306,8 @@ async function addCommentToRequest(requestId,commentText,user){
 }
 
 async function getRelevantWorkflowsByUsrRole(userRole){
-    const statusesInTheWorkflow=await Status.find({}).where('statusType').equals(userRole);
+    let role=await Role.findOne({role:userRole})
+    const statusesInTheWorkflow=await Status.find({}).where('statusType').equals(role);
     const allRelevantWorkflows=await Workflow.find({}).where('allowedStatuses').in(statusesInTheWorkflow)
     return allRelevantWorkflows
 }

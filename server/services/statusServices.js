@@ -1,3 +1,4 @@
+const Role = require("../models/Role");
 const Status = require("../models/Status");
 
 async function createStatus(statusName,statusType,nextStatuses){
@@ -13,6 +14,16 @@ async function assignStatusWithNextStatuses(status,arrayOfNextStatuses){
         status.nextStatuses.push(element)
     });
     status.save();
+}
+async function getAllClosedStatuses(){
+    let closedRole=await Role.findOne({role:'Closed'});
+    let result =await Status.find({statusType:closedRole.id});
+    return result
+}
+
+async function checkIfStatusIsClosed(status){
+    let closedRole=await Role.findOne({role:'Closed'});
+    return status.statusType.toString() === closedRole.id.toString();
 }
 
 async function editStatusName(status,statusName){
@@ -32,4 +43,10 @@ async function emptyNextStatuses(status){
 
 
 
-module.exports={createStatus,assignStatusWithNextStatuses,editStatusName,emptyNextStatuses}
+module.exports={createStatus,
+                assignStatusWithNextStatuses,
+                editStatusName,
+                emptyNextStatuses, 
+                getAllClosedStatuses,
+                checkIfStatusIsClosed
+            }
