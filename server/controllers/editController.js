@@ -1,6 +1,7 @@
 const { prepareMailContent, serverSendMail, emailAdress } = require('../emailClient/mail');
 const User = require('../models/User');
 const { getRequestById, editRequestStatus, getUserRights, editRequest, changeRequestDeadline } = require('../services/requestServices');
+const { checkIfStatusIsClosed } = require('../services/statusServices');
 const { parseError } = require('../utils/utils');
 
 const editController=require('express').Router();
@@ -15,15 +16,19 @@ editController.put('/:id',async (req,res)=>{
 
 
    try {
+    
     if(!newDeadline||!newComment){
         throw new Error('Missing deadline or comment. This fields are compulsory')
+    }
+    if(new Date(newDeadline)<new Date()){
+        throw new Error('New date cannot be in the past');
     }
     let databaseRequest=await getRequestById(requestId);
 
     if(!(await(getUserRights(databaseRequest, user))).userPrivileged){
         throw new Error('You are not allowed to change data in the request!')
     };
-    if(databaseRequest.status.statusType=='Closed'){
+    if(await checkIfStatusIsClosed(databaseRequest.status)){
         throw new Error('This request is closed! You are not allowed to change it!')
     }
 

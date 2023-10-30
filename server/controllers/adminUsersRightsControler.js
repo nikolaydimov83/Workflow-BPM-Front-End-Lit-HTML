@@ -1,5 +1,6 @@
 const UserActiveDir = require('../models/UserActiveDir');
 const { getAllActiveDirUsers, getActiveDirUserByID, editUserById, createUser } = require('../services/adminServices');
+const { getAllRoles } = require('../services/workflowServices');
 const { parseError } = require('../utils/utils');
 
 
@@ -38,6 +39,7 @@ adminUsersRightsControler.get('/:id',async(req,res)=>{
     let id =req.params.id;
     try {
         let data = await getActiveDirUserByID(id);
+
         res.status(201);
         res.json(data);
     } catch (error) {

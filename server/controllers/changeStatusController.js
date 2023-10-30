@@ -2,6 +2,7 @@ const { prepareMailContent, serverSendMail, emailAdress } = require('../emailCli
 
 const User = require('../models/User');
 const { getRequestById, editRequestStatus, getUserRights } = require('../services/requestServices');
+const { checkIfStatusIsClosed } = require('../services/statusServices');
 const { parseError } = require('../utils/utils');
 
 const changeStatusController=require('express').Router();
@@ -17,7 +18,7 @@ changeStatusController.post('/:id',async (req,res)=>{
     if(!(await(getUserRights(databaseRequest, user,newStatusId))).userCanChangeStatus){
         throw new Error('You are not allowed to change the status of the request!')
     };
-    if(databaseRequest.status.statusType=='Closed'){
+    if(await checkIfStatusIsClosed(databaseRequest.status)){
         throw new Error('This request is closed! You are not allowed to change it!')
     }
 
