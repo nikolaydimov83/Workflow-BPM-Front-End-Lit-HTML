@@ -5,7 +5,7 @@ const workflowSchema=new Schema({
     workflowName:{type:String, require:true, unique:true},
     allowedStatuses:{type:[Types.ObjectId],ref:'Status'},
     workflowCreateDate:{type:Date,default:Date.now,immutable:true},
-    rolesAllowedToFinishRequest:{type:[String]}
+    rolesAllowedToFinishRequest:{type:[Types.ObjectId], ref:'Role'}
 });
 
 workflowSchema.index({workflowName:1},{

@@ -1,12 +1,13 @@
 const { Schema, model,Types } = require("mongoose");
 
 const UserActiveDir = require("./UserActiveDir");
+const Role = require("./Role");
 let rolesMap={1:'Admin',101:'LA', 102:'LA-ML', 103:'Workflow'}
 
 async function getId(email){
 
     //let email=this.email;
-    let user= await UserActiveDir.findOne({email:email})
+    let user= await UserActiveDir.findOne({email:email}).populate('role')
     //console.log(userId.id)
     return user
 }
@@ -36,12 +37,7 @@ userSchema.pre('save', async function() {
         this.userStaticInfo = user.id;
         this.userStatus=user.userStatus;
         this.finCenter=user.branchNumber;
-        let userRole=rolesMap[this.finCenter];
-        if (this.finCenter>=111){
-            this.role='Branch'
-        }else{
-            this.role=userRole;
-        }
+        this.role=user.role.role;
        
       }else{
           this.userStatus='Inactive';

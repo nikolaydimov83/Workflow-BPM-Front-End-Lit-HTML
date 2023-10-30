@@ -8,7 +8,7 @@ const userActiveDirSchema=new Schema({
             return testForMatch
             
         },
-        message:(props)=>{return `Invalid pattern for email` }
+        message:(props)=>{return `Invalid pattern for email.` }
     }},
     branchNumber:{type:Number,required:true, min:1,max:999},
     branchName:{type:String,required:true},
@@ -22,9 +22,7 @@ userActiveDirSchema.index({email:1},{
         strength:2
     }
 });
-userActiveDirSchema.pre('save',()=>{
-console.log(`ПИПАШ В АКТИВНАТА ЮЗЪРСКА ДИРЕКТОРИЯ!`)
-})
+
 
 const UserActiveDir=model('UserActiveDir', userActiveDirSchema);
 
