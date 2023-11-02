@@ -1,0 +1,90 @@
+table{
+    padding: 0.1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+th {
+    text-align: left;
+    padding: 0.25em;
+    border-right: 1px solid rgb(160, 160, 160);
+    border-bottom: 1px solid rgb(160, 160, 160);
+}
+
+td {
+    padding: 0.1em;
+    border-right: 1px solid rgb(160, 160, 160);
+    border-bottom: 1px solid rgb(160, 160, 160);
+    text-align: left;
+    min-width: 95px;
+}
+div.dataTables_filter input {
+  height: 30px; 
+  margin-bottom: 5px;
+  padding: 3px;
+  border-radius: 5px;
+  width: 210px;
+  border-color: lightblue;
+}
+div.dataTables_length select {
+  height: 30px; 
+  margin-bottom: 5px;
+  padding: 3px;
+  border-radius: 5px;
+  width: 50px;
+  border-color: lightblue;
+}
+.tableLarge {
+    background: rgb(234, 243, 246);
+    max-width: 1400px;
+    margin: auto;
+    margin-top: 45px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  }
+
+  th a{
+    color:rgb(150, 150, 180);
+    text-decoration: none;
+  }
+
+  td a{
+    color:rgb(150, 150, 180);
+    text-decoration: none;
+  }
+
+  .dt-button.buttons-excel.buttons-html5{
+
+    height: 30px;
+    width: 70px;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: 0;
+    background: #667;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+    font-size: 12px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+  }
+  .dt-button.buttons-excel.buttons-html5:hover {background-color: rgb(187, 194, 197);}
+
+  .dt-button.buttons-excel.buttons-html5:active {
+    background-color: rgb(187, 194, 197);
+    box-shadow: 0 5px rgb(187, 194, 197);
+    transform: translateY(4px);
+  }
+  .dataTables_length{
+    display: inline-block;
+  }
+  .dt-buttons{
+    display: inline-block;
+  }
+  .dashboard_filter{
+    display: inline-block;
+  }
+  
