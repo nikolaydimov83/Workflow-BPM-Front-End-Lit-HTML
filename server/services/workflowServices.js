@@ -44,6 +44,7 @@ async function getAllRoles(){
     return result
 }
 
+
 async function getRoleById(id){
     let result=await Role.findById(id).lean()
     return result

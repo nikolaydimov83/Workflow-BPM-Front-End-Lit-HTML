@@ -1,12 +1,40 @@
 const Role = require("../models/Role");
 const Status = require("../models/Status");
+const { getAllRoles } = require("./workflowServices");
 
-async function createStatus(statusName,statusType,nextStatuses){
+async function createStatus(statusInfo){
+    let nextStatuses=statusInfo.nextStatuses;
+    let statusName=statusInfo.statusName;
+    let statusType=statusInfo.statusType;
+
     if(!nextStatuses){
         nextStatuses=[]
     }
+    if (nextStatuses.constructor!==Array) {
+        nextStatuses=[nextStatuses]
+    }
+    let allRoles=await getAllRoles();
+    let allStatuses=await getAllStatuses();
+    
+    if(allRoles.findIndex((role)=>role._id==statusType)==-1){
+        throw new Error ('Status type is invalid value - please choose status type that corresponds to specific role')
+    }
+    if(nextStatuses.length>0){
+        nextStatuses.forEach((status)=>{
+            if (allStatuses.findIndex((statusFromAllStatuses)=>statusFromAllStatuses._id==status)==-1){
+                throw new Error(`Status from next Statuses with ID ${status} is not found in the statuses database. You can assign only existing statuses as next status`)
+            }
+        })
+    }
+
+
     let status=await Status.create({statusName,statusType,nextStatuses});
     return status
+}
+
+async function getAllStatuses(){
+    let result = await Status.find({}).populate('nextStatuses statusType').lean();
+    return result
 }
 
 async function assignStatusWithNextStatuses(status,arrayOfNextStatuses){
@@ -48,5 +76,7 @@ module.exports={createStatus,
                 editStatusName,
                 emptyNextStatuses, 
                 getAllClosedStatuses,
-                checkIfStatusIsClosed
+                checkIfStatusIsClosed,
+                getAllStatuses
+
             }

@@ -6,16 +6,17 @@ const Subject = require('../models/Subject');
 const User = require('../models/User');
 const { readIapplyData } = require('../services/iapplyServices');
 const { createRequest } = require('../services/requestServices');
-const { findWorkflowBySubjectId } = require('../services/subjectServices');
+const { findWorkflowBySubjectId, findAllSubjectsByRole } = require('../services/subjectServices');
 const { parseError } = require('../utils/utils');
+const { getActiveDirUserByID } = require('../services/adminServices');
 const createController=require('express').Router();
 
 const emailSubjectForCreate='PlanB New Request Created'
 
 createController.get('/',async (req,res)=>{
     try {
-        
-        let subjects=await Subject.find({canBeInitiatedByRole:req.user.role});
+        let activeDirUser=await getActiveDirUserByID(req.user.userStaticInfo.toString());
+        let subjects=await findAllSubjectsByRole(activeDirUser.role);//await Subject.find({canBeInitiatedByRole:activeDirUser.role});
         res.status(201);
         res.json({subjects});
     } catch (error) {
@@ -30,6 +31,11 @@ createController.post('/',async (req,res)=>{
     try {
         
         let body = await prepareBodyForRequestCreate(req);
+        let activeDirUser=await getActiveDirUserByID(req.user.userStaticInfo.toString());
+        let subjects=await findAllSubjectsByRole(activeDirUser.role)
+        if (subjects.findIndex((subject)=>subject.assignedToWorkflow==body.requestWorkflow)==-1){
+            throw new Error (`This user does not have the appropriate Role to initiate this type of Workflow`)
+        }
         let request=await createRequest(body);
         let emailContent=prepareMailContent(request)
         serverSendMail(emailAdress,req.user.email,emailSubjectForCreate,emailContent)

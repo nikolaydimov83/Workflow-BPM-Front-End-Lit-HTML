@@ -4,7 +4,7 @@ const { Schema, model,Types } = require("mongoose");
 
 
 const requestSchema=new Schema({
-    statusName:{type:String, required:true},
+    statusName:{type:String, required:true,unique:true},
     nextStatuses:{type:[Types.ObjectId],ref:'Status'},
     statusCreateDate:{type:Date,default:Date.now,immutable:true},
     statusType:{type:Types.ObjectId, ref:'Role'}

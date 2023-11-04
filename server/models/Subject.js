@@ -4,8 +4,8 @@ const { Schema, model,Types } = require("mongoose");
 const subjectSchema=new Schema({
     subjectName:{type:String, required:true, unique:true},
     subjectCreateDate:{type:Date,default:Date.now,immutable:true},
-    assignedToWorkflow:{type:Types.ObjectId,ref:'Workflow'},
-    canBeInitiatedByRole:{type:String, required:true,enum:['LA','Branch','LA-ML']}
+    assignedToWorkflow:{type:Types.ObjectId,ref:'Workflow',required:true},
+    canBeInitiatedByRole:{type:Types.ObjectId, ref:'Role',required:true}
 });
 
 subjectSchema.index({subjectName:1},{

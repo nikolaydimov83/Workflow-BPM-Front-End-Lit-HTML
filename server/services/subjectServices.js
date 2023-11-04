@@ -15,4 +15,8 @@ async function findWorkflowBySubjectId(subjectId){
     return subject.assignedToWorkflow
 }
 
-module.exports={createSubject,editSubjectName,findWorkflowBySubjectId}
+async function findAllSubjectsByRole(role){
+    return await Subject.find({canBeInitiatedByRole:role})
+}
+
+module.exports={createSubject,editSubjectName,findWorkflowBySubjectId,findAllSubjectsByRole}
