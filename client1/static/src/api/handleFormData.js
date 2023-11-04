@@ -21,7 +21,10 @@ const allowedTypes={
     'userStatus':'string',
     'roleName':'optional',
     'role':'optional',
-    'roleType':'string'
+    'roleType':'string',
+    'nextStatuses':'nextStatuses',
+    'statusType':'string',
+    'statusName':'string'
     
 
 
@@ -33,7 +36,17 @@ export function loadFormData(form){
     let wrongData=false
     let formData=new FormData(form)
     for (const [key,value] of formData) {
-        formDataObject[key]=value
+        if (!formDataObject[key]){
+            formDataObject[key]=value
+        }else{
+            if(formDataObject[key].constructor===Array){
+                formDataObject[key].push(value);
+            }else{
+                formDataObject[key]=[formDataObject[key]];
+                formDataObject[key].push(value);
+            }
+        }
+        
     } 
     Object.entries(formDataObject).forEach((entry)=>{
         try{
@@ -131,6 +144,9 @@ export function emptyFormData(inputsWrapper){
         if(value.length<15){
             throw new Error('Description should be at least 15 chars long');
         }
+    },
+    'nextStatuses':()=>{
+        console.log('Next Statuses check');
     },
     'optional':()=>console.log('Optional. is optional')
 

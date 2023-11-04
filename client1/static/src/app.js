@@ -17,6 +17,7 @@ import { showResetPassChange } from "./views/resetPassChange.js";
 import { showResetPass } from "./views/resetPassView.js";
 import { showEditRole } from "./views/rolesEditView.js";
 import { showRoles } from "./views/rolesView.js";
+import { showStatuses } from "./views/statusesView.js";
 
 
 let main=document.querySelector('main');
@@ -53,6 +54,7 @@ page('/admin/:id',showAdminEdtUsr);
 page('/createUser',showAdminCreateUsr);
 page('/roles',showRoles);
 page('/editRoles/:id',showEditRole);
+page('/statuses',showStatuses)
 page.start();
 
 function decorateCtx(ctx,next){

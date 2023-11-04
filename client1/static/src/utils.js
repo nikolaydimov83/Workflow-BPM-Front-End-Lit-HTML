@@ -27,6 +27,9 @@ export function stringifyDates(data) {
         if (element.roleCreateDate){
           element.roleCreateDate=dateToString(element.roleCreateDate)
         }
+        if (element.statusCreateDate){
+          element.statusCreateDate=dateToString(element.statusCreateDate)
+        }
 
       });
     }
