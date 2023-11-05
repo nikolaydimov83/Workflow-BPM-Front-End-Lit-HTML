@@ -7,34 +7,52 @@ async function createStatus(statusInfo){
     let statusName=statusInfo.statusName;
     let statusType=statusInfo.statusType;
 
-    if(!nextStatuses){
-        nextStatuses=[]
-    }
-    if (nextStatuses.constructor!==Array) {
-        nextStatuses=[nextStatuses]
-    }
-    let allRoles=await getAllRoles();
-    let allStatuses=await getAllStatuses();
-    
-    if(allRoles.findIndex((role)=>role._id==statusType)==-1){
-        throw new Error ('Status type is invalid value - please choose status type that corresponds to specific role')
-    }
-    if(nextStatuses.length>0){
-        nextStatuses.forEach((status)=>{
-            if (allStatuses.findIndex((statusFromAllStatuses)=>statusFromAllStatuses._id==status)==-1){
-                throw new Error(`Status from next Statuses with ID ${status} is not found in the statuses database. You can assign only existing statuses as next status`)
-            }
-        })
-    }
+    await checkStatus(nextStatuses, statusType);
 
 
     let status=await Status.create({statusName,statusType,nextStatuses});
     return status
 }
 
+async function editStatus(statusInfo){
+    let nextStatuses=statusInfo.nextStatuses;
+    let statusName=statusInfo.statusName;
+    let statusType=statusInfo.statusType;
+    
+    await checkStatus(nextStatuses,statusType);
+    return await Status.findByIdAndUpdate(statusInfo.id,{statusName,statusType,nextStatuses})
+}
+
+async function checkStatus(nextStatuses, statusType) {
+    if (!nextStatuses) {
+        nextStatuses = [];
+    }
+    if (nextStatuses.constructor !== Array) {
+        nextStatuses = [nextStatuses];
+    }
+    let allRoles = await getAllRoles();
+    let allStatuses = await getAllStatuses();
+
+    if (allRoles.findIndex((role) => role._id == statusType) == -1) {
+        throw new Error('Status type is invalid value - please choose status type that corresponds to specific role');
+    }
+    if (nextStatuses.length > 0) {
+        nextStatuses.forEach((status) => {
+            if (allStatuses.findIndex((statusFromAllStatuses) => statusFromAllStatuses._id == status) == -1) {
+                throw new Error(`Status from next Statuses with ID ${status} is not found in the statuses database. You can assign only existing statuses as next status`);
+            }
+        });
+    }
+   
+}
+
 async function getAllStatuses(){
     let result = await Status.find({}).populate('nextStatuses statusType').lean();
     return result
+}
+
+async function getStatusById(id){
+    return Status.findById(id).populate('nextStatuses statusType');
 }
 
 async function assignStatusWithNextStatuses(status,arrayOfNextStatuses){
@@ -77,6 +95,8 @@ module.exports={createStatus,
                 emptyNextStatuses, 
                 getAllClosedStatuses,
                 checkIfStatusIsClosed,
-                getAllStatuses
+                getAllStatuses,
+                getStatusById,
+                editStatus
 
             }

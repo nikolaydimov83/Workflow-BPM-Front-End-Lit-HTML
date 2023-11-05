@@ -3,14 +3,17 @@
 const { Schema, model,Types } = require("mongoose");
 
 
-const requestSchema=new Schema({
+const statusSchema=new Schema({
     statusName:{type:String, required:true,unique:true},
     nextStatuses:{type:[Types.ObjectId],ref:'Status'},
     statusCreateDate:{type:Date,default:Date.now,immutable:true},
     statusType:{type:Types.ObjectId, ref:'Role'}
 });
 
-requestSchema.index({statusName:1},{
+statusSchema.index(
+    {
+    statusName:1
+},{
     collation:{
         locale:'en',
         strength:2
@@ -18,6 +21,6 @@ requestSchema.index({statusName:1},{
 });
 
 
-const Status=model('Status', requestSchema);
+const Status=model('Status', statusSchema);
 
 module.exports=Status;

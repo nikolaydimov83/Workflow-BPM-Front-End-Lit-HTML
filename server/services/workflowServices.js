@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 const Role = require("../models/Role");
 const Workflow = require("../models/Workflow");
 const { getActiveDirUserByID } = require("./adminServices");
+const Status = require("../models/Status");
 
 
 async function createRole(roleInfo){
@@ -52,10 +53,24 @@ async function getRoleById(id){
 
 
 
-async function createWorkflow(workflowName,allowedStatuses=[]){
-
-    let workflow=await Workflow.create({workflowName,allowedStatuses});
+async function createWorkflow(workflowName,initialStatus,rolesAllowedToFinishRequest=[]){
+    await checkWorkflowData(initialStatus,rolesAllowedToFinishRequest);
+    let workflow=await Workflow.create({workflowName,initialStatus,rolesAllowedToFinishRequest});
     return workflow
+}
+async function checkWorkflowData(initialStatus,rolesAllowedToFinishRequest){
+    let allStatuses=await Status.find({});
+    if (allStatuses.findIndex((stat)=>stat._id==initialStatus)==-1){
+        throw new Error('You are trying to create a workflow with non-existing initial status')
+    }
+    let allRoles=await Role.find({})
+    if (rolesAllowedToFinishRequest.length > 0) {
+        rolesAllowedToFinishRequest.forEach((role) => {
+            if (allRoles.findIndex((roleFromAllRoles) => roleFromAllRoles._id == role) == -1) {
+                throw new Error(`Role with ID ${role} is not found in the roles database. You can assign only existing roles in rolesAllowedToFinishTheRequest`);
+            }
+        });
+    }
 }
 async function addAllowedStatus(workflowName,status){
     const workflow=await Workflow.findOne({workflowName});
@@ -98,6 +113,10 @@ async function checkUserRoleIsPriviliged(workflowId,user){
     }
 }
 
+async function getAllWorkflows(){
+    return Workflow.find({}).populate('rolesAllowedToFinishRequest initialStatus').populate({path:'allowedStatuses',populate:'statusType'}).lean();
+}
+
 
     
  
@@ -113,5 +132,6 @@ module.exports={createWorkflow,
                 createRole,
                 editRole,
                 getAllRoles,
-                getRoleById
+                getRoleById,
+                getAllWorkflows
             }
