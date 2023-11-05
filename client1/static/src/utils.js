@@ -30,7 +30,9 @@ export function stringifyDates(data) {
         if (element.statusCreateDate){
           element.statusCreateDate=dateToString(element.statusCreateDate)
         }
-
+        if (element.workflowCreateDate){
+          element.workflowCreateDate=dateToString(element.workflowCreateDate)
+        }
       });
     }
     return data

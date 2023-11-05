@@ -24,7 +24,10 @@ const allowedTypes={
     'roleType':'string',
     'nextStatuses':'nextStatuses',
     'statusType':'string',
-    'statusName':'string'
+    'statusName':'string',
+    'initialStatus':'string',
+    'rolesAllowedToFinishRequest':'string',
+    'workflowName':'string'
     
 
 
