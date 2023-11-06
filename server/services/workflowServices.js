@@ -58,6 +58,21 @@ async function createWorkflow(workflowName,initialStatus,rolesAllowedToFinishReq
     let workflow=await Workflow.create({workflowName,initialStatus,rolesAllowedToFinishRequest});
     return workflow
 }
+
+async function editWorkflow(workflowInfo){
+    let workflowId=workflowInfo.id;
+    let workflowName=workflowInfo.workflowName;
+    let initialStatus=workflowInfo.initialStatus;
+    let rolesAllowedToFinishRequest=workflowInfo.rolesAllowedToFinishRequest;
+    if(!rolesAllowedToFinishRequest){
+        rolesAllowedToFinishRequest=[];
+    }
+    await checkWorkflowData(initialStatus,rolesAllowedToFinishRequest);
+    let workflow=await Workflow.findByIdAndUpdate(workflowId,{workflowName,initialStatus,rolesAllowedToFinishRequest});
+    return workflow
+}
+
+
 async function checkWorkflowData(initialStatus,rolesAllowedToFinishRequest){
     let allStatuses=await Status.find({});
     if (allStatuses.findIndex((stat)=>stat._id==initialStatus)==-1){
@@ -117,6 +132,12 @@ async function getAllWorkflows(){
     return Workflow.find({}).populate('rolesAllowedToFinishRequest initialStatus').populate({path:'allowedStatuses',populate:'statusType'}).lean();
 }
 
+async function getWorkflowByStatusId(statusId){
+    let result= await Workflow.find({allowedStatuses: { $in: [statusId] }})
+
+    return result
+}
+
 
     
  
@@ -133,5 +154,7 @@ module.exports={createWorkflow,
                 editRole,
                 getAllRoles,
                 getRoleById,
-                getAllWorkflows
+                getAllWorkflows,
+                getWorkflowByStatusId,
+                editWorkflow
             }

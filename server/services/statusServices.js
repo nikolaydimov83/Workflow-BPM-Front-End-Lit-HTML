@@ -1,6 +1,7 @@
+const { default: mongoose } = require("mongoose");
 const Role = require("../models/Role");
 const Status = require("../models/Status");
-const { getAllRoles } = require("./workflowServices");
+const { getAllRoles, getWorkflowByStatusId } = require("./workflowServices");
 
 async function createStatus(statusInfo){
     let nextStatuses=statusInfo.nextStatuses;
@@ -8,8 +9,6 @@ async function createStatus(statusInfo){
     let statusType=statusInfo.statusType;
 
     await checkStatus(nextStatuses, statusType);
-
-
     let status=await Status.create({statusName,statusType,nextStatuses});
     return status
 }
@@ -20,7 +19,26 @@ async function editStatus(statusInfo){
     let statusType=statusInfo.statusType;
     
     await checkStatus(nextStatuses,statusType);
-    return await Status.findByIdAndUpdate(statusInfo.id,{statusName,statusType,nextStatuses})
+    let workflowsOfTheEditedStatus=await getWorkflowByStatusId(statusInfo.id);
+    const session = await mongoose.startSession();
+    session.startTransaction();
+  
+    try {
+        workflowsOfTheEditedStatus.forEach(async (workflow)=>{
+            await workflow.save({ session })
+        })
+        let result= await Status.findByIdAndUpdate(statusInfo.id,{statusName,statusType,nextStatuses},{
+            new: true, // Return the updated document
+            session, // Assign the session to the operation
+          })
+      await session.commitTransaction();
+      return result
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
 }
 
 async function checkStatus(nextStatuses, statusType) {
@@ -55,12 +73,7 @@ async function getStatusById(id){
     return Status.findById(id).populate('nextStatuses statusType');
 }
 
-async function assignStatusWithNextStatuses(status,arrayOfNextStatuses){
-    arrayOfNextStatuses.forEach(element => {
-        status.nextStatuses.push(element)
-    });
-    status.save();
-}
+
 async function getAllClosedStatuses(){
     let closedRole=await Role.findOne({role:'Closed'});
     let result =await Status.find({statusType:closedRole.id});
@@ -72,31 +85,43 @@ async function checkIfStatusIsClosed(status){
     return status.statusType.toString() === closedRole.id.toString();
 }
 
-async function editStatusName(status,statusName){
-    status.statusName=statusName;
-    status.save();
-}
 
-async function emptyNextStatuses(status){
-   
-    status.nextStatuses.length=0;
-    status.save();
-}
+async function getAllChildStatuses(statusId) {
+    
+    const result = new Set(); // Using a Set to ensure unique statusIds
+  
+    async function traverse(statusId) {
+       
+      const status = await Status.findById(statusId);
+      
+      if (!status||status.nextStatuses.length==0||!status.nextStatuses){
+        result.add(statusId.toString());
+        return;
+      } 
+
+      result.add(statusId.toString());
+  
+      for (const nextStatusId of status.nextStatuses) {
+        if (!result.has(nextStatusId.toString())) {
+          await traverse(nextStatusId);
+        }else{
+            return
+        }
+      }
+    }
+  
+    await traverse(statusId);
+  
+    return Array.from(result); // Convert the Set to an array
+  }
 
 
 
-
-
-
-
-module.exports={createStatus,
-                assignStatusWithNextStatuses,
-                editStatusName,
-                emptyNextStatuses, 
+module.exports={createStatus, 
                 getAllClosedStatuses,
                 checkIfStatusIsClosed,
                 getAllStatuses,
                 getStatusById,
-                editStatus
+                editStatus,getAllChildStatuses
 
             }

@@ -2,13 +2,13 @@ const { Schema, model,Types } = require("mongoose");
 
 
 const rolesSchema=new Schema({
-    role:{type:String},
+    role:{type:String,unique:true},
     roleCreateDate:{type:Date,default:Date.now,immutable:true},
     roleType:{type:String, enum:["Branch","HO"],required:true},
-    roleName:{type:String,required:true,unique:true}
+    roleName:{type:String,required:true}
 });
 
-rolesSchema.pre('save',function(){
+rolesSchema.pre(['save','findOneAndUpdate'],function(){
     if (this.roleType=='Branch'){
         this.role=this.roleType+this.roleName;
     }else{
