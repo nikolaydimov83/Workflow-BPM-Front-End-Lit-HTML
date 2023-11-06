@@ -1,6 +1,6 @@
 
 const { getAllStatuses, createStatus, getStatusById, editStatus } = require('../services/statusServices');
-const { getAllSubjects } = require('../services/subjectServices');
+const { getAllSubjects, createSubject, editSubjectById, getSubjectById } = require('../services/subjectServices');
 const { createRole, getAllRoles, getRoleById, editRole, getAllWorkflows, createWorkflow, getWorkflowById, editWorkflow } = require('../services/workflowServices');
 const { parseError } = require('../utils/utils');
 
@@ -185,6 +185,48 @@ workflowController.get('/subjects',async(req,res)=>{
     try {
         
         let data=await getAllSubjects();
+        res.status(201);
+        res.json(data);
+    } catch (error) {
+        res.status(401);
+        res.json({message:parseError(error)});
+    }
+
+
+});
+
+workflowController.post('/subjects',async(req,res)=>{
+    try {
+        
+        let data=await createSubject(req.body);
+        res.status(201);
+        res.json(data);
+    } catch (error) {
+        res.status(401);
+        res.json({message:parseError(error)});
+    }
+
+
+});
+
+workflowController.put('/subjects/:id',async(req,res)=>{
+    try {
+        
+        let data=await editSubjectById(req.params.id,req.body);
+        res.status(201);
+        res.json(data);
+    } catch (error) {
+        res.status(401);
+        res.json({message:parseError(error)});
+    }
+
+
+});
+
+workflowController.get('/subjects/:id',async(req,res)=>{
+    try {
+        
+        let data=await getSubjectById(req.params.id);
         res.status(201);
         res.json(data);
     } catch (error) {

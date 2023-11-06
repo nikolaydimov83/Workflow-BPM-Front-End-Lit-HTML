@@ -1,14 +1,15 @@
 const Subject = require("../models/Subject");
 const Workflow = require("../models/Workflow");
 
-async function createSubject(subjectName,workflow,canBeInitiatedByRole){
-    let subject=await Subject.create({subjectName,assignedToWorkflow:workflow,canBeInitiatedByRole});
-    return subject
+async function createSubject(subject){
+    let subjectName=subject.subjectName;
+    let assignedToWorkflow=subject.assignedToWorkflow;
+    let result=await Subject.create({subjectName,assignedToWorkflow});
+    return result
 }
 
-async function editSubjectName(subject,subjectName){
-    subject.subjectName=subjectName;
-    subject.save();
+async function editSubjectById(id,subject){
+    return await Subject.findByIdAndUpdate(id,subject);
 }
 
 async function findWorkflowBySubjectId(subjectId){
@@ -35,8 +36,14 @@ async function getAllSubjects(){
         return Subject.find({}).populate('assignedToWorkflow');
 }
 
+async function getSubjectById(id){
+    return Subject.findById(id)
+}
+
 module.exports={createSubject, 
-                editSubjectName,
+                editSubjectById,
                 findWorkflowBySubjectId,
                 findAllSubjectsByRole,
-                getAllSubjects}
+                getAllSubjects,
+                getSubjectById
+            }
