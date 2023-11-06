@@ -33,6 +33,9 @@ export function stringifyDates(data) {
         if (element.workflowCreateDate){
           element.workflowCreateDate=dateToString(element.workflowCreateDate)
         }
+        if (element.subjectCreateDate){
+          element.subjectCreateDate=dateToString(element.subjectCreateDate)
+        }
       });
     }
     return data

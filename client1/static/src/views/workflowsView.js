@@ -43,14 +43,16 @@ let createWorkflowTemplate=(submitCreateWorkflowForm,statuses,roles)=>html`<sect
   <h2>Create Workflow</h2>
   
   <form @submit=${submitCreateWorkflowForm} class="create-status-form">
-    
+  <label for='workflowName'>Workflow Name</label>
     <input type="text" name="workflowName" id="workflowName" placeholder="Name of the workflow" />
       
+    <label for='rolesAllowedToFinishRequest'>Super Users</label>
       <select class='multi' multiple name="rolesAllowedToFinishRequest" id="rolesAllowedToFinishRequest">
         ${repeat(roles,(role)=>role._id,(role)=>html`
         <option value=${role._id}>${role.roleName}</option>`)}
       </select>
-  
+      
+      <label for='initialStatus'>Initial Status</label>
       <select name='initialStatus' id='initialStatus'>
       
       ${repeat(statuses,(stat)=>stat._id,(stat)=>html`
@@ -116,7 +118,7 @@ async function submitCreateWorkflowForm(ev){
       let data=loadFormData(ev.target);
       let serverResponseData=await post(`/workflow/workflows`,data)
 
-      outerCtx.page.redirect('/statuses')
+      outerCtx.page.redirect('/workflows')
       ev.target.reset();
   } catch (error) {
       errorHandler(error);

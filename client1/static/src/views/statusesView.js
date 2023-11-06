@@ -48,7 +48,7 @@ let createStatusTemplate=(submitCreateStatusForm,statuses,roles)=>html`<section 
       
       <select name="statusType" id="statusType">
         ${repeat(roles,(role)=>role._id,(role)=>html`
-        <option value=${role._id}>${role.roleName}</option>`)}
+        <option value=${role._id}>${role.role}</option>`)}
       </select>
   
       <select class='multi' multiple name='nextStatuses' id='nextStatuses'>

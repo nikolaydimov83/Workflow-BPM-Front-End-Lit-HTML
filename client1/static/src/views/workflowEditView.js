@@ -8,26 +8,28 @@ import { errorHandler } from './errorHandler.js';
 
 export let clearDashboardTemplate=()=>html``;
 
-let editStatusTemplate=(submitEditStatusForm,statuses,roles,currentStatus)=>html`<section id="createRole">
+let editWorkflowTemplate=(submitEditWorkflowForm,statusesAll,roles,currentWorkflow)=>html`<section id="createWorkflow">
 <div class="formMiddle">
-  <h2>Edit Status</h2>
+  <h2>Edit Workflow</h2>
   
-  <form @submit=${submitEditStatusForm} class="create-status-form">
-    
-    <input type="text" value=${currentStatus.statusName} name="statusName" id="statusName" placeholder="Name of the status" />
+  <form @submit=${submitEditWorkflowForm} class="create-status-form">
+      <label for='workflowName'>Workflow Name</label>
+      <input value=${currentWorkflow.workflowName} type="text" name="workflowName" id="workflowName" placeholder="Name of the workflow" />
       
-      <select name="statusType" id="statusType">
+      <label for='rolesAllowedToFinishRequest'>Super Users</label>
+      <select class='multi' multiple name="rolesAllowedToFinishRequest" id="rolesAllowedToFinishRequest">
         ${repeat(roles,(role)=>role._id,(role)=>html`
-        ${role.chosen?html`<option selected value=${role._id}>${role.role}</option>`:html`<option value=${role._id}>${role.roleName}</option>`}`)}
+        ${role.chosen?html`<option selected value=${role._id}>${role.roleName}</option>`:html`<option value=${role._id}>${role.roleName}</option>`}`)}
       </select>
-  
-      <select class='multi' multiple name='nextStatuses' id='nextStatuses'>
+
+      <label for='initialStatus'>Initial Status</label>
+      <select name='initialStatus' id='initialStatus'>
       
-      ${repeat(statuses,(stat)=>stat._id,(stat)=>html`
+      ${repeat(statusesAll,(stat)=>stat._id,(stat)=>html`
         ${stat.chosen?html`<option selected value=${stat._id}>${stat.statusType.role}: ${stat.statusName}</option>`:html`<option value=${stat._id}>${stat.statusType.role}: ${stat.statusName}</option>`}`)}
   
       </select>
-      <button type="submit">Edit Status</button>
+      <button type="submit">Edit Workflow</button>
       
     </form>
   
@@ -40,13 +42,14 @@ export let outerCtx=null;
 
 
 
-export async function showEditStatus(ctx){
+export async function showEditWorkflow(ctx){
   
   outerCtx=ctx
   let id=ctx.params.id
     try{
       let statusesAll=await get('/workflow/statuses');
-      let currentStatus=await get(`/workflow/statuses/${id}`);
+      let currentWorkflow=await get(`/workflow/workflows/${id}`);
+  
       statusesAll.sort((stat1,stat2)=>{
         if(stat1.statusType.role.toLowerCase()>stat2.statusType.role.toLowerCase()){
           return -1
@@ -57,20 +60,22 @@ export async function showEditStatus(ctx){
       
       });
       statusesAll.forEach(element => {
-        currentStatus.nextStatuses.forEach((nextStatus)=>{
-          if (nextStatus._id==element._id){
-            element.chosen=true;
-          }
-        })
+        if (element._id==currentWorkflow.initialStatus){
+          element.chosen=true;
+        }
       });
+
       let roles=await get('/workflow/roles');
       roles.forEach((role)=>{
-        if(role._id==currentStatus.statusType._id){
+        currentWorkflow.rolesAllowedToFinishRequest.forEach((workflowRole)=>{
+          if(role._id==workflowRole._id){
           role.chosen=true
         }
+        })
+
       })
         outerCtx.renderView(clearDashboardTemplate());
-        outerCtx.renderView(editStatusTemplate(submitEditStatusForm,statusesAll,roles,currentStatus));
+        outerCtx.renderView(editWorkflowTemplate(submitEditWorkflowForm,statusesAll,roles,currentWorkflow));
         decorateDashboardWithDataTable(0,1)
     }catch(error){
         errorHandler(error);
@@ -78,13 +83,13 @@ export async function showEditStatus(ctx){
 
 }
 
-async function submitEditStatusForm(ev){
+async function submitEditWorkflowForm(ev){
   ev.preventDefault();
   try {
       let data=loadFormData(ev.target);
-      let serverResponseData=await put(`/workflow/statuses/${outerCtx.params.id}`,data);
+      let serverResponseData=await put(`/workflow/workflows/${outerCtx.params.id}`,data);
 
-      outerCtx.page.redirect('/statuses')
+      outerCtx.page.redirect('/workflows')
       ev.target.reset();
   } catch (error) {
       errorHandler(error);

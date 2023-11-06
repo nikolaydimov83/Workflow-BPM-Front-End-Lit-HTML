@@ -19,6 +19,9 @@ import { showEditRole } from "./views/rolesEditView.js";
 import { showRoles } from "./views/rolesView.js";
 import { showEditStatus } from "./views/statusEditView.js";
 import { showStatuses } from "./views/statusesView.js";
+import { showEditSubject } from "./views/subjectEditView.js";
+import { showSubjects } from "./views/subjectsView.js";
+import { showEditWorkflow } from "./views/workflowEditView.js";
 import { showWorkflows } from "./views/workflowsView.js";
 
 
@@ -59,6 +62,9 @@ page('/editRoles/:id',showEditRole);
 page('/statuses',showStatuses);
 page('/editStatuses/:id',showEditStatus);
 page('/workflows', showWorkflows);
+page('/editWorkflows/:id',showEditWorkflow);
+page('/subjects',showSubjects);
+page('/editSubjects/:id', showEditSubject);
 page.start();
 
 function decorateCtx(ctx,next){

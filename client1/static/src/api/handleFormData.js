@@ -27,7 +27,9 @@ const allowedTypes={
     'statusName':'string',
     'initialStatus':'string',
     'rolesAllowedToFinishRequest':'string',
-    'workflowName':'string'
+    'workflowName':'string',
+    'assignedToWorkflow':'string',
+    'subjectName':'string'
     
 
 
