@@ -11,7 +11,10 @@ let errorTemplate=(messages)=>html`
 
 export async function errorHandler(error){
     let notificationWrapperDiv=document.querySelector(".notification-wrapper");
-    notificationWrapperDiv.style.display='block'
+    notificationWrapperDiv.style.display='block';
+    if(!Array.isArray(error.message)){
+        error.message=[error.message]
+    }
     error.message.forEach((m)=>{
         let notificationDiv=document.createElement('div');
         notificationDiv.style.display='block';
