@@ -6,7 +6,7 @@ import { errorHandler } from './errorHandler.js';
 
 let registerTemplate=()=>html`<section id="register">
 <div class="form">
-  <h2>Register</h2>
+  <h2>Регистрация на потребител</h2>
   <form @submit=${submitRegisterForm} class="login-form">
     <input
       type="text"
@@ -26,10 +26,10 @@ let registerTemplate=()=>html`<section id="register">
       id="repeat-password"
       placeholder="repeat password"
     />
-    <button type="submit">login</button>
-    <p class="message">Already registered? <a href="/login">Login</a></p>
+    <button type="submit">Регистрация</button>
+    <p class="message">Вече сте регистриран? <a href="/login">Вход</a></p>
     <p class="message">
-      Forgot password? <a href="/resetPass">Click here to reclaim your password</a>
+      Забравена парола? <a href="/resetPass">Натиснете тук, за да възстановите паролата си</a>
     </p>
   </form>
 </div>

@@ -7,30 +7,51 @@ const allowedTypes={
     're-password':'password',
     'iApplyId':'iApplyId',
     'subjectId':'optional',
-    'deadlineDate':'string',
-    'newDeadline':'string',
+    'deadlineDate':'deadlineDate',
+    'newDeadline':'deadlineDate',
     'clientEGFN':'string',
     'finCenter':'string',
     'finCenterText':'string',
     'nextStatus':'string',
-    'commentText':'string',
+    'commentText':'description',
     'searchData':'string',
     'searchString':'string',
     'branchNumber':'string',
     'branchName':'string',
     'userStatus':'string',
-    'roleName':'optional'
+    'roleName':'optional',
+    'role':'optional',
+    'roleType':'string',
+    'nextStatuses':'nextStatuses',
+    'statusType':'string',
+    'statusName':'string',
+    'initialStatus':'string',
+    'rolesAllowedToFinishRequest':'string',
+    'workflowName':'string',
+    'assignedToWorkflow':'string',
+    'subjectName':'string'
+    
 
 
 }
 export function loadFormData(form){
     
     let formDataObject={}
-    let wrongFieldsObject={}
+    let wrongFieldsObject={message:[]}
     let wrongData=false
     let formData=new FormData(form)
     for (const [key,value] of formData) {
-        formDataObject[key]=value
+        if (!formDataObject[key]){
+            formDataObject[key]=value
+        }else{
+            if(formDataObject[key].constructor===Array){
+                formDataObject[key].push(value);
+            }else{
+                formDataObject[key]=[formDataObject[key]];
+                formDataObject[key].push(value);
+            }
+        }
+        
     } 
     Object.entries(formDataObject).forEach((entry)=>{
         try{
@@ -38,12 +59,18 @@ export function loadFormData(form){
             wrongFieldsObject[entry[0]]=false
         }catch(err){
             wrongFieldsObject[entry[0]]=true
+            wrongFieldsObject.message.push(err.message);
             wrongData=true
         }
         
     })
     if (wrongData){
-        wrongFieldsObject.message='Invalid input';
+        /*let wrongFieldsObjectAsArray=Object.entries(wrongFieldsObject);
+        wrongFieldsObjectAsArray.forEach((field)=>{
+            if (field[1].wrongData&&field[0]!='message'){
+                wrongFieldsObject.message+=`${field[0]} : ${field[1].errorMessage}`;
+            }
+        })*/
         wrongFieldsObject.frontEndFormChecker=true
         throw wrongFieldsObject
     }
@@ -63,7 +90,7 @@ export function loadInputValuesOutsideForm(inputsWrapper){
                 data[child.name]=child.value; 
             }catch(err){
                 wrongFieldsObject[child.name]=true
-                wrongData=true
+                wrongData=true;
             }
 
         })
@@ -101,12 +128,12 @@ export function emptyFormData(inputsWrapper){
         let regex=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
         let emailValid=regex.test(value)
         if (!emailValid){
-            throw new Error('Email is not correct')
+            throw new Error('Некоректен формат за мейл')
         }  
     },
     'password':()=>{
         if ((value===''||value.length<3)){
-            throw new Error('Password is not corretct. Should be at least 3 characters long')
+            throw new Error('Паролата следва да бъде поне 3 символа')
         }
     },
     
@@ -115,19 +142,27 @@ export function emptyFormData(inputsWrapper){
             throw new Error('Wrong input')
         }
     },
+    'deadlineDate':()=>{
+        if ((value<new Date(Date.now()))){
+            throw new Error('Крайният срок не може да бъде минала дата')
+        }
+    },
     'iApplyId':()=>{
         let regex=/^[A-Z]{2}[0-9]+$/
         
         if ((!regex.test(value))){
-            throw new Error('Wrong input of iApplyId. Should start with 2 capital letters and at least 1 number')
+            throw new Error('Грешен I-apply номер. Трябва да се състои от 2 главни букви и поне една цифра')
         }
     },
    
    
     'description':()=>{
         if(value.length<15){
-            throw new Error('Description should be at least 15 chars long');
+            throw new Error('описанието трябва да е поне 15 символа');
         }
+    },
+    'nextStatuses':()=>{
+        console.log('Next Statuses check');
     },
     'optional':()=>console.log('Optional. is optional')
 

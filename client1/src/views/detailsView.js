@@ -11,8 +11,8 @@ let detailsTemplate=(data,changeStatus,lastCommnet)=>html`<section id="details">
   <div>
       <div class="details-headline-wrapper">
     <h1>Subject: ${data.subjectId.subjectName}</h1>
-    <h1>Status: ${data.status.statusName}</h1>
-    <h1>Deadline:${data.deadlineDate}</h1>
+    <h1>Статус: ${data.status.statusName}</h1>
+    <h1>Краен Срок:${data.deadlineDate}</h1>
     <h1>${data.clientName}</h1>
   </div>
   <div class="details-headline-wrapper">
@@ -24,10 +24,10 @@ let detailsTemplate=(data,changeStatus,lastCommnet)=>html`<section id="details">
 
 
   <div class="inlineDivDetails">
-  <h3>Client info</h3>
+  <h3>Информация за клиента</h3>
   <p class="details-property-info"><span>ФЦ/Рефериращ ФЦ</span>:  ${data.finCenter}/${data.refferingFinCenter?data.refferingFinCenter:html`Няма рефериращ`}</p>
-      <p class="details-property-info"><span>ID</span>:  ${data.iApplyId}</p>
-      <p class="details-property-info"><span>EGFN</span>:   ${data.clientEGFN}</p>
+      <p class="details-property-info"><span>Номер I-Apply</span>:  ${data.iApplyId}</p>
+      <p class="details-property-info"><span>ЕГН/Булстат</span>:   ${data.clientEGFN}</p>
       <p class="details-property-info"><span>Клиент</span>:   ${data.clientName}</p>
       <p class="details-property-info"><span>Продукт</span>:    ${data.product}</p>
       <p class="details-property-info"><span>Сума</span>:  ${data.ccy} ${data.amount}</p>
@@ -36,12 +36,13 @@ let detailsTemplate=(data,changeStatus,lastCommnet)=>html`<section id="details">
   </div>
 
   <div class="inlineDivDetails">
-  <h3>Request status info</h3>
-  <p class="details-property-info"><span>Status</span>:  ${data.status.statusName}</p>
+  <h3>Информация за статус на заявката</h3>
+  <p class="details-property-info"><span>Статус</span>:  ${data.status.statusName}</p>
   <p class="details-property-info"><span>Изпратен от</span>:  ${data.statusSender}</p>
   <p class="details-property-info"><span>Изпратен на дата</span>:  ${data.statusIncomingDate}</p>
   
   ${data.checkUserCanChangeStatus?html`<form @submit=${changeStatus}>
+  <label for='nextStatus'>Промени статус на:</label>
         <select class="details-property-info" name="nextStatus">
     ${repeat(data.status.nextStatuses,(nextStatus)=>nextStatus._id,(nextStatus)=>html`
             <option value="${nextStatus._id}" >${nextStatus.statusName}</option>
@@ -58,7 +59,7 @@ let detailsTemplate=(data,changeStatus,lastCommnet)=>html`<section id="details">
   </div>
 
   <div class="inlineDivDetails">
-  <h3>Request Description</h3>
+  <h3>Описание по детайли на заявката</h3>
   <p class="details-property-info-description"><span></span>  ${data.description}</p>
   </div>
 

@@ -17,6 +17,30 @@ header {
   background-color: red;
   color: aliceblue;
   display: flex;
+  min-width: 120px;
+  width: 200px;
+  height: fit-content;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  font-size: large;
+  font-weight: bolder;
+  margin: 5px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.notification-wrapper{
+  background-color: aliceblue;
+  color: red;
+  display: flex;
+  position:fixed;
+  top:2%;
+  right: 2%;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  font-size: large;
+  font-weight: bolder;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 nav {
   background-color: #7a6e6e;

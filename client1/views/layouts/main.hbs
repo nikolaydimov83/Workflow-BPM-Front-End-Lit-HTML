@@ -22,7 +22,7 @@
       <header>
         <!-- Navigation -->
         <a id="logo" href="/"
-          ><img id="logo-img" src="../../images/logoLargePost1.png" alt=""
+          ><img id="logo-img" src="../../images/logoPost.png" alt=""
         /></a>
         
         <nav>
@@ -31,17 +31,17 @@
 
           <!-- Logged-in users -->
           <div class="user">
-            <a href="/dashboard">Dashboard</a>         
-            <a href="/create">Add Request</a>
-            <a href="javascript:void(0)" id="logout">Logout</a>
+            <a href="/dashboard">Моите Заявки</a>         
+            <a href="/create">Създай Заявка</a>
+            <a href="javascript:void(0)" id="logout">Изход</a>
             <a href="#" id="profile"></a>
 
           </div>
 
           <!-- Guest users -->
           <div class="guest">
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
+            <a href="/login">Вписване на потребител</a>
+            <a href="/register">Регистрация</a>
           </div>
           <!--Admin users-->
           <div class="admin">
@@ -49,9 +49,9 @@
             <a href="/createUser" id="createUserActiveDir">Create User</a>
             <a href="javascript:void(0)" id="logoutAdmin">Logout</a>
           </div>
-          <!--Workflow users-->
 
-            <div class="workflow">
+          <!--Workflow Designer Users-->
+          <div class="workflow">
             <a href="/roles">Roles</a>         
             <a href="/statuses">Statuses</a>
             <a href="/subjects">Subjects</a>
@@ -60,7 +60,10 @@
           </div>
         </nav>
       </header>
-      <div class="notification"><span></span></div>
+      <div class="notification-wrapper">
+        
+      </div>
+      
       <main>
        {{{body}}}
       </main>

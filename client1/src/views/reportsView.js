@@ -3,7 +3,7 @@ import { getDashBoardContext, getTableCriteriaSortIndex, setDashBoardContext, se
 import { loadFormData } from '../api/handleFormData.js';
 import { html,repeat } from '../lib.js';
 import { stringifyDates } from '../utils.js';
-import { catalogTemplate, outerCtx, sortTableBy, submitsearchEGFNForm, submitsearchForm } from './dashboardView.js';
+import { catalogTemplate, clearDashboardTemplate, decorateDashboardWithDataTable, outerCtx, sortTableBy, submitsearchEGFNForm, submitsearchForm } from './dashboardView.js';
 import { errorHandler } from './errorHandler.js';
 
 
@@ -16,7 +16,10 @@ export async function showDefauaultReport(ctx){
     try{
         let data=await get(dashboardContext.path);
         let dataStringifiedDates=stringifyDates(data);
+        ctx.renderView(clearDashboardTemplate());
         ctx.renderView(catalogTemplate(dataStringifiedDates,sortTableBy,submitsearchEGFNForm,submitsearchForm));
+        
+    decorateDashboardWithDataTable()
     }catch(error){
         errorHandler(error);
     }

@@ -92,3 +92,18 @@
   color: #535353;
   text-decoration: none;
 }
+
+.form select {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 99%;
+  height: auto;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+  text-align: center;
+}

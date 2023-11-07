@@ -38,7 +38,8 @@ logoutAdmin.addEventListener('click', logoutUser);
 let logoutWorkflow=document.getElementById('logoutWorkflow');
 logoutWorkflow.addEventListener('click',logoutUser)
 
-//document.getElementById('notifications').style.display='none';
+//document.querySelector('.notification').style.display='none';
+document.querySelector('.notification-wrapper').style.display='none'
 renderNav();
 
 page(decorateCtx);

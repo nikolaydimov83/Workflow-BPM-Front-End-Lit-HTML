@@ -6,7 +6,7 @@ import { errorHandler } from './errorHandler.js';
 
 let loginTemplate=()=>html`<section id="login">
 <div class="form">
-  <h2>Login</h2>
+  <h2>Вход на потребител</h2>
   <form @submit=${submitLoginForm} class="login-form">
     <input type="text" name="email" id="email" placeholder="email" />
     <input
@@ -15,13 +15,13 @@ let loginTemplate=()=>html`<section id="login">
       id="password"
       placeholder="password"
     />
-    <button type="submit">login</button>
+    <button type="submit">Вписване</button>
     <p class="message">
-      Not registered? <a href="/register">Create an account</a>
+      Не сте регистриран? <a href="/register">Създайте потребител</a>
     </p>
 
     <p class="message">
-      Forgot password? <a href="/resetPass">Click here to reclaim your password</a>
+      Забравена парола? <a href="/resetPass">Натиснете тук, за да възстановите паролата си</a>
     </p>
   </form>
 </div>
