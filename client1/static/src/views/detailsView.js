@@ -42,6 +42,7 @@ let detailsTemplate=(data,changeStatus,lastCommnet)=>html`<section id="details">
   <p class="details-property-info"><span>Изпратен на дата</span>:  ${data.statusIncomingDate}</p>
   
   ${data.checkUserCanChangeStatus?html`<form @submit=${changeStatus}>
+  <label for='nextStatus'>Промени статус на:</label>
         <select class="details-property-info" name="nextStatus">
     ${repeat(data.status.nextStatuses,(nextStatus)=>nextStatus._id,(nextStatus)=>html`
             <option value="${nextStatus._id}" >${nextStatus.statusName}</option>
