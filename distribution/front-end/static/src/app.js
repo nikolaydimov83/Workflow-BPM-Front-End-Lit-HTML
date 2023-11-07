@@ -17,6 +17,12 @@ import { showResetPassChange } from "./views/resetPassChange.js";
 import { showResetPass } from "./views/resetPassView.js";
 import { showEditRole } from "./views/rolesEditView.js";
 import { showRoles } from "./views/rolesView.js";
+import { showEditStatus } from "./views/statusEditView.js";
+import { showStatuses } from "./views/statusesView.js";
+import { showEditSubject } from "./views/subjectEditView.js";
+import { showSubjects } from "./views/subjectsView.js";
+import { showEditWorkflow } from "./views/workflowEditView.js";
+import { showWorkflows } from "./views/workflowsView.js";
 
 
 let main=document.querySelector('main');
@@ -32,7 +38,8 @@ logoutAdmin.addEventListener('click', logoutUser);
 let logoutWorkflow=document.getElementById('logoutWorkflow');
 logoutWorkflow.addEventListener('click',logoutUser)
 
-//document.getElementById('notifications').style.display='none';
+//document.querySelector('.notification').style.display='none';
+document.querySelector('.notification-wrapper').style.display='none'
 renderNav();
 
 page(decorateCtx);
@@ -53,6 +60,12 @@ page('/admin/:id',showAdminEdtUsr);
 page('/createUser',showAdminCreateUsr);
 page('/roles',showRoles);
 page('/editRoles/:id',showEditRole);
+page('/statuses',showStatuses);
+page('/editStatuses/:id',showEditStatus);
+page('/workflows', showWorkflows);
+page('/editWorkflows/:id',showEditWorkflow);
+page('/subjects',showSubjects);
+page('/editSubjects/:id', showEditSubject);
 page.start();
 
 function decorateCtx(ctx,next){

@@ -11,12 +11,12 @@ let createCommentTemplate=(data,lastCommnet,submitCreateCommentForm)=>html`<sect
   <h4>Добавяне на коментар</h4>
   <div class="comment-request-details">
     <p class="details-cretae-comment"><span>ФЦ/Рефериращ ФЦ</span>:  ${data.finCenter}/${data.refferingFinCenter?data.refferingFinCenter:html`Няма рефериращ`}</p>
-    <p class="details-cretae-comment"><span>ID</span>:  ${data.iApplyId}</p>
-    <p class="details-cretae-comment"><span>EGFN</span>:   ${data.clientEGFN}</p>
+    <p class="details-cretae-comment"><span>Номер I-apply</span>:  ${data.iApplyId}</p>
+    <p class="details-cretae-comment"><span>ЕГН/Булстат</span>:   ${data.clientEGFN}</p>
     <p class="details-cretae-comment"><span>Клиент</span>:   ${data.clientName}</p>
     <p class="details-cretae-comment"><span>Продукт</span>:    ${data.product}</p>
     <p class="details-cretae-comment"><span>Сума</span>:  ${data.ccy} ${data.amount}</p>
-    <p class="details-cretae-comment"><span>Status</span>:  ${data.status.statusName}</p>
+    <p class="details-cretae-comment"><span>Статус</span>:  ${data.status.statusName}</p>
     <p class="details-cretae-comment"><span>Изпратен от</span>:  ${data.statusSender}</p>
     <p class="details-cretae-comment"><span>Изпратен на дата</span>:  ${data.statusIncomingDate}</p>
     <p class="details-cretae-comment"><span>Краен срок</span>:  ${data.deadlineDate}</p>
@@ -25,7 +25,7 @@ let createCommentTemplate=(data,lastCommnet,submitCreateCommentForm)=>html`<sect
 
     <h3>Напиши коментар</h3>
     <form @submit=${submitCreateCommentForm} class="create-comment-form">
-        <textarea type="textarea" name="commentText" id="description" placeholder="Описание"></textarea>
+        <textarea type="textarea" name="commentText" id="commentText" placeholder="Описание"></textarea>
         <button type="submit">Изпрати</button>
     </form>
       

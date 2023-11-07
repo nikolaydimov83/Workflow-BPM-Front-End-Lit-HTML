@@ -6,14 +6,14 @@ import { errorHandler } from './errorHandler.js';
 
 let resetPassTemplate=()=>html`<section id="login">
 <div class="form">
-  <h2>Fill in your mail to reset password</h2>
+  <h2>Въведете e-mail</h2>
   <form @submit=${submitForm} class="login-form">
     <input type="text" name="email" id="email" placeholder="email" />
-    <button type="submit">Reset Pass</button>
+    <button type="submit">Изпрати</button>
     <p class="message">
-      Not registered? <a href="/register">Create an account</a>
+      Не сте регистриран? <a href="/register">Регистрирайте се тук</a>
     </p>
-    <p class="message">Already registered? <a href="/login">Login</a></p>
+    <p class="message">Вече сте регистриран? <a href="/login">Вход</a></p>
   </form>
 </div>
 </section>`

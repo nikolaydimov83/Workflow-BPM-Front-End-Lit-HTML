@@ -26,18 +26,18 @@ export let catalogTemplate=(dataStringifiedDates,
   />
   <button type="submit">Search</button>
 </form> 
-<button @click=${showCatalog} class="pre-set-report">Dashboard</button>
-<button @click=${showDelayedReport} class="pre-set-report">Delayed</button>
-<button @click=${showAllActive} class="pre-set-report">Active</button>
-<button @click=${showAll} class="pre-set-report">All</button>
+<button @click=${showCatalog} class="pre-set-report">На мой екран</button>
+<button @click=${showDelayedReport} class="pre-set-report">Забавени</button>
+<button @click=${showAllActive} class="pre-set-report">Всички Активни</button>
+<button @click=${showAll} class="pre-set-report">Всички</button>
 </div>
 <h2>${searchContextString}</h2>
 <div class="tableLarge">
 <table id="dashboard" class="no-footer dataTable" role="grid" aria-describedby="dashboard_info">
 <thead >
   <tr >
-  <th ><a id="creator"href="javascript:void(0)">Creator</a></th>
-    <th ><a id="iApplyId"href="javascript:void(0)">IApplyId</a></th>
+  <th ><a id="creator"href="javascript:void(0)">Създател</a></th>
+    <th ><a id="iApplyId"href="javascript:void(0)">Апликация номер</a></th>
     <th ><a id="clientName"href="javascript:void(0)">Име на клиента</a></th>
     <th ><a id="clientEGFN"href="javascript:void(0)">EGFN</a></th>
     <th ><a id="finCenter"href="javascript:void(0)">ФЦ</a></th>
@@ -45,7 +45,7 @@ export let catalogTemplate=(dataStringifiedDates,
     <th ><a id="subjectId"href="javascript:void(0)">Subject</a></th>
     <th ><a id="status"href="javascript:void(0)">Статус</a></th>
     <th ><a id="statusIncomingDate"href="javascript:void(0)">Дата на постъпване</a></th>
-    <th ><a id="deadlineDate"href="javascript:void(0)">Deadline</a></th>
+    <th ><a id="deadlineDate"href="javascript:void(0)">Краен срок</a></th>
     <th ><a id="details"href="javascript:void(0)">Детайли</a></th>
   </tr>
  </thead>
@@ -159,6 +159,7 @@ export function decorateDashboardWithDataTable(orderBy1,orderBy2) {
   $(document).ready(function () {
     $.fn.dataTable.moment('DD-MM-YYYY');
     $('#dashboard').DataTable({ 
+      "iDisplayLength": -1,
         dom: 'lBfrtip',
         "order": [[orderBy1, 'asc'], [orderBy2, 'asc']],
         "lengthMenu": [[5,25, 50, 100, -1], [5,25, 50, 100, "All"]],
