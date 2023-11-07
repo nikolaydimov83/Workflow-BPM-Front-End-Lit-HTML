@@ -7,6 +7,13 @@ module.exports=(app)=>{
         //res.sendFile('../static/index.html')
         res.render('mockedHome',{ahref})
     });
+    app.use('/dashboard',(req,res)=>{
+        
+        let ahref=`/dashboard`
+        //res.sendFile('../static/index.html')
+        res.render('mockedHome',{ahref})
+    });
+
 
 
 }
