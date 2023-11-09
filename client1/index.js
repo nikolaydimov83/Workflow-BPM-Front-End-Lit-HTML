@@ -1,6 +1,6 @@
 const express = require('express');
-const expressConfig=require('./config/express');
-const routesConfig=require('./config/routes');
+const expressConfig=require('./config/express.js');
+const routesConfig=require('./config/routes.js');
 
 
 

@@ -7,6 +7,9 @@ const routesConfig=require('./routes');
 const corsOptions =require('./middlewares/cors');
 const cron = require('node-cron');
 const { replaceIapplyTable } = require('./importExternalFiles/csvImports');
+const Role = require('./models/Role');
+const { createRole } = require('./services/workflowServices');
+const { createUser } = require('./services/adminServices');
 
 const CONNECTION_STRING='mongodb://localhost:27217,localhost:27218,localhost:27219/eurobankApp2?replicaSet=myReplicaSet1'
 start();
@@ -43,7 +46,15 @@ async function start(){
     routesConfig(app);
 
 
-    app.listen(3030,()=>console.log('Server listens on port 3030!'))
+    app.listen(3030,()=>console.log('Server listens on port 3030!'));
+    if(!await Role.findOne({})){
+      let adminRole=await createRole({roleType:'HO',roleName:'Admin'});
+      let adminUser=await createUser({email:'rkostyaneva@postbank.bg',branchNumber:101,branchName:'Admin',userStatus:'Active',role:adminRole.id});
+      let workflowRole=await createRole({roleType:'HO',roleName:'Workflow'});
+      let workflowUserss=await createUser({email:'ihristozova@postbank.bg',branchNumber:101,branchName:'Workflow',userStatus:'Active',role:workflowRole.id});
+    }else{
+      
+    }
     //script();
 
 }

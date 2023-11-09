@@ -29,6 +29,7 @@ const userSchema=new Schema({
 });
 
 userSchema.pre('save', async function() {
+    
     let email=this.email
     let user=await getId(email);
 

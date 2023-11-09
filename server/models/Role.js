@@ -9,6 +9,7 @@ const rolesSchema=new Schema({
 });
 
 rolesSchema.pre(['save','findOneAndUpdate'],function(){
+    
     if (this.roleType=='Branch'){
         this.role=this.roleType+this.roleName;
     }else{
