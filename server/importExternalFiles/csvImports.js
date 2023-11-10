@@ -32,7 +32,7 @@ async function performTransaction(newData) {
       await session.abortTransaction();
       throw error;
     } finally {
-      session.endSession();
+      await session.endSession();
     }
   }
 module.exports={replaceIapplyTable}

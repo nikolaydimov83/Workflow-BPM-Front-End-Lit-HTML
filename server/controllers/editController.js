@@ -17,10 +17,15 @@ editController.put('/:id',async (req,res)=>{
 
    try {
     
+        let today=new Date();
+        today.setHours(0,0,0,0);
+        let newDeadlineAsDate=new Date(newDeadline);
+        newDeadlineAsDate.setHours(0,0,0,0);
     if(!newDeadline||!newComment){
         throw new Error('Missing deadline or comment. This fields are compulsory')
     }
-    if(new Date(newDeadline)<new Date()){
+    if(newDeadlineAsDate<today){
+    
         throw new Error('New date cannot be in the past');
     }
     let databaseRequest=await getRequestById(requestId);

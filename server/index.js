@@ -26,7 +26,19 @@ async function start(){
         console.error(error.message);
         process.exit(1)
     }
-    cron.schedule('16 16 * * *', async () => {
+    cron.schedule('02 12 * * *', async () => {
+        console.log('Running replaceIapplyTable() function...');
+        try {
+          await replaceIapplyTable();
+          console.log('IApply table replaced successfully!');
+        } catch (error) {
+          console.log(error.message);
+        }
+      }, {
+        scheduled: true,
+        timezone: 'Europe/Sofia' // Replace with your timezone
+      });
+      cron.schedule('03 12 * * *', async () => {
         console.log('Running replaceIapplyTable() function...');
         try {
           await replaceIapplyTable();

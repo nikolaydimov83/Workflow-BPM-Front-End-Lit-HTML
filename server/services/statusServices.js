@@ -20,24 +20,28 @@ async function editStatus(statusInfo){
     
     await checkStatus(nextStatuses,statusType);
     let workflowsOfTheEditedStatus=await getWorkflowByStatusId(statusInfo.id);
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    const session1 = await mongoose.startSession();
+    session1.startTransaction();
   
     try {
-        workflowsOfTheEditedStatus.forEach(async (workflow)=>{
-            await workflow.save({ session })
-        })
+
+        for (const workflow of workflowsOfTheEditedStatus) {
+            await workflow.save({ session:session1 });
+
+        }
+
         let result= await Status.findByIdAndUpdate(statusInfo.id,{statusName,statusType,nextStatuses},{
             new: true, // Return the updated document
-            session, // Assign the session to the operation
+            session:session1, // Assign the session to the operation
           })
-      await session.commitTransaction();
+      await session1.commitTransaction();
       return result
     } catch (error) {
-      await session.abortTransaction();
+      await session1.abortTransaction();
       throw error;
     } finally {
-      session.endSession();
+        await session1.endSession()
+      
     }
 }
 

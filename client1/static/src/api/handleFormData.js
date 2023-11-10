@@ -141,8 +141,12 @@ export function emptyFormData(inputsWrapper){
         return value
     },
     'deadlineDate':()=>{
-        if ((value<new Date(Date.now()))){
-            throw new Error('Крайният срок не може да бъде минала дата');
+        let today=new Date(Date.now())
+        today.setHours(0,0,0,0);
+        let valueAsDate=new Date(value)
+        valueAsDate.setHours(0,0,0,0);
+        if ((valueAsDate<today)||(!value)){
+            throw new Error('Крайният срок е задължително поле и не може да бъде минала дата');
         }
         return value
     },
