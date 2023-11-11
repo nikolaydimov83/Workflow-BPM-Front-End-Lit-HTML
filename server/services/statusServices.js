@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 const Role = require("../models/Role");
 const Status = require("../models/Status");
 const { getAllRoles, getWorkflowByStatusId } = require("./workflowServices");
+const Workflow = require("../models/Workflow");
 
 async function createStatus(statusInfo){
     let nextStatuses=statusInfo.nextStatuses;
@@ -22,12 +23,13 @@ async function editStatus(statusInfo){
     let workflowsOfTheEditedStatus=await getWorkflowByStatusId(statusInfo.id);
     const session1 = await mongoose.startSession();
     session1.startTransaction();
-  
+
     try {
 
         for (const workflow of workflowsOfTheEditedStatus) {
-            await workflow.save({ session:session1 });
-
+            
+            await workflow.save({ session:session1,statusInfo:statusInfo});
+            
         }
 
         let result= await Status.findByIdAndUpdate(statusInfo.id,{statusName,statusType,nextStatuses},{
@@ -35,6 +37,7 @@ async function editStatus(statusInfo){
             session:session1, // Assign the session to the operation
           })
       await session1.commitTransaction();
+
       return result
     } catch (error) {
       await session1.abortTransaction();
