@@ -1,6 +1,6 @@
 import { clearUserData, getUserData } from "../utils.js";
 
-let baseUrl=`http://localhost:3030`
+let baseUrl=`https://localhost:3030`
 async function request(url,method,data){
     let options={
         method:method,
