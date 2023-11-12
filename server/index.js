@@ -12,6 +12,9 @@ const { replaceIapplyTable } = require('./importExternalFiles/csvImports');
 const Role = require('./models/Role');
 const { createRole } = require('./services/workflowServices');
 const { createUser } = require('./services/adminServices');
+const winstonExpress=require('express-winston');
+const logger = require('./logger/logger');
+const WinstonLog = require('./models/WinstonLog');
 
 const CONNECTION_STRING='mongodb://localhost:27217,localhost:27218,localhost:27219/eurobankApp2?replicaSet=myReplicaSet1'
 
@@ -54,10 +57,48 @@ async function start(){
         next();
     });*/
     app.use(express.json());
+    app.use((req, res, next) => {
+      const forwardedFor = req.headers['x-forwarded-for'];
+      const realIp = req.headers['x-real-ip'];
+    
+      // Try to get the real client IP address
+      const clientIp = forwardedFor || realIp || req.socket.remoteAddress;
+      const sensitiveFields = ['password'];
+
+      // Create a shallow copy of the request body
+      const filteredBody = { ...req.body };
+    
+      // Remove sensitive fields from the copy
+      sensitiveFields.forEach(field => {
+        if (filteredBody[field]) {
+          delete filteredBody[field];
+        }
+      });
+      
+
+
+    app.use(winstonExpress.logger({
+      winstonInstance:logger,
+      statusLevels:true
+    }))
+
+
+    logger.info({
+      message: 'Incoming Request',
+      method: req.method,
+      url: req.url,
+      ip: clientIp,
+      headers: req.headers,
+      query: req.query,
+      body: filteredBody
+    });
+  
+    next(); // Pass control to the next middleware
+  });
+
     app.use(cors(corsOptions));
     app.use(verifyToken());
     
-
     routesConfig(app);
     
     const server = https.createServer(credentials, app);
@@ -72,7 +113,8 @@ async function start(){
       let workflowRole = await createRole({ roleType: 'HO', roleName: 'Workflow' });
       let workflowUser = await createUser({ email: 'ihristozova@postbank.bg', branchNumber: 101, branchName: 'Workflow', userStatus: 'Active', role: workflowRole.id });
     } else {
-      // Handle other scenarios if needed
+        let a=await WinstonLog.find({});
+        console.log()
     }
 
     /*app.listen(3030,()=>console.log('Server listens on port 3030!'));
@@ -87,3 +129,5 @@ async function start(){
     //script();
 
 }
+
+
