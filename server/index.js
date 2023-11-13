@@ -15,15 +15,20 @@ const { createUser } = require('./services/adminServices');
 const winstonExpress=require('express-winston');
 const logger = require('./logger/logger');
 const WinstonLog = require('./models/WinstonLog');
+const path = require('path');
 
 const CONNECTION_STRING='mongodb://localhost:27217,localhost:27218,localhost:27219/eurobankApp2?replicaSet=myReplicaSet1'
 
+const currentDirectory = __dirname;
+
+const filePathCert = path.join(currentDirectory, 'keys', 'your-cert.pem');
+const filePathKey = path.join(currentDirectory, 'keys', 'your-private-key.pem');
 const credentials = {
-  key: fs.readFileSync('/home/nikolay/localhost.key'),
-  cert: fs.readFileSync('/home/nikolay/localhost.crt'),
-  // Add CA certificate if available (optional)
-  // ca: fs.readFileSync('/path/to/your/ca.pem')
-};
+  //key: fs.readFileSync('/home/nikolay/localhost.key'),
+  //cert: fs.readFileSync('/home/nikolay/localhost.crt'),
+  key: fs.readFileSync(filePathKey),
+  cert: fs.readFileSync(filePathCert),
+}
 
 start();
 
@@ -63,7 +68,7 @@ async function start(){
     
       // Try to get the real client IP address
       const clientIp = forwardedFor || realIp || req.socket.remoteAddress;
-      const sensitiveFields = ['password'];
+      const sensitiveFields = ['password','re-password'];
 
       // Create a shallow copy of the request body
       const filteredBody = { ...req.body };
