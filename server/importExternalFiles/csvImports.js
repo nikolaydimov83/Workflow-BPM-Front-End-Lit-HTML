@@ -2,9 +2,10 @@ const path = require('path');
 const csv=require('csvtojson');
 const IApply = require('../models/IApply');
 const mongoose=require('mongoose');
+const { baseDir } = require('../constants');
 
 async function replaceIapplyTable(){
-const csvFilePath=path.join(__dirname,'csv','iApply.csv');
+const csvFilePath=path.join(baseDir,'csv','iApply.csv');
 let array=[]
 try {
     array=await csv().fromFile(csvFilePath)

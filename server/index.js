@@ -15,17 +15,11 @@ const { createUser } = require('./services/adminServices');
 const winstonExpress=require('express-winston');
 const logger = require('./logger/logger');
 const WinstonLog = require('./models/WinstonLog');
-const path = require('path');
+const { filePathKey, filePathCert, CONNECTION_STRING } = require('./constants');
 
-const CONNECTION_STRING='mongodb://localhost:27217,localhost:27218,localhost:27219/eurobankApp2?replicaSet=myReplicaSet1'
-
-const currentDirectory = __dirname;
-
-const filePathCert = path.join(currentDirectory, 'keys', 'your-cert.pem');
-const filePathKey = path.join(currentDirectory, 'keys', 'your-private-key.pem');
 const credentials = {
-  //key: fs.readFileSync('/home/nikolay/localhost.key'),
-  //cert: fs.readFileSync('/home/nikolay/localhost.crt'),
+  //key: fs.readFileSync('/home/nikolay/Documents/GitHub/workflowEurobank/workflowEuroBank/server/keys/your-private-key.pem'),
+  //cert: fs.readFileSync('/home/nikolay/Documents/GitHub/workflowEurobank/workflowEuroBank/server/keys/your-cert.pem'),
   key: fs.readFileSync(filePathKey),
   cert: fs.readFileSync(filePathCert),
 }
@@ -57,46 +51,35 @@ async function start(){
         timezone: 'Europe/Sofia' // Replace with your timezone
       });
       
-   /*   app.use((req, res, next) => {
-        debug('Incoming request with CORS headers:', req.headers);
-        next();
-    });*/
+
     app.use(express.json());
     app.use((req, res, next) => {
       const forwardedFor = req.headers['x-forwarded-for'];
       const realIp = req.headers['x-real-ip'];
-    
-      // Try to get the real client IP address
       const clientIp = forwardedFor || realIp || req.socket.remoteAddress;
       const sensitiveFields = ['password','re-password'];
-
-      // Create a shallow copy of the request body
       const filteredBody = { ...req.body };
-    
-      // Remove sensitive fields from the copy
+
       sensitiveFields.forEach(field => {
         if (filteredBody[field]) {
           delete filteredBody[field];
         }
       });
       
+      app.use(winstonExpress.logger({
+        winstonInstance:logger,
+        statusLevels:true
+      }))
 
-
-    app.use(winstonExpress.logger({
-      winstonInstance:logger,
-      statusLevels:true
-    }))
-
-
-    logger.info({
-      message: 'Incoming Request',
-      method: req.method,
-      url: req.url,
-      ip: clientIp,
-      headers: req.headers,
-      query: req.query,
-      body: filteredBody
-    });
+      logger.info({
+        message: 'Incoming Request',
+        method: req.method,
+        url: req.url,
+        ip: clientIp,
+        headers: req.headers,
+        query: req.query,
+        body: filteredBody
+      });
   
     next(); // Pass control to the next middleware
   });
@@ -121,17 +104,6 @@ async function start(){
         let a=await WinstonLog.find({});
         console.log()
     }
-
-    /*app.listen(3030,()=>console.log('Server listens on port 3030!'));
-    if(!await Role.findOne({})){
-      let adminRole=await createRole({roleType:'HO',roleName:'Admin'});
-      let adminUser=await createUser({email:'rkostyaneva@postbank.bg',branchNumber:101,branchName:'Admin',userStatus:'Active',role:adminRole.id});
-      let workflowRole=await createRole({roleType:'HO',roleName:'Workflow'});
-      let workflowUserss=await createUser({email:'ihristozova@postbank.bg',branchNumber:101,branchName:'Workflow',userStatus:'Active',role:workflowRole.id});
-    }else{
-      
-    }*/
-    //script();
 
 }
 
