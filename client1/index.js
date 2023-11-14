@@ -4,6 +4,7 @@ const routesConfig=require('./config/routes.js');
 const https = require('https');
 const fs = require('fs');
 const path=require('path');
+const { filePathKey, filePathCert } = require('./constants.js');
 
 start();
 
@@ -16,8 +17,7 @@ async function start(){
     routesConfig(app);
     const currentDirectory = __dirname;
 
-    const filePathCert = path.join(currentDirectory, 'keys', 'your-cert.pem');
-    const filePathKey = path.join(currentDirectory, 'keys', 'your-private-key.pem');
+
     const credentials = {
   //key: fs.readFileSync('/home/nikolay/localhost.key'),
   //cert: fs.readFileSync('/home/nikolay/localhost.crt'),
