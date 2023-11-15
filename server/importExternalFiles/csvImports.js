@@ -5,19 +5,19 @@ const mongoose=require('mongoose');
 const { baseDir } = require('../constants');
 
 async function replaceIapplyTable(){
-const csvFilePath=path.join(baseDir,'csv','iApply.csv');
+
+const csvFilePath=path.join(baseDir,'importExternalFiles','csv','iApply.csv');
+
 let array=[]
 try {
     array=await csv().fromFile(csvFilePath)
+    await performTransaction(array)
 } catch (error) {
-    console.log(error.message);
-    return
+    
+  console.log(error.message);
+    
 }
-try {
-await performTransaction(array)
-} catch (error) {
-    console.log(error.message);
-}
+
 
 
 }

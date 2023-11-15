@@ -20,7 +20,7 @@ let adminCreateUserTemplate=(submitCreateActiveUsrForm,rolesList)=>html`<section
          
          
         />
-        <label for='branchName'>Branch Name</label>
+        <label for='branchName'>Име на клон или роля</label>
         <input
           type="text"
           name="branchName"
@@ -39,14 +39,14 @@ let adminCreateUserTemplate=(submitCreateActiveUsrForm,rolesList)=>html`<section
          
         />
 
-        <label for='role'>Role</label>
+        <label for='role'>Роля</label>
         <select class="details-property-info" name="role">
           ${repeat(rolesList,(role)=>role._id,(role)=>html`
             <option value="${role._id}" >${role.role}</option>
           `)}
         </select>
 
-        <label for='userStatus'>Role</label>
+        <label for='userStatus'>Стаус - Активен/Неактивен</label>
         <input
           
           type="text"

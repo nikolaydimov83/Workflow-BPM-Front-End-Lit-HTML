@@ -6,7 +6,7 @@ import { errorHandler } from './errorHandler.js';
 
 let resetPassTemplate=()=>html`<section id="login">
 <div class="form">
-  <h2>Напишете вашият мейл, за да промените паролата си</h2>
+  <h2>Въведете e-mail</h2>
   <form @submit=${submitForm} class="login-form">
     <input type="text" name="email" id="email" placeholder="email" />
     <button type="submit">Изпрати</button>

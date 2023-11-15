@@ -1,8 +1,9 @@
 
+const emailPattern=/^[A-Za-z0-9]+@postbank.bg$/
 const allowedTypes={
 
     'description':'description',
-    'email':'string',
+    'email':'email',
     'password':'password',
     're-password':'password',
     'iApplyId':'iApplyId',
@@ -16,12 +17,12 @@ const allowedTypes={
     'commentText':'description',
     'searchData':'string',
     'searchString':'string',
-    'branchNumber':'string',
-    'branchName':'string',
+    'branchNumber':'branchNumber',
+    'branchName':'branchName',
     'userStatus':'string',
-    'roleName':'optional',
+    'roleName':'roleName',
     'role':'optional',
-    'roleType':'string',
+    'roleType':'roleType',
     'nextStatuses':'nextStatuses',
     'statusType':'string',
     'statusName':'string',
@@ -55,7 +56,7 @@ export function loadFormData(form){
     } 
     Object.entries(formDataObject).forEach((entry)=>{
         try{
-            checkInputCorrect(entry[1],allowedTypes,entry[0])
+            formDataObject[entry[0]]=checkInputCorrect(entry[1],allowedTypes,entry[0])
             wrongFieldsObject[entry[0]]=false
         }catch(err){
             wrongFieldsObject[entry[0]]=true
@@ -78,29 +79,6 @@ export function loadFormData(form){
 
 }
 
-export function loadInputValuesOutsideForm(inputsWrapper){
-    let data={}
-    let wrongFieldsObject={}
-    let wrongData=false
-    Array.from(inputsWrapper.children)
-        .filter((child)=>child.nodeName==='INPUT')
-        .forEach((child)=>{
-            try{
-                checkInputCorrect(child.value,allowedTypes,child.name);
-                data[child.name]=child.value; 
-            }catch(err){
-                wrongFieldsObject[child.name]=true
-                wrongData=true;
-            }
-
-        })
-        if (wrongData){
-            wrongFieldsObject.message='Invalid input';
-            wrongFieldsObject.frontEndFormChecker=true
-            throw wrongFieldsObject
-        }
-return data    
-}
 
 export function emptyFormData(inputsWrapper){
     
@@ -124,35 +102,61 @@ export function emptyFormData(inputsWrapper){
 
    let action={
     
-    'email':()=>{
-        let regex=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
-        let emailValid=regex.test(value)
-        if (!emailValid){
-            throw new Error('Некоректен формат за мейл')
-        }  
-    },
     'password':()=>{
         if ((value===''||value.length<3)){
-            throw new Error('Паролата следва да бъде поне 3 символа')
+            throw new Error(type+': Паролата следва да бъде поне 3 символа');
         }
+        return value
     },
     
     'string':()=>{
         if ((value==='')){
-            throw new Error('Wrong input')
+            throw new Error(type+' Wrong input');
         }
+        return value
+    },
+    'branchName':()=>{
+        if ((value==='')){
+            throw new Error('Името на клона е задължително поле');
+        }
+        return value
+    },
+    'branchNumber':()=>{
+        let regex=/^[0-9]+$/
+        if ((!value.match(regex))){
+            throw new Error('Номера на клона е число от 1 до 999');
+        }
+        return value
+    },
+    'roleName':()=>{
+        if ((value==='')){
+            throw new Error('Име на роля е задължително поле');
+        }
+        return value
+    },
+    'roleType':()=>{
+        if ((value!=='Branch'&&value!=='HO')){
+            throw new Error('Грешен тип на роля - трябва да бъде HO или Branch');
+        }
+        return value
     },
     'deadlineDate':()=>{
-        if ((value<new Date(Date.now()))){
-            throw new Error('Крайният срок не може да бъде минала дата')
+        let today=new Date(Date.now())
+        today.setHours(0,0,0,0);
+        let valueAsDate=new Date(value)
+        valueAsDate.setHours(0,0,0,0);
+        if ((valueAsDate<today)||(!value)){
+            throw new Error('Крайният срок е задължително поле и не може да бъде минала дата');
         }
+        return value
     },
     'iApplyId':()=>{
         let regex=/^[A-Z]{2}[0-9]+$/
-        
+        value.trim();
         if ((!regex.test(value))){
-            throw new Error('Грешен I-apply номер. Трябва да се състои от 2 главни букви и поне една цифра')
+            throw new Error('Грешен I-apply номер. Трябва да се състои от 2 главни букви и поне една цифра');
         }
+        return value
     },
    
    
@@ -160,14 +164,24 @@ export function emptyFormData(inputsWrapper){
         if(value.length<15){
             throw new Error('описанието трябва да е поне 15 символа');
         }
+        return value
+    },
+    'email':()=>{
+        value=value.trim();
+        let testForMatch=/^[A-Za-z0-9]+@postbank.bg$/.test(value);
+            if(!testForMatch){
+                throw new Error('Мейла не е в очаквания формат username@postbank.bg! В допълнение моля уверете се, че сте премахнали излишни интервали')
+            }
+        return value
     },
     'nextStatuses':()=>{
         console.log('Next Statuses check');
+        return value
     },
-    'optional':()=>console.log('Optional. is optional')
+    'optional':()=>value
 
 
    }   
-    action[allowedTypes[type]]()
+    return action[allowedTypes[type]]()
 }
 

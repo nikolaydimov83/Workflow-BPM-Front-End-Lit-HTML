@@ -18,8 +18,7 @@ const WinstonLog = require('./models/WinstonLog');
 const { filePathKey, filePathCert, CONNECTION_STRING } = require('./constants');
 
 const credentials = {
-  //key: fs.readFileSync('/home/nikolay/Documents/GitHub/workflowEurobank/workflowEuroBank/server/keys/your-private-key.pem'),
-  //cert: fs.readFileSync('/home/nikolay/Documents/GitHub/workflowEurobank/workflowEuroBank/server/keys/your-cert.pem'),
+  
   key: fs.readFileSync(filePathKey),
   cert: fs.readFileSync(filePathCert),
 }
@@ -38,7 +37,7 @@ async function start(){
         console.error(error.message);
         process.exit(1)
     }
-    cron.schedule('02 12 * * *', async () => {
+    cron.schedule('42 22 * * *', async () => {
         console.log('Running replaceIapplyTable() function...');
         try {
           await replaceIapplyTable();
@@ -48,7 +47,7 @@ async function start(){
         }
       }, {
         scheduled: true,
-        timezone: 'Europe/Sofia' // Replace with your timezone
+        timezone: 'Europe/Sofia'
       });
       
 

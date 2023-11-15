@@ -207,10 +207,15 @@ async function getRequestsBySearchString(searchString){
     if (searchType=='other'){
         let result={}
         
-        let statusesLikeSearchString=await Status.find({statusName:{$regex:'.*' + regexSanitizedSearchString + '.*',$options:'i'}});
-        let subjectsLikeSearchString=await Subject.find({subjectName:{$regex:'.*' + regexSanitizedSearchString + '.*',$options:'i'}})
+        let statusesLikeSearchString=await Status.find({
+            statusName:{$regex:'.*' + regexSanitizedSearchString + '.*',$options:'i'
+            }});
+        let subjectsLikeSearchString=await Subject.find({
+            subjectName:{$regex:'.*' + regexSanitizedSearchString + '.*',$options:'i'}
+        })
         let workflowsLikeSearchString=subjectsLikeSearchString.map((subject)=>subject.assignedToWorkflow);
-        let requestwithStatusMatch=await Request.find({})
+        let requestwithStatusMatch=await Request
+            .find({})
             .or([
                 {status:{$in:statusesLikeSearchString}},
                 {requestWorkflow:{$in:workflowsLikeSearchString}},
