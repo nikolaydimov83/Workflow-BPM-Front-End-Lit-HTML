@@ -1,10 +1,15 @@
 const express=require('express');
 const handlebars=require('express-handlebars')
+const path=require('path');
+const { baseDir } = require('../constants');
+
 
 module.exports=(app)=>{
 const hbs =handlebars.create({
     extname:'.hbs',
-    helpers:{optionSelected:function(valueOption, bodyOption){
+    helpers:{
+    
+    optionSelected:function(valueOption, bodyOption){
         if(!bodyOption){
             bodyOption="crypto-wallet";
         }
@@ -27,6 +32,7 @@ const hbs =handlebars.create({
 
 app.engine('.hbs',hbs.engine);
 app.set('view engine', '.hbs');
-app.use(express.static('static'));
+app.use(
+    express.static('static'/*path.join(baseDir,'static')*/));
 
 }

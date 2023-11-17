@@ -15,7 +15,8 @@ const { createUser } = require('./services/adminServices');
 const winstonExpress=require('express-winston');
 const logger = require('./logger/logger');
 const WinstonLog = require('./models/WinstonLog');
-const { filePathKey, filePathCert, CONNECTION_STRING } = require('./constants');
+const { filePathKey, filePathCert, CONNECTION_STRING, PORT, IP_ADDRESS } = require('./constants');
+
 
 const credentials = {
   
@@ -80,7 +81,7 @@ async function start(){
         body: filteredBody
       });
   
-    next(); // Pass control to the next middleware
+    next(); 
   });
 
     app.use(cors(corsOptions));
@@ -90,9 +91,9 @@ async function start(){
     
     const server = https.createServer(credentials, app);
 
-    const PORT = 3030;
+    
 
-    server.listen(PORT, () => console.log(`Server listens on port ${PORT}!`));
+    server.listen(PORT, IP_ADDRESS,() => console.log(`Server listens on port ${IP_ADDRESS+":"+PORT}!`));
 
     if (!(await Role.findOne({}))) {
       let adminRole = await createRole({ roleType: 'HO', roleName: 'Admin' });
