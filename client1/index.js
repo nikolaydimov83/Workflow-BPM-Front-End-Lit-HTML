@@ -28,7 +28,7 @@ async function start(){
     //const IP_ADDRESS="185.123.188.135";
     const IP_ADDRESS="127.0.0.1";
     const PORT = 3000;
-
+    console.log('Playnig')
     server.listen(PORT, IP_ADDRESS,() => {
         console.log(`Server listens on ${IP_ADDRESS+':'+PORT}!`);
     });
