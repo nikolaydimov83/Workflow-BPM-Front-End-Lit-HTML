@@ -1,5 +1,5 @@
 const nodemailer=require('nodemailer');
-const { IP_ADDRESS } = require('../constants');
+const { IP_ADDRESS, FRONT_END_IP_ADDRESS } = require('../constants');
 const emailAdress='nikolay.dimov83@gmail.com'
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -40,7 +40,7 @@ function prepareMailContent(request){
     }
 
   return `
-  <div><a href=http://${IP_ADDRESS}/dashboard/${request._id}>Plan B заявка с id:  <a/>
+  <div><a href=https://${FRONT_END_IP_ADDRESS}/dashboard/${request._id}>Plan B заявка с id:  <a/>
   По апликация ${request.iApplyId} 
   На клиент ${request.clientName}, 
   ЕГФН:${request.clientEGFN} 
