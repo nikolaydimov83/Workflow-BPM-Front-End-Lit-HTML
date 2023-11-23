@@ -39,7 +39,7 @@ export let catalogTemplate=(dataStringifiedDates,
   <th ><a id="creator"href="javascript:void(0)">Създател</a></th>
     <th ><a id="iApplyId"href="javascript:void(0)">Апликация номер</a></th>
     <th ><a id="clientName"href="javascript:void(0)">Име на клиента</a></th>
-    <th ><a id="clientEGFN"href="javascript:void(0)">EGFN</a></th>
+    <th ><a id="clientEGFN"href="javascript:void(0)">ЕГН/ЕИК</a></th>
     <th ><a id="finCenter"href="javascript:void(0)">ФЦ</a></th>
     <th ><a id="refferingFinCenter"href="javascript:void(0)">Рефериращ</a></th>
     <th ><a id="subjectId"href="javascript:void(0)">Subject</a></th>

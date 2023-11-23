@@ -85,7 +85,15 @@ function logoutUser(ev){
     page.redirect('/')
 
 }
-
+document.addEventListener('visibilitychange',updateUserInfoOnDOM)
+function updateUserInfoOnDOM(){
+    if ((document.getElementById('profile').textContent)!==getUserData().email){
+        renderNav()
+        page.redirect('/')
+    }
+    
+    
+}
 function renderNav(){
 let userData=getUserData();
 if(!userData){
