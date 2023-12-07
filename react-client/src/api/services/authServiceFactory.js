@@ -5,6 +5,6 @@ export function authServiceFactory(token){
     return {
         login:(data)=>api.post('/users/login',data),
         register:(data)=>api.post('/users/register',data),
-        logout:()=>api.get('users/logout')
+        logout:()=>api.get('/logout')
     }
 }

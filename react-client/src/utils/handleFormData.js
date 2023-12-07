@@ -3,6 +3,7 @@ const emailPattern=/^[A-Za-z0-9]+@postbank.bg$/
 const allowedTypes={
     'email':'email',
     'password':'password',
+    're-password':'password'
 
 }
 export function loadFormData(data){
@@ -35,12 +36,7 @@ export function loadFormData(data){
         
     })
     if (wrongData){
-        /*let wrongFieldsObjectAsArray=Object.entries(wrongFieldsObject);
-        wrongFieldsObjectAsArray.forEach((field)=>{
-            if (field[1].wrongData&&field[0]!='message'){
-                wrongFieldsObject.message+=`${field[0]} : ${field[1].errorMessage}`;
-            }
-        })*/
+
         wrongFieldsObject.frontEndFormChecker=true
         throw wrongFieldsObject
     }
@@ -93,7 +89,7 @@ export function emptyFormData(inputsWrapper){
     },
     'email':()=>{
         value=value.trim();
-        let testForMatch=/^[A-Za-z0-9]+@postbank.bg$/.test(value);
+        let testForMatch=emailPattern.test(value);
             if(!testForMatch){
                 throw new Error('Мейла не е в очаквания формат username@postbank.bg!')
             }

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 export function useService(serviceFactory){
-    const {user}=useContext(AuthContext);
+    const {user}=useContext(GlobalContext);
 
     return serviceFactory(user?.accessToken)
 }

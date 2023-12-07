@@ -3,8 +3,10 @@ import { serviceFactory } from "../api"
 export default function dashboardServiceFactory(token){
     const api=serviceFactory(token);
     return {
-        getAll:()=>api.get('/data/characters?sortBy=_createdOn%20desc'),
-        getById:(id)=>api.get('/data/characters/'+id),
+        getAll:()=>api.get('/data/catalog'),
+        getById:(id)=>api.get('/data/catalog'+id),
+        
+        
         create:(data)=>api.post('/data/characters',data),
         edit:(id,data)=>api.put('/data/characters/'+id,data),
         getLikes:(characterId)=>api.get(`/data/useful?where=characterId%3D%22${characterId}%22&distinct=_ownerId&count`),

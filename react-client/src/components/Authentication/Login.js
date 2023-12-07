@@ -3,20 +3,25 @@ import { useForm } from "../../hooks/useForm"
 import { loadFormData } from "../../utils/handleFormData";
 import { useService } from "../../hooks/useService";
 import { authServiceFactory } from "../../api/services/authServiceFactory";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { useContext, useEffect } from "react";
+import { GlobalContext } from "../../contexts/GlobalContext";
 import styles from "./Auth.module.css"
+import { useError } from "../../hooks/useError";
 
 export default function Login(){
-    
+    //const {handleError,errMessages,fieldStatuses}=useError()
     const {onChangeUserForm, onSubmitUserForm,formData} = useForm({
         email:'',
         password:''
     },onSubmitLoginFormHandler);
 
     const authService=useService(authServiceFactory);
-    const ctx=useContext(AuthContext);
+    const ctx=useContext(GlobalContext);
     const navigate=useNavigate()
+
+    useEffect(()=>{
+        ctx.clearFieldStatuses();
+    },[]);
 
     function onSubmitLoginFormHandler(){
         try {
@@ -25,11 +30,11 @@ export default function Login(){
                 ctx.loginUser(data);
                 navigate('/dashboard');
             }).catch((err)=>{
-                console.log(err)
+                ctx.handleError(err);
             })
 
         } catch (error) {
-            
+            ctx.handleError(error)
         }
     }
 
@@ -39,17 +44,20 @@ export default function Login(){
         <div className={styles.form}>
         <h2>Вход на потребител</h2>
         <form  onSubmit={onSubmitUserForm} className="login-form">
-            <input
+            <input 
+            className={ctx.fieldStatuses?.email?styles.error:''}
             onChange={onChangeUserForm}
             value={formData.email} 
             type="text" 
             name="email" 
             id="email" 
-            placeholder="email" 
+            placeholder="email"
+             
             />
 
 
             <input
+            className={ctx.fieldStatuses?.password?styles.error:''}
             onChange={onChangeUserForm}
             value={formData.password}
             type="password"

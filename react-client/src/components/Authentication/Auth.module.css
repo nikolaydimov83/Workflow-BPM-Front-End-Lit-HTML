@@ -21,7 +21,9 @@
   margin-bottom: 30px;
   font-size: 30px;
 }
-
+.form .error {
+  border: 2px solid red;
+}
 .form input {
   font-family: "Roboto", sans-serif;
   outline: 0;
@@ -107,3 +109,5 @@
   font-size: 14px;
   text-align: center;
 }
+
+
