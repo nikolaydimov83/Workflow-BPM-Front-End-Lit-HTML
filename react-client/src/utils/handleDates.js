@@ -1,6 +1,10 @@
 import moment from "moment";
-
-export function stringifyDates(data) {
+const format = 'DD-MM-YYYY';
+const dateToString=(date)=>{
+  let mom=moment(date).format(format);
+  return moment(date).format(format);
+}
+export const stringifyDates=(data)=> {
     if (data.length > 0) {
       data.forEach(element => {
         if (element.statusIncomingDate){
@@ -30,9 +34,13 @@ export function stringifyDates(data) {
     }
     return data
   }
-
-  function dateToString(date){
-    let mom=moment(date).format('DD-MM-YYYY');
-    return moment(date).format('DD-MM-YYYY');
-  }
   
+
+export const compareDates = (dateA, dateB) => {
+    
+
+const parsedDateA = new Date(moment(dateA, format));
+const parsedDateB = new Date(moment(dateB, format));
+
+    return parsedDateA.getTime() - parsedDateB.getTime();
+};
