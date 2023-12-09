@@ -3,7 +3,8 @@ const emailPattern=/^[A-Za-z0-9]+@postbank.bg$/
 const allowedTypes={
     'email':'email',
     'password':'password',
-    're-password':'password'
+    're-password':'password',
+    'searchString':'string'
 
 }
 export function loadFormData(data){

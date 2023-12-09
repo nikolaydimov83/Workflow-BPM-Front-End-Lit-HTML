@@ -1,6 +1,4 @@
 import { useState,useMemo } from "react";
-import { useService } from "./useService";
-import dashboardServiceFactory from "../api/services/dashboardServiceFactory";
 import { compareDates, stringifyDates } from "../utils/handleDates";
 import { useTable, useSortBy, useFilters } from 'react-table'
 import { Link } from "react-router-dom";
@@ -43,12 +41,10 @@ export function useDashboard(tableStructure){
         setSortConfig({});
       };
 
- 
-    const dashApi=useService(dashboardServiceFactory)
     
-    function loadDashboardInfo(){
+    function loadDashboardInfo(apiFunc,inputData){
         
-        dashApi.getAll()
+        apiFunc(inputData)
             .then((data)=>{
                 const items=stringifyDates(data.result)
                 setDashboardState({result:items,searchContextString:data.searchContextString});
