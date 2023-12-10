@@ -5,6 +5,7 @@ import { useService } from "../../hooks/useService"
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { loadFormData } from "../../utils/handleFormData";
 import { DashboardContext } from "../../contexts/DashboardContext";
+import styles from './SearchForm.module.css'
 
 export default function SearchForm(){
     const dashApi=useService(dashboardServiceFactory);
@@ -26,7 +27,7 @@ export default function SearchForm(){
         }
     }
     return(
-        <form onSubmit={onSubmitUserForm} className="search-wrapper cf">
+        <form onSubmit={onSubmitUserForm} className={styles['search-wrapper']}>
         <input
             onChange={onChangeUserForm}
             value={formData.searchString}

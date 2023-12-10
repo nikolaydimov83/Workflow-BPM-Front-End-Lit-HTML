@@ -1,0 +1,21 @@
+  .search-wrapper-div {
+    width: 95%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.24); */
+  }
+  .details-btn {
+    text-decoration: none;
+    margin: auto 50px;
+    font-size: 21px;
+    width: 130px;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    background: #7c7e7e;
+  }
+
+ 
+  
+

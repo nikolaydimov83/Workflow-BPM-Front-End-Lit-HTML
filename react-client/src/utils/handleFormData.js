@@ -4,7 +4,10 @@ const allowedTypes={
     'email':'email',
     'password':'password',
     're-password':'password',
-    'searchString':'string'
+    'searchString':'string',
+    'nextStatus':'string',
+    'commentText':'description',
+    'newDeadline':'deadlineDate'
 
 }
 export function loadFormData(data){
@@ -77,7 +80,7 @@ export function emptyFormData(inputsWrapper){
     
     'string':()=>{
         if ((value==='')){
-            throw new Error(type+' Wrong input');
+            throw new Error(type+' Не може да бъде празно поле');
         }
         return value
     },
@@ -94,6 +97,16 @@ export function emptyFormData(inputsWrapper){
             if(!testForMatch){
                 throw new Error('Мейла не е в очаквания формат username@postbank.bg!')
             }
+        return value
+    },
+    'deadlineDate':()=>{
+        let today=new Date(Date.now())
+        today.setHours(0,0,0,0);
+        let valueAsDate=new Date(value)
+        valueAsDate.setHours(0,0,0,0);
+        if ((valueAsDate<today)||(!value)){
+            throw new Error('Крайният срок е задължително поле и не може да бъде минала дата');
+        }
         return value
     }
    }   

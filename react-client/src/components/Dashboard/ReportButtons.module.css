@@ -1,0 +1,26 @@
+.pre-set-report {
+    width: 200px;
+    height: 65px;
+    margin-right: 10px;
+    margin-top: 10px;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: 0;
+    background: rgb(187, 194, 197);
+    border: 0;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 5px;
+    display:inline-block;
+    text-align: center;
+  
+  }
+  .pre-set-report:hover {background-color: #667}
+  
+  .pre-set-report:active {
+    background-color: #667;
+    box-shadow: 0 5px #667;
+    transform: translateY(4px);
+  }

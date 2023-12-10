@@ -10,6 +10,10 @@ import { useContext } from 'react';
 import Register from './components/Authentication/Register';
 import Dashboard from './components/Dashboard/Dashboard';
 import { DashboardContextProvider } from './contexts/DashboardContext';
+import Details from './components/Details/Details';
+import CreateComment from './components/Commnet/CreateComment';
+import Edit from './components/Details/Edit';
+
 
 function App() {
 
@@ -26,6 +30,9 @@ function App() {
             <DashboardContextProvider >
               <Dashboard/>
             </DashboardContextProvider>}/>
+          <Route path='/dashboard/:id' element={<Details/>}/>
+          <Route path='/comment/create/:id' element={<CreateComment/>}/>
+          <Route path='/edit/:id' element={<Edit/>}/>
 
 
           

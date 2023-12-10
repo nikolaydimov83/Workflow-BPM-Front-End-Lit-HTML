@@ -2,12 +2,11 @@ import { useContext, useEffect } from "react";
 import SearchForm from "./SearchForm";
 import { DashboardContext } from "../../contexts/DashboardContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { trialTableStrucure, userTableStrucure } from "../../tableStructures/tableStructures";
-import { exportToExcel } from "../../utils/handleExcel";
 import Table from "./Table";
 import { useService } from "../../hooks/useService";
 import dashboardServiceFactory from "../../api/services/dashboardServiceFactory";
 import ReportButtons from "./ReportButtons";
+import styles from './Dashboard.module.css'
 
 export default function Dashboard(){
     const dashAPI=useService(dashboardServiceFactory)
@@ -16,10 +15,6 @@ export default function Dashboard(){
         {
             loadDashboardInfo,
             dashboardState,
-            handleFilterChange,
-            filterText,
-            filteredState,
-            dashboardContextState
         }=useContext(DashboardContext)
     useEffect(()=>{
 
@@ -29,28 +24,18 @@ export default function Dashboard(){
             ctxGlobal.handeleError()
         }
         
-    },[])
-    function handleOnClickExcel(e){
-        exportToExcel(filteredState,dashboardContextState)
-    }
+    },[]);
+
     return (
         
     <>
 
-        <div className="search-wrapper-div">
-        <SearchForm/>
-        <ReportButtons/>
+        <div className={styles["search-wrapper-div"]}>
+            <SearchForm/>
+            <ReportButtons/>  
         </div>
         <h2>{dashboardState.searchContextString}</h2>
         <div className="tableLarge">
-        
-        <input
-        type="text"
-        value={filterText}
-        onChange={handleFilterChange}
-        placeholder="Filter..."
-        />
-        <button onClick={handleOnClickExcel}>Excel</button>
         <Table/>
         </div>
     </>
