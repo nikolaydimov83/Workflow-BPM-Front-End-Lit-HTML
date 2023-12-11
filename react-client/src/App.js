@@ -13,6 +13,7 @@ import { DashboardContextProvider } from './contexts/DashboardContext';
 import Details from './components/Details/Details';
 import CreateComment from './components/Commnet/CreateComment';
 import Edit from './components/Details/Edit';
+import Create from './components/Details/Create';
 
 
 function App() {
@@ -33,9 +34,7 @@ function App() {
           <Route path='/dashboard/:id' element={<Details/>}/>
           <Route path='/comment/create/:id' element={<CreateComment/>}/>
           <Route path='/edit/:id' element={<Edit/>}/>
-
-
-          
+          <Route path='/create' element={<Create/>}/>  
         </Routes>
       </div>
 

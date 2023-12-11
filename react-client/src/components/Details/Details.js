@@ -6,8 +6,8 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { stringifyDates } from "../../utils/handleDates";
 import { useForm } from "../../hooks/useForm";
 import { loadFormData } from "../../utils/handleFormData";
-import { DashboardContext } from "../../contexts/DashboardContext";
 import { Link } from "react-router-dom";
+import styles from './Details.module.css';
 
 export default function Details(){
     const {id} = useParams();
@@ -70,22 +70,22 @@ export default function Details(){
         
              <section id="details">
 
-                <div class="formLarge">
+                <div className={styles.formLarge}>
 
-                    <div class="details-headline-wrapper">
-                        <h1>Subject: {request?.subjectId?.subjectName}</h1>
-                        <h1>Статус: {request?.status?.statusName}</h1>
-                        <h1>Краен Срок:{request.deadlineDate}</h1>
-                        <h1>{request.clientName}</h1>
+                    <div className={styles["details-headline-wrapper"]}>
+                        <h1><span>Subject:</span> {request?.subjectId?.subjectName}</h1>
+                        <h1><span>Статус:</span> {request?.status?.statusName}</h1>
+                        <h1><span>Краен Срок:</span> {request.deadlineDate}</h1>
+                        <h1><span>Клиент:</span> {request.clientName}</h1>
                     </div>
 
-                    <div class="details-headline-wrapper">
+                    <div className={styles["details-headline-wrapper"]}>
                     <h1>Последен Коментар:</h1>
-                    <p>{request.lastCommnet?request.lastCommnet.commentOwner.email+':'+request.lastCommnet.body:'Все още няма коментари'}</p>
+                    <p>{request.lastCommnet?request.lastCommnet.commentOwner.email+': '+request.lastCommnet.body:'Все още няма коментари'}</p>
                     </div>
-                    <div class="inlineDivDetails">
-                <h3>Информация за клиента</h3>
-                <p class="details-property-info"><span>ФЦ/Рефериращ ФЦ</span>:  {request.finCenter}/{request.refferingFinCenter?request.refferingFinCenter:`Няма рефериращ`}</p>
+                    <div className={styles["inlineDivDetails"]}>
+                    <h3>Информация за клиента</h3>
+                    <p class="details-property-info"><span>ФЦ/Рефериращ ФЦ</span>:  {request.finCenter}/{request.refferingFinCenter?request.refferingFinCenter:`Няма рефериращ`}</p>
                     <p class="details-property-info"><span>Номер I-Apply</span>:  {request.iApplyId}</p>
                     <p class="details-property-info"><span>ЕГН/Булстат</span>:   {request.clientEGFN}</p>
                     <p class="details-property-info"><span>Клиент</span>:   {request.clientName}</p>
@@ -95,7 +95,7 @@ export default function Details(){
                     
                 </div>
 
-                <div class="inlineDivDetails">
+                <div className={styles["inlineDivDetails"]}>
                     <h3>Информация за статус на заявката</h3>
                     <p class="details-property-info"><span>Статус</span>:  {request?.status?.statusName}</p>
                     <p class="details-property-info"><span>Изпратен от</span>:  {request.statusSender}</p>
@@ -103,7 +103,7 @@ export default function Details(){
                     
                     {request.checkUserCanChangeStatus?
                     <form onSubmit={onSubmitUserForm}>
-                    <label for='nextStatus'>Промени статус на:</label>
+                        <label for='nextStatus'>Промени статус на:</label>
                         <select value={formData.nextStatus}onChange={onChangeUserForm} class="details-property-info" name="nextStatus">
                             {request?.status?.nextStatuses.map((nextStatus)=>
                                 <option key={nextStatus._id} value={nextStatus._id} >{nextStatus.statusName}</option>
@@ -118,17 +118,17 @@ export default function Details(){
 
                 </div>
 
-                <div class="inlineDivDetails">
-                <h3>Описание по детайли на заявката</h3>
-                <p class="details-property-info-description"><span></span>  {request.description}</p>
+                <div className={styles["inlineDivDetails"]}>
+                    <h3>Описание по детайли на заявката</h3>
+                    <p class="details-property-info-description"><span></span>  {request.description}</p>
                 </div>
 
-                {request.comments.map((comment)=>
-                            <div class='comments-history'>
-                                <div ><span>{comment?.commentOwner?.email} : {comment?.commentDate} </span>
-                                </div><p class='comment-body-history'><br/>{comment?.body}</p>
-                            </div>
-                )}
+                    {request.comments.map((comment)=>
+                        <div class='comments-history'>
+                             <div ><span>{comment?.commentOwner?.email} : {comment?.commentDate} </span>
+                             </div><p class='comment-body-history'><br/>{comment?.body}</p>
+                        </div>
+                    )}
                 </div>
             </section>
                     )

@@ -13,7 +13,12 @@ export default function dashboardServiceFactory(token){
         changeStatus:(id,data)=>api.post(`/data/changeStatus/${id}`,data),
         createComment:(id,data)=>api.post(`/comments/${id}`,data),
         editRequest:(id,data)=>api.put(`/data/edit/${id}`,data),
+        createRequest:(data)=>api.post('/data/create',data),
+        
+        
         getSubjects:()=>api.get('/data/create'),
+        getIapplyData:(iapplyId)=>api.get(`/iApply/${iapplyId}`),
+
         
         
         create:(data)=>api.post('/data/characters',data),

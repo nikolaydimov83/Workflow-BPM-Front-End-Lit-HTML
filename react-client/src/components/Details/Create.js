@@ -1,27 +1,86 @@
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm"
+import { useService } from "../../hooks/useService";
+import dashboardServiceFactory from "../../api/services/dashboardServiceFactory";
+import { GlobalContext } from "../../contexts/GlobalContext";
+import { loadFormData } from "../../utils/handleFormData";
+import { DashboardContext } from "../../contexts/DashboardContext";
+import { useNavigate } from "react-router";
 
 export default function Create(){
+    const [create,setCreate]=useState({subjects:[]});
+    const ctxGlobal=useContext(GlobalContext);
+    const navigate=useNavigate()
     const {
         onChangeUserForm,
         onSubmitUserForm,
         formData,
-        updateFormFields
-    }=useForm();
+        updateFormFields,
+        clearFormFileds
+    }=useForm(
+        {
+            iApplyId:'',
+            subjectId:'',
+            deadlineDate:'',
+            clientEGFN:'',
+            finCenter:'',
+            refferingFinCenter:'',
+            clientName:'',
+            product:'',
+            ccy:'',
+            amount:'',
+            description:''
 
+        },onSubmitCreateForm);
+    const dashAPI=useService(dashboardServiceFactory);
+    const globalCtx=useContext(GlobalContext);
     useEffect(()=>{
-
+        dashAPI.getSubjects()
+        .then((data)=>{
+            setCreate(data);
+            if (data.subjects.length>0){
+                updateFormFields({...formData,subjectId:data.subjects[0]._id});
+            }
+            
+        })
+        .catch((err)=>{
+            globalCtx.handleError(err);
+        })
     },[])
     
     function onChangeIAppliId(){
-
+        dashAPI.getIapplyData(formData.iApplyId)
+        .then((data)=>{
+            delete data.iApplyData.__v;
+            delete data.iApplyData._id;
+            updateFormFields({...formData,...data.iApplyData});
+        })
+        .catch((err)=>{
+            globalCtx.handleError(err)
+            clearFormFileds(['subjectId','description']);
+        })
     }
-
+    function onSubmitCreateForm(){
+        try {
+            let checkedData=loadFormData(formData);
+            let serverResponseData=dashAPI.createRequest(checkedData)
+            .then(()=>{
+              navigate('/dashboard/')
+            })
+            .catch((err)=>{
+              ctxGlobal.handleError(err);
+            })
+            
+          
+          } catch (error) {
+            ctxGlobal.handleError(error);
+          }
+    }
     return (
         <section id="create">
         <div class="formLarge">
         <h2>Създай заявка</h2>
-        <form /*{submit}*/ class="create-form">
+        <form onSubmit={onSubmitUserForm} class="create-form">
             <div class="inlineDiv">
                 <label for='iApplyId'>Iapply ID</label>
                 <input
@@ -35,15 +94,18 @@ export default function Create(){
                 />
                 <label for='subjectName'>Subject</label>
                 <select
+                onChange={onChangeUserForm}
+                value={formData?.subjectId}
                 name="subjectId"
                 id="subjectName">
-                {/*repeat(serverResponse.subjects,(subject)=>subject._id,(subject)=>html`
-                    <option value="${subject._id}" >${subject.subjectName}</option>
-    `)*/}
+                {create?.subjects.map((subject)=>
+                    <option key={subject._id} value={subject._id} >{subject.subjectName}</option>)}
                 
                 </select>
                 <label for='deadlineDate'>Краен срок</label>
                 <input
+                onChange={onChangeUserForm}
+                value={formData.deadlineDate}
                 type="date"
                 name="deadlineDate"
                 id="deadlineDate"
@@ -51,6 +113,8 @@ export default function Create(){
                 />
                 <label for='clientEGFN'>ЕГН/Булстат</label>
                 <input
+                onChange={onChangeUserForm}
+                value={formData.clientEGFN}
                 type="text"
                 name="clientEGFN"
                 id="clientEGFN"
@@ -63,6 +127,8 @@ export default function Create(){
             <label for='finCenter'>Клон/Рефериращ клон</label>
             <div>
             <input
+                onChange={onChangeUserForm}
+                value={formData.finCenter}                
                 class="small"
                 type="text"
                 name="finCenter"
@@ -72,6 +138,8 @@ export default function Create(){
 
                 />
                 <input
+                onChange={onChangeUserForm}
+                value={formData.refferingFinCenter}                
                 class="verySmall"
                 type="text"
                 name="refferingFinCenter"
@@ -85,6 +153,8 @@ export default function Create(){
 
                 <label for='clientName'>Клиент</label>
                 <input
+                onChange={onChangeUserForm}
+                value={formData.clientName}                
                 type="text"
                 name="clientName"
                 id="clientName"
@@ -94,6 +164,8 @@ export default function Create(){
                 />
                 <label for='product'>Продукт</label>
                 <input
+                onChange={onChangeUserForm}
+                value={formData.product}                
                 type="text"
                 name="product"
                 id="product"
@@ -104,6 +176,8 @@ export default function Create(){
                 <label for='amount'>Сума</label>
                     <div>
                     <input
+                    onChange={onChangeUserForm}
+                    value={formData.ccy}
                     class="verySmall"
                     type="text"
                     name="ccy"
@@ -113,6 +187,8 @@ export default function Create(){
                   
                     />
                     <input class="small"
+                    onChange={onChangeUserForm}
+                    value={formData.amount}
                     type="number"
                     name="amount"
                     id="amount"
@@ -126,6 +202,8 @@ export default function Create(){
             </div>
 
                 <textarea
+                onChange={onChangeUserForm}
+                value={formData.description}
                 type="textarea"
                 name="description"
                 id="description"

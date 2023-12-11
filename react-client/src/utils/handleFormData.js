@@ -1,5 +1,6 @@
 
 const emailPattern=/^[A-Za-z0-9]+@postbank.bg$/
+const iApplyPattern=/^[A-Z]{2}[0-9]+$/
 const allowedTypes={
     'email':'email',
     'password':'password',
@@ -7,7 +8,18 @@ const allowedTypes={
     'searchString':'string',
     'nextStatus':'string',
     'commentText':'description',
-    'newDeadline':'deadlineDate'
+    'newDeadline':'deadlineDate',
+    'iApplyId':'iApplyId',
+    'subjectId':'string',
+    'deadlineDate':'deadlineDate',
+    'clientEGFN':'clientEGFN',
+    'finCenter':'finCenter',
+    'refferingFinCenter':'refferingFinCenter',
+    'description':'description',
+    'clientName':'string',
+    'product':'string',
+    'ccy':'string',
+    'amount':'amount'
 
 }
 export function loadFormData(data){
@@ -54,13 +66,13 @@ export function emptyFormData(inputsWrapper){
     Array.from(inputsWrapper.getElementsByTagName('input'))
         
         .forEach((child)=>{
-            if (child.type==='text'||child.type==='number'||child.type=='textarea'||child.type=='password')
+            if (child.type==='text'||child.type==='number'||child.type==='textarea'||child.type==='password')
                 child.value='';
         })
     Array.from(inputsWrapper.getElementsByTagName('textarea'))
         
         .forEach((child)=>{
-            if (child.type==='text'||child.type==='number'||child.type=='textarea')
+            if (child.type==='text'||child.type==='number'||child.type==='textarea')
                 child.value='';
         })
 
@@ -108,8 +120,39 @@ export function emptyFormData(inputsWrapper){
             throw new Error('Крайният срок е задължително поле и не може да бъде минала дата');
         }
         return value
+    },
+    'finCenter':()=>{
+        
+        if (Number(value)<1||Number(value)>999){
+            throw new Error('Финансовия центрър е число между 1 и 999')
+        }
+    },
+    'refferingFinCenter':()=>{
+        
+        if (value!=='Не'&&(Number(value)<1||Number(value)>999)){
+            throw new Error('Рефериращия финансов центрър е число между 1 и 999')
+        }
+    },
+    'clientEGFN':()=>{
+        if (value.length>10||value.length<9){
+            throw new Error ('Невалиден формат на ЕГН/Булстат. Следва да бъде точно 10/9 цифри')
+        }
+    },
+    'amount':()=>{
+        if (Number(value)<100){
+            throw new Error('Некоректен размер на кредита. Размера не може да е по-малък от 100')
+        }
+    },
+    'iApplyId':()=>{
+       
+        let testForMatch=iApplyPattern.test(value);
+            if(!testForMatch){
+                throw new Error('Номера на заявлението не е в очкавания формат!')
+            }
+        return value
     }
    }   
+
     return action[allowedTypes[type]]()
 }
 

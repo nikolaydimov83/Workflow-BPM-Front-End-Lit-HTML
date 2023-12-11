@@ -1,0 +1,222 @@
+.formLarge {
+    background: rgb(233,242,242);
+    max-width: 95%;
+    margin: auto;
+    margin-top: 45px;
+    padding: 15px;
+    text-align: center;
+    border-radius: 30px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-items: stretch;
+  }
+  
+  .formLarge h1 {
+    margin-block-start: 0.2em;
+    margin-block-end: 0.2em;
+    font-size: 19px;
+    text-align: left;
+  }
+  .formLarge h3 {
+  
+    text-align: left;
+  }
+  
+  .formLarge h4{
+    font-size: x-large;
+  }
+  
+  .formLarge input {
+  
+    display: block;
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: white;
+    height: 50px;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: center;
+    border: 2px solid rgb(200,200,200);
+   
+  }
+  
+  .formLarge select {
+    display: block;
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+  
+    height: 50px;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 5px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: center;
+    background-color: white;
+    border: 2px solid rgb(200,200,200);
+  }
+  .formLarge label{
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    width: 90%;
+    height: 15px;
+    border: 0;
+    margin-bottom: 15px;
+    padding: 3px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size:medium;
+    text-align: left;
+    font-weight:bolder;
+    
+  }
+  
+
+  .formLarge button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: 0;
+    background: #989999;
+    width: 220px;
+    
+    border: 0;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 10px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+  }
+  .formLarge button:hover,
+  .formLarge button:active,
+  .formLarge button:focus {
+    background: #737474;
+  }
+
+  .details-headline-wrapper{
+  
+    border-radius: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
+    flex-basis: calc(50% - 12px);
+    margin-bottom: 5px;
+    margin-right: 5px;
+    background-color: white;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.24);
+    height: 140px;
+    overflow: auto;
+   
+  }
+  .details-headline-wrapper p{
+    text-align: left;
+    margin-block-start: 0.3em;
+    margin-block-end: 0.3em;
+  }
+
+  .inlineDivDetails{
+    
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    flex-basis: calc(33% - 15px);
+    margin-bottom: 10px;
+    margin-right: 5px;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.24);
+   
+  }
+
+  .inlineDivDetails a{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: 0;
+    background: #989999;
+    width: 190px;
+  
+    border: 0;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+  }
+  .inlineDivDetails form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+
+  .inlineDivDetails select{
+    padding: 1px;
+    width: 97%;
+  }
+  .details-wrapper {
+    background: rgb(234, 243, 246);
+    max-width: 1400px;
+    max-height: 600px;
+    margin: auto;
+    margin-top: 45px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    display: flex;
+  }
+  
+  .details-group{
+    text-align: left;
+  }
+  .inlineDivDetails p{
+    text-align: left;
+    display: inline-block;
+    font-weight: bold;
+    font-size: large;
+    width: 95%;
+    border: 2px solid rgb(232, 232, 232);
+    border-radius: 10px;
+    padding: 5px;
+  
+  }
+
+  .formLarge span{
+    text-decoration: underline;
+    
+  }
+
+  .comments-history{
+    width: 90%;
+    background-color: white;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    display: block;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 3px;
+    text-align: left;
+  }
+  
+  .comment-card-history{
+    display: inline-block;
+  }
+  
+  .comments-history span{
+   font-weight: bold;
+  
+  }

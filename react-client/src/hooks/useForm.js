@@ -6,7 +6,14 @@ export function useForm(initialValues,submitHandler){
     function updateFormFields(data){
       setFormData(data)
     }
-
+    function clearFormFileds(exceptionFields){
+      let exceptionObject={}
+      exceptionFields.forEach((field)=>{
+        exceptionObject[field]=formData[field]
+      })
+      
+      setFormData({...initialValues,...exceptionObject});
+    }
     function onChangeUserForm(e){
   
         setFormData((oldUserState)=>{
@@ -31,6 +38,7 @@ export function useForm(initialValues,submitHandler){
         onChangeUserForm,
         onSubmitUserForm,
         formData,
-        updateFormFields
+        updateFormFields,
+        clearFormFileds
     }
 }
