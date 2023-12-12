@@ -7,10 +7,20 @@ import { useService } from "../../hooks/useService";
 import dashboardServiceFactory from "../../api/services/dashboardServiceFactory";
 import ReportButtons from "./ReportButtons";
 import styles from './Dashboard.module.css'
+import adminServiceFactory from "../../api/services/adminServiceFactory";
 
 export default function Dashboard(){
-    const dashAPI=useService(dashboardServiceFactory)
+
     const ctxGlobal=useContext(GlobalContext)
+    const dashAPI=useService(dashboardServiceFactory)
+    const adminAPI=useService(adminServiceFactory)
+    let chosenFunction;
+    if (ctxGlobal.user.role==='Admin'){
+        chosenFunction=adminAPI.getAllAdminInfo;
+    }else{
+        chosenFunction=dashAPI.getAll
+    }
+    
     const 
         {
             loadDashboardInfo,
@@ -19,9 +29,9 @@ export default function Dashboard(){
     useEffect(()=>{
 
         try {
-            loadDashboardInfo(dashAPI.getAll)
+            loadDashboardInfo(chosenFunction)
         } catch (error) {
-            ctxGlobal.handeleError()
+            ctxGlobal.handleError(error)
         }
         
     },[]);
@@ -31,8 +41,13 @@ export default function Dashboard(){
     <>
 
         <div className={styles["search-wrapper-div"]}>
-            <SearchForm/>
-            <ReportButtons/>  
+            
+            {['Admin','Workflow'].includes(ctxGlobal.user.role)?'':
+           <>
+                <SearchForm/>
+                <ReportButtons/>
+           </> 
+            }  
         </div>
         <h2>{dashboardState.searchContextString}</h2>
         <div className="tableLarge">

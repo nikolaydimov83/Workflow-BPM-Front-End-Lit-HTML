@@ -8,6 +8,11 @@ import { useForm } from "../../hooks/useForm";
 import { loadFormData } from "../../utils/handleFormData";
 import { Link } from "react-router-dom";
 import styles from './Details.module.css';
+import formStyles from './DetailsIapplyData.module.css'
+import DetailsMainInfo from "./DetailsMainInfo";
+import DetailsIapplyData from "./DetailsIapplyData";
+import DetailsExplanation from "./DetailsExplanation";
+import DetailsComment from "./DetailsComment";
 
 export default function Details(){
     const {id} = useParams();
@@ -72,64 +77,41 @@ export default function Details(){
 
                 <div className={styles.formLarge}>
 
-                    <div className={styles["details-headline-wrapper"]}>
-                        <h1><span>Subject:</span> {request?.subjectId?.subjectName}</h1>
-                        <h1><span>Статус:</span> {request?.status?.statusName}</h1>
-                        <h1><span>Краен Срок:</span> {request.deadlineDate}</h1>
-                        <h1><span>Клиент:</span> {request.clientName}</h1>
+                    <DetailsMainInfo request={request}/>
+                    <DetailsIapplyData request={request}/>
+
+
+                    <div className={formStyles["inlineDivDetails"]}>
+                        <h3>Информация за статус на заявката</h3>
+                        <p class="details-property-info"><span>Статус</span>:  {request?.status?.statusName}</p>
+                        <p class="details-property-info"><span>Изпратен от</span>:  {request.statusSender}</p>
+                        <p class="details-property-info"><span>Изпратен на дата</span>:  {request.statusIncomingDate}</p>
+                        
+                        {request.checkUserCanChangeStatus?
+                        <form onSubmit={onSubmitUserForm}>
+                            <label for='nextStatus'>Промени статус на:</label>
+                            <select 
+                                value={formData.nextStatus}
+                                onChange={onChangeUserForm} 
+                                name="nextStatus"
+                            >
+                                {request?.status?.nextStatuses.map((nextStatus)=>
+                                    <option key={nextStatus._id} value={nextStatus._id} >{nextStatus.statusName}</option>
+                                )}
+                            </select>
+                            <button>Смени Статус</button>
+                            <Link to={`/comment/create/${request._id}`}>Добави коментар</Link>
+                            {request.privilegedUser?<Link to={`/edit/${request._id}`}>Промени Данни</Link>:''}
+                        </form>
+                        
+                        :<Link to={`/comment/create/${request._id}`}>Добави коментар</Link>}
+
                     </div>
-
-                    <div className={styles["details-headline-wrapper"]}>
-                    <h1>Последен Коментар:</h1>
-                    <p>{request.lastCommnet?request.lastCommnet.commentOwner.email+': '+request.lastCommnet.body:'Все още няма коментари'}</p>
-                    </div>
-                    <div className={styles["inlineDivDetails"]}>
-                    <h3>Информация за клиента</h3>
-                    <p class="details-property-info"><span>ФЦ/Рефериращ ФЦ</span>:  {request.finCenter}/{request.refferingFinCenter?request.refferingFinCenter:`Няма рефериращ`}</p>
-                    <p class="details-property-info"><span>Номер I-Apply</span>:  {request.iApplyId}</p>
-                    <p class="details-property-info"><span>ЕГН/Булстат</span>:   {request.clientEGFN}</p>
-                    <p class="details-property-info"><span>Клиент</span>:   {request.clientName}</p>
-                    <p class="details-property-info"><span>Продукт</span>:    {request.product}</p>
-                    <p class="details-property-info"><span>Сума</span>:  {request.ccy} {request.amount}</p>
-
-                    
-                </div>
-
-                <div className={styles["inlineDivDetails"]}>
-                    <h3>Информация за статус на заявката</h3>
-                    <p class="details-property-info"><span>Статус</span>:  {request?.status?.statusName}</p>
-                    <p class="details-property-info"><span>Изпратен от</span>:  {request.statusSender}</p>
-                    <p class="details-property-info"><span>Изпратен на дата</span>:  {request.statusIncomingDate}</p>
-                    
-                    {request.checkUserCanChangeStatus?
-                    <form onSubmit={onSubmitUserForm}>
-                        <label for='nextStatus'>Промени статус на:</label>
-                        <select value={formData.nextStatus}onChange={onChangeUserForm} class="details-property-info" name="nextStatus">
-                            {request?.status?.nextStatuses.map((nextStatus)=>
-                                <option key={nextStatus._id} value={nextStatus._id} >{nextStatus.statusName}</option>
-                            )}
-                        </select>
-                        <button>Смени Статус</button>
-                        <Link to={`/comment/create/${request._id}`}>Добави коментар</Link>
-                        {request.privilegedUser?<Link to={`/edit/${request._id}`}>Промени Данни</Link>:''}
-                    </form>
-                    
-                    :<Link to={`/comment/create/${request._id}`}>Добави коментар</Link>}
-
-                </div>
-
-                <div className={styles["inlineDivDetails"]}>
-                    <h3>Описание по детайли на заявката</h3>
-                    <p class="details-property-info-description"><span></span>  {request.description}</p>
-                </div>
-
+                    <DetailsExplanation request={request}/>
                     {request.comments.map((comment)=>
-                        <div class='comments-history'>
-                             <div ><span>{comment?.commentOwner?.email} : {comment?.commentDate} </span>
-                             </div><p class='comment-body-history'><br/>{comment?.body}</p>
-                        </div>
+                        <DetailsComment comment={comment}/>
                     )}
-                </div>
+            </div>
             </section>
                     )
 }

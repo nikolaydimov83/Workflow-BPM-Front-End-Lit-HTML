@@ -7,7 +7,9 @@ body {
 }
 
 
-
+section{
+  margin-top: 15px;
+}
 footer {
   background-color: #7d7e7e;
   color: white;

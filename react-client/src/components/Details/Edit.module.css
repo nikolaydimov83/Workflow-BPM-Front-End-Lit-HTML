@@ -18,22 +18,15 @@
     overflow-wrap: break-word
   }
   
-  .formLarge h1 {
-    margin-block-start: 0.2em;
-    margin-block-end: 0.2em;
-    font-size: 19px;
-    text-align: left;
-  }
+
   .formLarge h3 {
   
     text-align: left;
   }
   
-  .formLarge h4{
-    font-size: x-large;
-  }
+
   
-  .inlineDivDetails input {
+  .formLarge input {
   
     display: block;
     font-family: "Roboto", sans-serif;
@@ -48,25 +41,10 @@
     font-size: 14px;
     text-align: center;
     border: 2px solid rgb(200,200,200);
-   
+    width: 90%;
   }
   
-  .formLarge select {
-    display: block;
-    font-family: "Roboto", sans-serif;
-    outline: 0;
-  
-    height: 50px;
-    border: 0;
-    margin: 0 0 15px;
-    padding: 5px;
-    border-radius: 10px;
-    box-sizing: border-box;
-    font-size: 14px;
-    text-align: center;
-    background-color: white;
-    border: 2px solid rgb(200,200,200);
-  }
+
 
   
 
@@ -76,7 +54,8 @@
     font-weight: bold;
     outline: 0;
     background: #989999;
-    width: 220px;
+    width: 90%;
+    height: 50px;
     
     border: 0;
     padding: 15px;
@@ -96,56 +75,38 @@
 
 
 
-  .formLarge a{
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
-    outline: 0;
-    background: #989999;
-    width: 190px;
-  
-    border: 0;
-    padding: 15px;
-    color: #ffffff;
-    font-size: 14px;
-    border-radius: 10px;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
+  .formLarge div{
+    flex-basis: calc(50% - 12px);
   }
   .formLarge form{
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-basis: calc(50% - 12px);
+    
   }
 
-
-
-  .formLarge select{
-    padding: 1px;
-    width: 97%;
-  }
-  .details-wrapper {
-    background: rgb(234, 243, 246);
-    max-width: 1400px;
-    max-height: 600px;
-    margin: auto;
-    margin-top: 45px;
-    padding: 20px;
-    text-align: center;
-    border-radius: 15px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-    display: flex;
-  }
-  
-  .details-group{
+  .formLarge p{
     text-align: left;
+    
+    font-weight: bold;
+ 
+    border-radius: 10px;
+    padding: 3px;
+  
   }
 
+  .formLarge textarea{
+    flex: 1;
+    padding: 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: center;
+    border: 2px solid rgb(200,200,200);
+    width: 90%;
+  }
   .formLarge span{
     text-decoration: underline;
     
   }
-

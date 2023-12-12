@@ -1,10 +1,14 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useDashboard } from "../hooks/useDashboard";
-import { trialTableStrucure,userTableStrucure } from "../tableStructures/tableStructures";
+import { adminTableStructure,userTableStrucure } from "../tableStructures/tableStructures";
+import { GlobalContext } from "./GlobalContext";
 export const  DashboardContext=createContext();
 
 export function DashboardContextProvider({children}){
-   const [dashboardContextState,setDashboardContextState]=useState(userTableStrucure)
+   const ctxGlobal=useContext(GlobalContext);
+   const table=ctxGlobal.user.role==='Admin'?adminTableStructure:userTableStrucure;
+   //useEffect(()=>{},[])
+   const [dashboardContextState,setDashboardContextState]=useState(table)
     const 
         {
             loadDashboardInfo,

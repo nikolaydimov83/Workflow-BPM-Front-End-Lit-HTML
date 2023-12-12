@@ -1,6 +1,6 @@
 section {
-    margin-bottom: 100px;
-    margin-top: 100px;
+    margin-bottom: 30px;
+    margin-top: 30px;
   }
   
   #home {
@@ -16,7 +16,7 @@ img {
   }
   
 h1 {
-    font-style: italic;
+   
     font-size: 39px;
     color: rgb(68, 67, 67);
     text-align: center;
@@ -24,7 +24,7 @@ h1 {
   
   h2,
   h3 {
-    font-style: italic;
+    
     font-size: 27px;
     color: rgb(68, 67, 67);
     text-align: center;

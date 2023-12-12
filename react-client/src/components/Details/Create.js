@@ -4,8 +4,8 @@ import { useService } from "../../hooks/useService";
 import dashboardServiceFactory from "../../api/services/dashboardServiceFactory";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { loadFormData } from "../../utils/handleFormData";
-import { DashboardContext } from "../../contexts/DashboardContext";
 import { useNavigate } from "react-router";
+import styles from './Create.module.css';
 
 export default function Create(){
     const [create,setCreate]=useState({subjects:[]});
@@ -78,12 +78,12 @@ export default function Create(){
     }
     return (
         <section id="create">
-        <div class="formLarge">
+        <div className={styles["formLarge"]}>
         <h2>Създай заявка</h2>
-        <form onSubmit={onSubmitUserForm} class="create-form">
-            <div class="inlineDiv">
+        <form onSubmit={onSubmitUserForm} className={styles["formLarge"]}>
+            <div className={styles["inlineDiv"]}>
                 <label for='iApplyId'>Iapply ID</label>
-                <input
+                <input className={styles["normal"]}
                 type="text"
                 name="iApplyId"
                 id="iApplyId"
@@ -103,7 +103,7 @@ export default function Create(){
                 
                 </select>
                 <label for='deadlineDate'>Краен срок</label>
-                <input
+                <input className={styles["normal"]}
                 onChange={onChangeUserForm}
                 value={formData.deadlineDate}
                 type="date"
@@ -112,7 +112,7 @@ export default function Create(){
                 placeholder="Краен срок"
                 />
                 <label for='clientEGFN'>ЕГН/Булстат</label>
-                <input
+                <input className={styles["normal"]}
                 onChange={onChangeUserForm}
                 value={formData.clientEGFN}
                 type="text"
@@ -123,13 +123,13 @@ export default function Create(){
                 disabled
                 />
             </div>
-            <div class="inlineDiv">
+            <div className={styles["inlineDiv"]}>
             <label for='finCenter'>Клон/Рефериращ клон</label>
             <div>
-            <input
+            <input 
                 onChange={onChangeUserForm}
                 value={formData.finCenter}                
-                class="small"
+                className={styles["small"]}
                 type="text"
                 name="finCenter"
                 id="finCenter"
@@ -140,7 +140,7 @@ export default function Create(){
                 <input
                 onChange={onChangeUserForm}
                 value={formData.refferingFinCenter}                
-                class="verySmall"
+                className={styles["verySmall"]}
                 type="text"
                 name="refferingFinCenter"
                 id="refferingFinCenter"
@@ -152,7 +152,7 @@ export default function Create(){
             </div>  
 
                 <label for='clientName'>Клиент</label>
-                <input
+                <input className={styles["normal"]}
                 onChange={onChangeUserForm}
                 value={formData.clientName}                
                 type="text"
@@ -163,7 +163,7 @@ export default function Create(){
                
                 />
                 <label for='product'>Продукт</label>
-                <input
+                <input className={styles["normal"]}
                 onChange={onChangeUserForm}
                 value={formData.product}                
                 type="text"
@@ -174,29 +174,29 @@ export default function Create(){
              
                 />
                 <label for='amount'>Сума</label>
-                    <div>
-                    <input
-                    onChange={onChangeUserForm}
-                    value={formData.ccy}
-                    class="verySmall"
-                    type="text"
-                    name="ccy"
-                    id="ccy"
-                    placeholder="CCY"
-                    disabled
-                  
-                    />
-                    <input class="small"
-                    onChange={onChangeUserForm}
-                    value={formData.amount}
-                    type="number"
-                    name="amount"
-                    id="amount"
-                    placeholder="Сума"
-                    disabled
-             
-        
-                    />
+                    <div >
+                        <input 
+                        onChange={onChangeUserForm}
+                        value={formData.ccy}
+                        className={styles["verySmall"]}
+                        type="text"
+                        name="ccy"
+                        id="ccy"
+                        placeholder="CCY"
+                        disabled
+                    
+                        />
+                        <input className={styles["small"]}
+                        onChange={onChangeUserForm}
+                        value={formData.amount}
+                        type="number"
+                        name="amount"
+                        id="amount"
+                        placeholder="Сума"
+                        disabled
+                
+            
+                        />
 
                     </div>
             </div>

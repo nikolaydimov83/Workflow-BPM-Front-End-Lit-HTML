@@ -19,8 +19,12 @@ const allowedTypes={
     'clientName':'string',
     'product':'string',
     'ccy':'string',
-    'amount':'amount'
-
+    'amount':'amount',
+    'branchNumber':'finCenter',
+    'branchName':'string',
+    'role':'string',
+    'userStatus':'userStatus',
+    'id':'string'
 }
 export function loadFormData(data){
     let formData=Object.entries(data);
@@ -126,22 +130,26 @@ export function emptyFormData(inputsWrapper){
         if (Number(value)<1||Number(value)>999){
             throw new Error('Финансовия центрър е число между 1 и 999')
         }
+        return value
     },
     'refferingFinCenter':()=>{
         
         if (value!=='Не'&&(Number(value)<1||Number(value)>999)){
             throw new Error('Рефериращия финансов центрър е число между 1 и 999')
         }
+        return value
     },
     'clientEGFN':()=>{
         if (value.length>10||value.length<9){
             throw new Error ('Невалиден формат на ЕГН/Булстат. Следва да бъде точно 10/9 цифри')
         }
+        return value
     },
     'amount':()=>{
         if (Number(value)<100){
             throw new Error('Некоректен размер на кредита. Размера не може да е по-малък от 100')
         }
+        return value
     },
     'iApplyId':()=>{
        
@@ -149,6 +157,12 @@ export function emptyFormData(inputsWrapper){
             if(!testForMatch){
                 throw new Error('Номера на заявлението не е в очкавания формат!')
             }
+        return value
+    },
+    'userStatus':()=>{
+        if(value!=='Active'&&value!=='Inactive'){
+            throw new Error ('User status is not correct! Should be Active/Inactive!')
+        }
         return value
     }
    }   

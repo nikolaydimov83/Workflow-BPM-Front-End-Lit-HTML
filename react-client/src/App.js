@@ -14,6 +14,8 @@ import Details from './components/Details/Details';
 import CreateComment from './components/Commnet/CreateComment';
 import Edit from './components/Details/Edit';
 import Create from './components/Details/Create';
+import EditUser from './components/Admin/EditUser';
+import CreateUser from './components/Admin/CreateUser';
 
 
 function App() {
@@ -34,7 +36,9 @@ function App() {
           <Route path='/dashboard/:id' element={<Details/>}/>
           <Route path='/comment/create/:id' element={<CreateComment/>}/>
           <Route path='/edit/:id' element={<Edit/>}/>
-          <Route path='/create' element={<Create/>}/>  
+          <Route path='/create' element={<Create/>}/> 
+          <Route path='/admin/:id' element={<EditUser/>}/> 
+          <Route path='/createUser' element={<CreateUser/>}/>
         </Routes>
       </div>
 

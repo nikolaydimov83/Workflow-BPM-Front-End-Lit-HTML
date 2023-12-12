@@ -46,14 +46,24 @@ export const userTableStrucure=[
     }
   ]
 
-  export const trialTableStrucure=[
-    { Header: 'Създател', accessor: 'requestCreatorEmail' },
-    { Header: 'Апликация номер', accessor: 'iApplyId' },
+  export const adminTableStructure=[
+    { 
+      Header: 'Клон номер', 
+      accessor: 'branchNumber',
+      sortType: (rowA, rowB) => (Number(rowA.original.branchNumber)-Number(rowB.original.branchNumber))
+    },
+    { Header: 'Име на клон', accessor: 'branchName' },
+    { Header: 'Email', accessor: 'email' },
+    { Header: 'Роля', accessor: 'role' },
+    { Header: 'Финална Роля', accessor: 'roleName' },
+    { Header: 'Статус на потребител', accessor: 'userStatus' },
+    { Header: 'Потребител Id', accessor: '_id' },
 
     {
       Header: 'Action',
       accessor: (row) => (
-        <Link to={`/dashboard/${row._id}`}>Покажи</Link>
+        <Link to={`/admin/${row._id}`}>Покажи</Link>
       ),
     }
   ]
+
