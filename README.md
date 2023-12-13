@@ -185,3 +185,16 @@ VERY IMPORTANT - From the Subject select field the user choses the Subject of th
 A request cannot be generated when Subject is not selected - the server will not approve it.
 
 Upon successful creation the new request will be assigned with current status equal to the initial status of the workflow that is set to the subject of the request and the user will be send to the /dashboard
+
+
+## PLEASE READ
+
+Тъй като възможността потребител да създава заявки, да ги edit-ва и да ги движи по workflow е свъзано с параметризации от потребител със специални права, чиято функционалност още дописвам на React, обръщам внимание, че през лит версията съм напараметризирал няколко юзъра за удобство, ако проверяващите искат да разгледат:
+
+User: ndimov@postbank.bg, pass:123 - потребител, който може да създава заявка със Subject "Учредяване на залог". Този потребител е Super потребител за заявки със Subject "Учредяване на залог". Какво означава супер потребител - в README.md :)
+
+Потребители dsrangelova@postbank.bg, epaneva@postbank.bg, nnachev@postbank.bg - всички са част от процеса със Subject "Учредяване на залог". Всички използват pass 123. dsrangelova и epaneva са с роли на клон, nnachev е с роля на ЦУ
+
+Потребител rkostyaneva@postbank.bg - отново pass:123 е user admin
+
+Може да видите списък с текущите потребители и техните роли, да създадете нови и да променяте съществуващи. Молбата ми е, ако тествате промяната по данни на потребител да не го правите върху вече създадените, тъй като активно ги ползвам, за да тествам - по-добре създайте нов потребител и пробвайте с него промени.
