@@ -39,7 +39,19 @@ function App() {
           <Route path='/create' element={<Create/>}/> 
           <Route path='/admin/:id' element={<EditUser/>}/> 
           <Route path='/createUser' element={<CreateUser/>}/>
-        </Routes>
+          <Route path='/roles' element={            
+          
+            <DashboardContextProvider >
+              <Dashboard/>
+            </DashboardContextProvider>}/>
+            <Route path='/statuses' element={            
+          
+          <DashboardContextProvider >
+            <Dashboard/>
+          </DashboardContextProvider>}/>  
+          </Routes>
+          
+        
       </div>
 
     </AuthContextProvider>

@@ -23,7 +23,7 @@ export const userTableStrucure=[
     { 
       Header: 'Статус', 
       accessor: (row)=>row.status.statusName
-      },
+    },
     { 
       Header: 'Subject',
       accessor: (row)=>row.subjectId.subjectName
@@ -66,4 +66,31 @@ export const userTableStrucure=[
       ),
     }
   ]
+
+  export const workFlowTableStructure={
+    roles:[
+    
+      { Header: 'Final Role', accessor: 'role' },
+      { Header: 'Role Name', accessor: 'roleName' },
+      { Header: 'Role Type', accessor: 'roleType' },
+      { 
+        Header: 'Role Create Date',
+        accessor:'roleCreateDate',
+        sortType: (rowA, rowB) => compareDates(rowA.original.deadlineDate, rowB.original.deadlineDate) 
+      },
+      {
+        Header: 'Action',
+        accessor: (row) => (
+          <Link to={`/roles/${row._id}`}>Покажи</Link>
+        ),
+      }
+    ],
+    statuses:[
+      { Header: 'Status Name', accessor: 'statusName' },
+      { 
+        Header: 'Status Type', 
+        accessor: (row)=>row?.statusType?.role
+      },
+    ]
+  }
 

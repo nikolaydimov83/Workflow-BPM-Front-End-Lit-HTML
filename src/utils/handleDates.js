@@ -5,6 +5,7 @@ const dateToString=(date)=>{
   return moment(date).format(format);
 }
 export const stringifyDates=(data)=> {
+
     if (data.length > 0) {
       data.forEach(element => {
         if (element.statusIncomingDate){

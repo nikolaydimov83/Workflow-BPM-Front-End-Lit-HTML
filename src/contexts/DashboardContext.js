@@ -1,14 +1,30 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDashboard } from "../hooks/useDashboard";
-import { adminTableStructure,userTableStrucure } from "../tableStructures/tableStructures";
+import { adminTableStructure,userTableStrucure,workFlowTableStructure } from "../tableStructures/tableStructures";
 import { GlobalContext } from "./GlobalContext";
+import { useWorkflow } from "../hooks/useWorkfow";
 export const  DashboardContext=createContext();
 
 export function DashboardContextProvider({children}){
    const ctxGlobal=useContext(GlobalContext);
-   const table=ctxGlobal.user.role==='Admin'?adminTableStructure:userTableStrucure;
-   //useEffect(()=>{},[])
-   const [dashboardContextState,setDashboardContextState]=useState(table)
+   const [rolesStatusesWorkflowsSubjects, setrolesStatusesWorkflowsSubjects]=useState('statuses');
+   const initialTable=getTableStructure(rolesStatusesWorkflowsSubjects);
+
+   const [tableStructureState,setTableStructureState]=useState(initialTable) 
+   
+    function getTableStructure(workflowListType){
+       if (ctxGlobal.user.role==='Admin'){
+        return (adminTableStructure)
+       }else if(ctxGlobal.user.role==='Workflow'){
+
+           return (workFlowTableStructure[workflowListType]);
+
+       }else{
+
+            return (userTableStrucure)
+       }
+  }
+  
     const 
         {
             loadDashboardInfo,
@@ -20,8 +36,11 @@ export function DashboardContextProvider({children}){
             prepareRow,
             handleFilterChange,
             filterText,
-            filteredState
-        }=useDashboard(dashboardContextState);
+            filteredState,
+            setNewTableStructure
+            
+            
+        }=useDashboard(initialTable);
     
     return (
     
@@ -39,7 +58,10 @@ export function DashboardContextProvider({children}){
         handleFilterChange,
         filterText,
         filteredState,
-        dashboardContextState
+        setNewTableStructure,
+        getTableStructure,
+        rolesStatusesWorkflowsSubjects,
+        setrolesStatusesWorkflowsSubjects
         }}>
         {children}
     </DashboardContext.Provider>

@@ -1,9 +1,9 @@
 import { useState,useMemo } from "react";
-import { compareDates, stringifyDates } from "../utils/handleDates";
+import { stringifyDates } from "../utils/handleDates";
 import { useTable, useSortBy, useFilters } from 'react-table'
-import { Link } from "react-router-dom";
 
-export function useDashboard(tableStructure){
+
+export function useDashboard(initialTableStructure){
     const [dashboardState,setDashboardState]=useState(
         {
             result:[],
@@ -16,7 +16,10 @@ export function useDashboard(tableStructure){
     //state for sort  
     const [sortConfig, setSortConfig] = useState({});
 
-    const columns = useMemo(() => tableStructure, []);
+    const [tableStructure,setTableStructure]=useState(initialTableStructure)
+
+    const columns = useMemo(() => tableStructure, [tableStructure]);
+    
     
     const {
             getTableProps,
@@ -30,7 +33,7 @@ export function useDashboard(tableStructure){
               data: useMemo(() => {
                 // Filter the data based on the filterText
                 return getSortedFilteredState(dashboardState, columns, filterText, sortConfig);
-              }, [dashboardState.result, filterText, sortConfig]),
+              }, [filterText, sortConfig,dashboardState,columns]),
             },
             useFilters,
             useSortBy
@@ -41,13 +44,21 @@ export function useDashboard(tableStructure){
         setSortConfig({});
       };
 
-    
+    function setNewTableStructure(newTableStructure){
+        setTableStructure(newTableStructure)
+    }
     function loadDashboardInfo(apiFunc,inputData){
         
         apiFunc(inputData)
             .then((data)=>{
-                const items=stringifyDates(data.result)
-                setDashboardState({result:items,searchContextString:data.searchContextString});
+                if (!data.result){
+                    const items=stringifyDates(data)
+                    setDashboardState({result:items,searchContextString:''});
+                }else{
+                    const items=stringifyDates(data.result)
+                    setDashboardState({result:items,searchContextString:data.searchContextString});                    
+                }
+
             })
             .catch((err)=>{
                 throw err
@@ -65,7 +76,8 @@ export function useDashboard(tableStructure){
             prepareRow,
             handleFilterChange,
             filterText,
-            filteredState
+            filteredState,
+            setNewTableStructure
         }
         )
 }
@@ -76,9 +88,9 @@ function getSortedFilteredState(dashboardState, columns, filterText, sortConfig)
             let value;
 
             if (typeof column.accessor === 'function') {
-                value = String(column.accessor(row)).toLowerCase();
+                value = String(column.accessor(row)||'').toLowerCase();
             } else {
-                value = String(row[column.accessor]).toLowerCase();
+                value = String(row[column.accessor]||'').toLowerCase();
             }
 
             const filterTextLower = filterText.toLowerCase();
@@ -91,10 +103,10 @@ function getSortedFilteredState(dashboardState, columns, filterText, sortConfig)
         filteredData.sort((a, b) => {
             const columnId = sortConfig.column.id;
             return sortConfig.direction === 'asc'
-                ? a[columnId].localeCompare(b[columnId])
-                : b[columnId].localeCompare(a[columnId]);
+            ? (a[columnId] || '').localeCompare(b[columnId] || '')
+            : (b[columnId] || '').localeCompare(a[columnId] || '');
         });
     }
-
+    
     return filteredData;
 }

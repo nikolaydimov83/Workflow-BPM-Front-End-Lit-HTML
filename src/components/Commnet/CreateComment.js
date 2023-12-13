@@ -6,6 +6,7 @@ import dashboardServiceFactory from "../../api/services/dashboardServiceFactory"
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { stringifyDates } from "../../utils/handleDates";
 import { loadFormData } from "../../utils/handleFormData";
+import styles from './CreateComment.module.css'
 
 export default function CreateComment(){
     const {id}=useParams();
@@ -56,9 +57,10 @@ useEffect(()=>{
 },[id])
     return (
 <section id="create">
-<div class="formLarge">
-  <h4>Добавяне на коментар</h4>
-  <div class="comment-request-details">
+<div className={styles["formLarge"]}>
+  
+  <div className={styles["inlineDiv"]}>
+  <h4>Информация за заявката</h4>
     <p class="details-cretae-comment"><span>ФЦ/Рефериращ ФЦ</span>:  {createViewState.finCenter}/{createViewState.refferingFinCenter?createViewState.refferingFinCenter:`Няма рефериращ`}</p>
     <p class="details-cretae-comment"><span>Номер I-apply</span>:  {createViewState.iApplyId}</p>
     <p class="details-cretae-comment"><span>ЕГН/Булстат</span>:   {createViewState.clientEGFN}</p>
@@ -72,8 +74,9 @@ useEffect(()=>{
     <p class="details-cretae-comment"><span>Последен коментар</span>:  {createViewState?.lastCommnet?.body}</p>
   </div>
 
+    
+    <form onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
     <h3>Напиши коментар</h3>
-    <form onSubmit={onSubmitUserForm} class="create-comment-form">
         <textarea value={formData.commentText} onChange={onChangeUserForm} type="textarea" name="commentText" id="commentText" placeholder="Описание"></textarea>
         <button type="submit">Изпрати</button>
     </form>

@@ -84,7 +84,7 @@ export function emptyFormData(inputsWrapper){
 }
 
  function checkInputCorrect(value,allowedTypes,type){
-
+    value=value.trim()
    let action={
     
     'password':()=>{

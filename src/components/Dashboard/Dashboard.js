@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import SearchForm from "./SearchForm";
 import { DashboardContext } from "../../contexts/DashboardContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
@@ -8,24 +8,35 @@ import dashboardServiceFactory from "../../api/services/dashboardServiceFactory"
 import ReportButtons from "./ReportButtons";
 import styles from './Dashboard.module.css'
 import adminServiceFactory from "../../api/services/adminServiceFactory";
+import workflowServiceFactory from "../../api/services/workflowServiceFactory";
+import DashboardWorkflowNav from "./DashboardWorkflowNav";
 
 export default function Dashboard(){
 
-    const ctxGlobal=useContext(GlobalContext)
-    const dashAPI=useService(dashboardServiceFactory)
-    const adminAPI=useService(adminServiceFactory)
-    let chosenFunction;
-    if (ctxGlobal.user.role==='Admin'){
-        chosenFunction=adminAPI.getAllAdminInfo;
-    }else{
-        chosenFunction=dashAPI.getAll
-    }
+    const ctxGlobal=useContext(GlobalContext);
+    const {setNewTableStructure, loadDashboardInfo, getTableStructure,dashboardState, rolesStatusesWorkflowsSubjects}=useContext(DashboardContext)
+    const dashAPI=useService(dashboardServiceFactory);
+    const adminAPI=useService(adminServiceFactory);
+    const workflowApi=useService(workflowServiceFactory)
     
-    const 
-        {
-            loadDashboardInfo,
-            dashboardState,
-        }=useContext(DashboardContext)
+
+
+        
+    useEffect(()=>{
+        let newChosenFunc=chooseApiFunction();
+        try {
+            const newTableStructure=getTableStructure(rolesStatusesWorkflowsSubjects)
+            loadDashboardInfo(newChosenFunc)
+            setNewTableStructure(newTableStructure)
+            
+        } catch (error) {
+            ctxGlobal.handleError(error)
+        }
+    },[rolesStatusesWorkflowsSubjects])
+    
+
+    const chosenFunction=chooseApiFunction();
+
     useEffect(()=>{
 
         try {
@@ -35,7 +46,20 @@ export default function Dashboard(){
         }
         
     },[]);
-
+    function chooseApiFunction(){
+        let chosenFunction;
+        if (ctxGlobal.user.role==='Admin'){
+            chosenFunction=adminAPI.getAllAdminInfo;
+        }else if(ctxGlobal.user.role==='Workflow'){
+            
+            chosenFunction=workflowApi[rolesStatusesWorkflowsSubjects];
+        }
+        
+        else{
+            chosenFunction=dashAPI.getAll
+        }
+        return chosenFunction
+    }
     return (
         
     <>
@@ -48,6 +72,13 @@ export default function Dashboard(){
                 <ReportButtons/>
            </> 
             }  
+
+            {['Workflow'].includes(ctxGlobal.user.role)?<DashboardWorkflowNav/>:''
+        
+                
+              
+           
+            }
         </div>
         <h2>{dashboardState.searchContextString}</h2>
         <div className="tableLarge">
