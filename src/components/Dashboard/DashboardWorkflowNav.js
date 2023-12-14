@@ -8,8 +8,6 @@ export default function DashboardWorkflowNav(){
     
     function handleWorkflowNavClick(e){
         setrolesStatusesWorkflowsSubjects(e.target.name)
-            console.log(rolesStatusesWorkflowsSubjects)
-        
     }
     
     return (
@@ -18,7 +16,7 @@ export default function DashboardWorkflowNav(){
         <Link name='statuses' to="/statuses" onClick={handleWorkflowNavClick}>Statuses</Link>
         <Link name='workflows' to="/workflows" onClick={handleWorkflowNavClick}>Workflows</Link>
         <Link name='subjects' to="/subjects" onClick={handleWorkflowNavClick}>Subjects</Link>
-        
+        <Link name={'create'+rolesStatusesWorkflowsSubjects} to={'/create'+rolesStatusesWorkflowsSubjects} >Create {rolesStatusesWorkflowsSubjects} </Link>
         </nav>
     )
 }

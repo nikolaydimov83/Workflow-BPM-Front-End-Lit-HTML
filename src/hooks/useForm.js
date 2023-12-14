@@ -6,6 +6,11 @@ export function useForm(initialValues,submitHandler){
     function updateFormFields(data){
       setFormData(data)
     }
+    function updateSomeFormFields(data){
+      setFormData((oldState)=>{
+        return {...oldState,...data}
+      })
+    }
     function clearFormFileds(exceptionFields){
       let exceptionObject={}
       exceptionFields.forEach((field)=>{
@@ -22,7 +27,14 @@ export function useForm(initialValues,submitHandler){
               !Array.isArray(oldUserState[e.target.name]) &&
               oldUserState[e.target.name] !== null){
             return {...oldUserState, [e.target.name]:userCheckBoxObject}
-          }else{
+          }else  if(Array.isArray(oldUserState[e.target.name]) &&
+          oldUserState[e.target.name] !== null){
+
+        return {...oldUserState,[e.target.name]:Array.from(e.target.selectedOptions,(option)=>option.value)}
+      
+      }
+          
+          else{
             
             return {...oldUserState, [e.target.name]:e.target.value}
           }
@@ -39,6 +51,7 @@ export function useForm(initialValues,submitHandler){
         onSubmitUserForm,
         formData,
         updateFormFields,
+        updateSomeFormFields,
         clearFormFileds
     }
 }

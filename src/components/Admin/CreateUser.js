@@ -26,7 +26,8 @@ export default function CreateUser(){
                         email:'',
                         role:'',
                         userStatus:''
-                    },handleOnSbmtUsrCreateFrm)
+                    },handleOnSbmtUsrCreateFrm);
+
 
     useEffect(()=>{
         api.get('/workflow/roles')
@@ -37,7 +38,7 @@ export default function CreateUser(){
                     branchNumber:'',
                     branchName:'',
                     email:'',
-                    role:data[0]._id,
+                    role:data[0]?._id,
                     userStatus:''
                 });
             

@@ -24,7 +24,17 @@ const allowedTypes={
     'branchName':'string',
     'role':'string',
     'userStatus':'userStatus',
-    'id':'string'
+    'id':'string',
+    'roleName':'roleName',
+    'roleType':'roleType',
+    'nextStatuses':'string',
+    'statusType':'string',
+    'statusName':'string',
+    'initialStatus':'string',
+    'rolesAllowedToFinishRequest':'string',
+    'workflowName':'string',
+    'assignedToWorkflow':'string',
+    'subjectName':'string'
 }
 export function loadFormData(data){
     let formData=Object.entries(data);
@@ -165,7 +175,20 @@ export function emptyFormData(inputsWrapper){
             throw new Error ('User status is not correct! Should be Active/Inactive!')
         }
         return value
-    }
+    },
+    'roleName':()=>{
+        if ((value==='')){
+            throw new Error('Име на роля е задължително поле');
+        }
+        return value
+    },
+    'roleType':()=>{
+        if ((value!=='Branch'&&value!=='HO')){
+            throw new Error('Грешен тип на роля - трябва да бъде HO или Branch');
+        }
+        return value
+    },
+    'optional':()=>value
    }   
 
     return action[allowedTypes[type]]()

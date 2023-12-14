@@ -16,6 +16,10 @@ import Edit from './components/Details/Edit';
 import Create from './components/Details/Create';
 import EditUser from './components/Admin/EditUser';
 import CreateUser from './components/Admin/CreateUser';
+import CreateRole from './components/WorkflowDesign/CreateRole';
+import CreateStatus from './components/WorkflowDesign/CreateStatus';
+import CreateWorkflow from './components/WorkflowDesign/CreateWorkflow';
+import CreateSubject from './components/WorkflowDesign/CreateSubject';
 
 
 function App() {
@@ -65,7 +69,11 @@ function App() {
           <DashboardContextProvider >
             <Dashboard/>
           </DashboardContextProvider>}
-        />                  
+        /> 
+        <Route path='/createroles' element={<CreateRole/>}/>  
+        <Route path='/createstatuses' element={<CreateStatus/>}/>   
+        <Route path='/createworkflows' element={<CreateWorkflow/>}/> 
+        <Route path='/createsubjects' element={<CreateSubject/>}/>            
           </Routes>
           
         
