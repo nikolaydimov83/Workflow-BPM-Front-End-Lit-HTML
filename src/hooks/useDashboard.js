@@ -15,7 +15,7 @@ export function useDashboard(initialTableStructure){
   
     //state for sort  
     const [sortConfig, setSortConfig] = useState({});
-
+    //chosen table structure    
     const [tableStructure,setTableStructure]=useState(initialTableStructure)
 
     const columns = useMemo(() => tableStructure, [tableStructure]);

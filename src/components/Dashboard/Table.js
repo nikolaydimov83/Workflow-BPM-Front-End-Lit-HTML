@@ -22,7 +22,7 @@ export default function Table(){
   }
     return (
       <div>
-        <div className={styles.tableOpsWrapper}>
+        <div /*className={styles.tableOpsWrapper}*/>
 
         <input
         

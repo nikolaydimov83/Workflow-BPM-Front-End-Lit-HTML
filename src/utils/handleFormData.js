@@ -84,7 +84,8 @@ export function emptyFormData(inputsWrapper){
 }
 
  function checkInputCorrect(value,allowedTypes,type){
-    value=value.trim()
+
+    
    let action={
     
     'password':()=>{
@@ -134,7 +135,7 @@ export function emptyFormData(inputsWrapper){
     },
     'refferingFinCenter':()=>{
         
-        if (value!=='Не'&&(Number(value)<1||Number(value)>999)){
+        if (value&&(Number(value)<1||Number(value)>999)){
             throw new Error('Рефериращия финансов центрър е число между 1 и 999')
         }
         return value

@@ -76,7 +76,7 @@ export const userTableStrucure=[
       { 
         Header: 'Role Create Date',
         accessor:'roleCreateDate',
-        sortType: (rowA, rowB) => compareDates(rowA.original.deadlineDate, rowB.original.deadlineDate) 
+        sortType: (rowA, rowB) => compareDates(rowA.original.roleCreateDate, rowB.original.roleCreateDate) 
       },
       {
         Header: 'Action',
@@ -91,6 +91,55 @@ export const userTableStrucure=[
         Header: 'Status Type', 
         accessor: (row)=>row?.statusType?.role
       },
+      { 
+        Header: 'Next Statuses', 
+        accessor: (row)=>row?.nextStatuses?.map((status,index)=><p key={status._id}>{index+1}. {status.statusName}</p>)
+      },
+      { 
+        Header: 'Status Create Date', 
+        accessor: 'statusCreateDate',
+        sortType: (rowA, rowB) => compareDates(rowA.original.statusCreateDate, rowB.original.statusCreateDate) 
+    },
+    {
+      Header: 'Action',
+      accessor: (row) => (
+        <Link to={`/statuses/${row._id}`}>Покажи</Link>
+      ),
+    }
+    ],
+    workflows:[
+      {Header:'Workflow Name', accessor:'workflowName'},
+      {
+        Header:'Allowed Statuses',
+        accessor: (row)=>row?.allowedStatuses?.map((status,index)=><p key={status._id}>{index+1}. {status.statusName}</p>)
+      },
+      {
+        Header:'Special Statuses',
+        accessor: (row)=>row?.rolesAllowedToFinishRequest?.map((role,index)=><p key={role._id}>{index+1}. {role.role}</p>)
+      },
+      { 
+        Header: 'Workflow Create Date', 
+        accessor: 'workflowCreateDate',
+        sortType: (rowA, rowB) => compareDates(rowA.original.workflowCreateDate, rowB.original.workflowCreateDate) 
+    },
+    {
+      Header: 'Action',
+      accessor: (row) => (
+        <Link to={`/workflows/${row._id}`}>Покажи</Link>
+      ),
+    }
+    ],
+    subjects:[
+      {Header:'Subject Name',accessor:'subjectName'},
+      {
+        Header:'Workflow',
+        accessor: (row)=>row?.assignedToWorkflow?.workflowName
+      },
+      { 
+        Header: 'Subject Create Date', 
+        accessor: 'subjectCreateDate',
+        sortType: (rowA, rowB) => compareDates(rowA.original.subjectCreateDate, rowB.original.subjectCreateDate) 
+    }
     ]
   }
 

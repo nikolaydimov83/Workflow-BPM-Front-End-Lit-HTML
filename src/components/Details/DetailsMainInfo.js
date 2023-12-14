@@ -1,3 +1,4 @@
+import { splitStringToArrayByLineBreaks } from '../../utils/handleStrings'
 import styles from './DetailsMainInfo.module.css'
 export default function DetailsMainInfo({request}){
     return (
@@ -12,7 +13,13 @@ export default function DetailsMainInfo({request}){
                     <div className={styles["details-headline-wrapper"]}>
                         <h1>Последен Коментар:</h1>
                         <p>
-                            {request.lastCommnet?request.lastCommnet.commentOwner.email+': '+request.lastCommnet.body
+                            {request.lastCommnet?
+                            <>
+                            <span>{request.lastCommnet.commentOwner.email+': '}</span><br/>
+                            {splitStringToArrayByLineBreaks(request?.lastCommnet?.body)
+                            .map((commentLine)=><>{commentLine}<br/></>)}
+                            </>
+
                             :'Все още няма коментари'}
                         </p>
                     </div>

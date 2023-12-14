@@ -1,0 +1,28 @@
+
+
+  .nav {
+    background-color: #7a6e6e;
+    height: 0px;
+
+    display: flex;
+    justify-content: space-between;
+    color: rgb(228, 227, 227);
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+.nav a {
+    font-size: 1.5rem;
+    color: #0a0a0a;
+    font-weight: 400;
+    padding: 0 10px;
+    text-decoration: none;
+    color: rgb(150, 150, 150);
+    margin-left: 0.1em;
+    
+  }
+  
+  
+  .nav a:hover {
+    color: rgb(202, 203, 204);
+  }

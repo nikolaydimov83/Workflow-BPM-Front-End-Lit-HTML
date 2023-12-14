@@ -5,10 +5,8 @@ export default function workflowServiceFactory(token){
     return {
 
         roles:()=>api.get('/workflow/roles'),
-        statuses:()=>api.get('/workflow/statuses')
-
-
-        
-        
+        statuses:()=>api.get('/workflow/statuses'),
+        workflows:()=>api.get('/workflow/workflows'),
+        subjects:()=>api.get('/workflow/subjects')        
     }
 }

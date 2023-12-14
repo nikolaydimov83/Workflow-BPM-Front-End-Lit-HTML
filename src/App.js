@@ -39,16 +39,33 @@ function App() {
           <Route path='/create' element={<Create/>}/> 
           <Route path='/admin/:id' element={<EditUser/>}/> 
           <Route path='/createUser' element={<CreateUser/>}/>
+          
           <Route path='/roles' element={            
+    
+            <DashboardContextProvider >
+              <Dashboard/>
+            </DashboardContextProvider>}
+          />
+
+          <Route path='/statuses' element={            
           
             <DashboardContextProvider >
               <Dashboard/>
-            </DashboardContextProvider>}/>
-            <Route path='/statuses' element={            
+            </DashboardContextProvider>}
+          />  
+          <Route path='/workflows' element={            
           
           <DashboardContextProvider >
             <Dashboard/>
-          </DashboardContextProvider>}/>  
+          </DashboardContextProvider>}
+        /> 
+
+        <Route path='/subjects' element={            
+          
+          <DashboardContextProvider >
+            <Dashboard/>
+          </DashboardContextProvider>}
+        />                  
           </Routes>
           
         

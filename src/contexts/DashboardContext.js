@@ -3,14 +3,18 @@ import { useDashboard } from "../hooks/useDashboard";
 import { adminTableStructure,userTableStrucure,workFlowTableStructure } from "../tableStructures/tableStructures";
 import { GlobalContext } from "./GlobalContext";
 import { useWorkflow } from "../hooks/useWorkfow";
+import { useLocation } from "react-router";
 export const  DashboardContext=createContext();
 
 export function DashboardContextProvider({children}){
    const ctxGlobal=useContext(GlobalContext);
-   const [rolesStatusesWorkflowsSubjects, setrolesStatusesWorkflowsSubjects]=useState('statuses');
+   let pathname=useLocation().pathname.replace('/','');
+   if(pathname==='dashboard'){
+    pathname='roles'
+   }
+   const [rolesStatusesWorkflowsSubjects, setrolesStatusesWorkflowsSubjects]=useState(pathname);
    const initialTable=getTableStructure(rolesStatusesWorkflowsSubjects);
 
-   const [tableStructureState,setTableStructureState]=useState(initialTable) 
    
     function getTableStructure(workflowListType){
        if (ctxGlobal.user.role==='Admin'){

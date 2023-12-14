@@ -2,7 +2,7 @@
     background: rgb(234, 243, 246);
     max-width: 1400px;
     margin: auto;
-    margin-top: 45px;
+    margin-top: 35px;
     padding: 20px;
     text-align: center;
     border-radius: 15px;
@@ -27,16 +27,18 @@
     border-right: 1px solid rgb(160, 160, 160);
     border-bottom: 1px solid rgb(160, 160, 160);
     color:rgb(150, 150, 180);
+    margin: 0;
 }
 .tableLarge tr{
     background-color: white;
 }
 .tableLarge td {
-    padding: 0.1em;
+    padding: 8px;
     border-right: 1px solid rgb(160, 160, 160);
     border-bottom: 1px solid rgb(160, 160, 160);
     text-align: left;
     min-width: 95px;
+    margin: 0;
 }
 
 

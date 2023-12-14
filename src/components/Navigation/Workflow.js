@@ -7,7 +7,7 @@ export default function Workflow(){
 
     return (
         <div className="workflow">
-
+        <Link to="/dashboard">Моите Процеси</Link>  
         <Logout/>
       </div>
     )
