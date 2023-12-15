@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import { useForm } from "../../hooks/useForm";
 import { useService } from "../../hooks/useService";
 import workflowServiceFactory from "../../api/services/workflowServiceFactory";
@@ -6,15 +5,17 @@ import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { loadFormData } from "../../utils/handleFormData";
 import styles from "./CreateWorkflow.module.css"
-import { Link } from "react-router-dom";
+
 import WorkflowCreateEditNav from "./WorkflowCreateEditNav";
+import { useNavigate, useParams } from "react-router";
 
 export default function CreateWorkflow(){
-    const workflowApi=useService(workflowServiceFactory)
+    const workflowApi=useService(workflowServiceFactory);
     const navigate=useNavigate();
-    const ctxGlobal=useContext(GlobalContext)
+    const ctxGlobal=useContext(GlobalContext);
     const [roles,setRoles]=useState([]);
-    const [statuses,setStatuses]=useState([])
+    const [statuses,setStatuses]=useState([]);
+    const {id}=useParams();
     const {        
             onChangeUserForm,
             onSubmitUserForm,
@@ -29,16 +30,17 @@ export default function CreateWorkflow(){
                     
     function handleOnSbmtWorkflowCreateFrm(){
         try {
+            let action=id?workflowApi.editWorkflow:workflowApi.createworkflows;
             const checkedData=loadFormData(formData);
-            workflowApi.createworkflows(checkedData)
+            action(checkedData,id)
             .then(()=>{
-                navigate('/workflows')
+                navigate('/workflows');
               })
               .catch((err)=>{
                 ctxGlobal.handleError(err);
               })            
             } catch (error) {
-                ctxGlobal.handleError(error)
+                ctxGlobal.handleError(error);
             }
     }                
     useEffect(()=>{
@@ -47,7 +49,7 @@ export default function CreateWorkflow(){
             setRoles(data);
            
         }).catch((err)=>{
-            navigate('/workflows');
+
             ctxGlobal.handleError(err);
         });
         workflowApi.statuses()
@@ -62,10 +64,24 @@ export default function CreateWorkflow(){
             updateSomeFormFields({initialStatus:data[0]?._id}); 
             setStatuses(data);          
         }).catch((err)=>{
-            navigate('/workflows');
+      
             ctxGlobal.handleError(err);
         });
-    },[]);
+        if(id){
+            workflowApi.getWorkflowById(id)
+            .then((data)=>{
+                updateSomeFormFields({
+                    workflowName:data.workflowName,
+                    initialStatus:data.initialStatus,
+                    rolesAllowedToFinishRequest:data.rolesAllowedToFinishRequest.map(role=>role._id),
+                }); 
+            })
+            .catch((err)=>{
+     
+                ctxGlobal.handleError(err);
+            })
+        }
+    },[id]);
 
 
 
@@ -98,20 +114,20 @@ export default function CreateWorkflow(){
                     id="rolesAllowedToFinishRequest"
                 >
                   
-                    {roles.map((role)=><option key={role._id} value={role._id}>{role.roleName}</option>)}
+                    {roles.map((role)=><option key={role._id} value={role._id}>{role.role}</option>)}
                 </select>
                 
                 <label for='initialStatus'>Initial Status</label>
 
                 <select 
                     onChange={onChangeUserForm}
-                    value={formData.rolesAllowedToFinishRequest}                    
+                    value={formData.initialStatus}                    
                     name='initialStatus' 
                     id='initialStatus'
                 >
                     {statuses.map((stat)=><option key={stat._id} value={stat._id}>{stat.statusType.role}: {stat.statusName}</option>)}
                 </select>
-                <button type="submit">Create Workflow</button>
+                <button type="submit">Save</button>
                 
                 </form>
             

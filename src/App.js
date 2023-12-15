@@ -73,7 +73,12 @@ function App() {
         <Route path='/createroles' element={<CreateRole/>}/>  
         <Route path='/createstatuses' element={<CreateStatus/>}/>   
         <Route path='/createworkflows' element={<CreateWorkflow/>}/> 
-        <Route path='/createsubjects' element={<CreateSubject/>}/>            
+        <Route path='/createsubjects' element={<CreateSubject/>}/>  
+
+        <Route path='/roles/:id' element={<CreateRole/>}/>
+        <Route path='/statuses/:id' element={<CreateStatus/>}/> 
+        <Route path='/workflows/:id' element={<CreateWorkflow/>}/>    
+        <Route path='/subjects/:id' element={<CreateSubject/>}/>            
           </Routes>
           
         

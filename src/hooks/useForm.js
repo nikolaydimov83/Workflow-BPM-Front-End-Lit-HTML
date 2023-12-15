@@ -25,7 +25,8 @@ export function useForm(initialValues,submitHandler){
           let userCheckBoxObject={...oldUserState[e.target.name], [e.target.value]:e.target.checked}
           if( typeof oldUserState[e.target.name] === 'object' &&
               !Array.isArray(oldUserState[e.target.name]) &&
-              oldUserState[e.target.name] !== null){
+              oldUserState[e.target.name] !== null&&
+              e.target.tagName!=='SELECT'){
             return {...oldUserState, [e.target.name]:userCheckBoxObject}
           }else  if(Array.isArray(oldUserState[e.target.name]) &&
           oldUserState[e.target.name] !== null){

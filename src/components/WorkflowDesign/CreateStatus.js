@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import { useForm } from "../../hooks/useForm";
 import { useService } from "../../hooks/useService";
 import workflowServiceFactory from "../../api/services/workflowServiceFactory";
@@ -7,13 +6,15 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { loadFormData } from "../../utils/handleFormData";
 import styles from "./CreateStatus.module.css"
 import WorkflowCreateEditNav from "./WorkflowCreateEditNav";
+import { useNavigate, useParams } from "react-router";
 
 export default function CreateStatus(){
-    const workflowApi=useService(workflowServiceFactory)
-    const navigate=useNavigate();
-    const ctxGlobal=useContext(GlobalContext)
+    const workflowApi=useService(workflowServiceFactory);
+    const ctxGlobal=useContext(GlobalContext);
     const [roles,setRoles]=useState([]);
-    const [statuses,setStatuses]=useState([])
+    const [statuses,setStatuses]=useState([]);
+    const navigate=useNavigate();
+    const {id}=useParams();
     const {        
             onChangeUserForm,
             onSubmitUserForm,
@@ -22,14 +23,15 @@ export default function CreateStatus(){
            }=useForm(
                     {
                         statusName:'',
-                        statusType:'',
+                        statusType:{},
                         nextStatuses:[],
                     },handleOnSbmtStatusCreateFrm);
                     
     function handleOnSbmtStatusCreateFrm(){
         try {
+            let action=id?workflowApi.editStatus:workflowApi.createstatuses
             const checkedData=loadFormData(formData);
-            workflowApi.createstatuses(checkedData)
+            action(checkedData,id)
             .then(()=>{
                 navigate('/statuses')
               })
@@ -44,9 +46,11 @@ export default function CreateStatus(){
         workflowApi.roles()
         .then((data)=>{
             setRoles(data);
-            updateSomeFormFields({statusType:data[0]?._id});            
+            if(!id){
+              //updateSomeFormFields({statusType:data[0]?._id});   
+            }
+                       
         }).catch((err)=>{
-            navigate('/statuses');
             ctxGlobal.handleError(err);
         });
         workflowApi.statuses()
@@ -62,10 +66,22 @@ export default function CreateStatus(){
             setStatuses(data);
             //updateSomeFormFields({nextStatuses:[data[0]?._id]});            
         }).catch((err)=>{
-            navigate('/statuses');
             ctxGlobal.handleError(err);
         });
-    },[]);
+        if(id){
+            workflowApi.getStatusById(id)
+            .then((data)=>{
+                updateSomeFormFields({
+                    statusName:data.statusName,
+                    statusType:data.statusType._id,
+                    nextStatuses:data.nextStatuses.map(stat=>stat._id),
+                }); 
+            })
+            .catch((err)=>{
+                ctxGlobal.handleError(err);
+            })
+        }
+    },[id,ctxGlobal]);
 
 
 
@@ -90,13 +106,27 @@ export default function CreateStatus(){
                     {roles.map((role)=><option key={role._id} value={role._id}>{role.role}</option>)}
                 </select>
             
-                <select onChange={onChangeUserForm} value={formData.nextStatuses} className={styles["multi"]} multiple name='nextStatuses' id='nextStatuses'>
+                <select 
+                    onChange={onChangeUserForm} 
+                    value={formData.nextStatuses} 
+                    className={styles["multi"]} 
+                    multiple 
+                    name='nextStatuses' 
+                    id='nextStatuses'
+                    >
                 
                 {
-                    statuses.map(stat=><option key={stat._id} value={stat._id}>{stat.statusType.role}: {stat.statusName}</option>)}
+                    statuses.map(stat=>(
+                        <option 
+                            key={stat._id} 
+                            value={stat._id}
+                            selected={formData.nextStatuses.includes(stat._id)}
+                            >{stat.statusType.role}: {stat.statusName}
+                            
+                        </option>))}
             
                 </select>
-                <button type="submit">Create Status</button>
+                <button type="submit">Save</button>
                 
                 </form>
             

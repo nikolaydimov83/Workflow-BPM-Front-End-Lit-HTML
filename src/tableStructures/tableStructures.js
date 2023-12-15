@@ -139,6 +139,12 @@ export const userTableStrucure=[
         Header: 'Subject Create Date', 
         accessor: 'subjectCreateDate',
         sortType: (rowA, rowB) => compareDates(rowA.original.subjectCreateDate, rowB.original.subjectCreateDate) 
+    },
+    {
+      Header: 'Action',
+      accessor: (row) => (
+        <Link to={`/subjects/${row._id}`}>Покажи</Link>
+      ),
     }
     ]
   }

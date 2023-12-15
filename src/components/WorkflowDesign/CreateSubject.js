@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "../../hooks/useForm";
 import { useService } from "../../hooks/useService";
 import workflowServiceFactory from "../../api/services/workflowServiceFactory";
@@ -11,10 +11,10 @@ import WorkflowCreateEditNav from "./WorkflowCreateEditNav";
 
 export default function CreateSubject(){
     const workflowApi=useService(workflowServiceFactory)
-    const navigate=useNavigate();
-    const ctxGlobal=useContext(GlobalContext)
+    const ctxGlobal=useContext(GlobalContext);
     const [workflows,setWorkflows]=useState([]);
-
+    const navigate=useNavigate();
+    const {id}=useParams()
     const {        
             onChangeUserForm,
             onSubmitUserForm,
@@ -28,8 +28,9 @@ export default function CreateSubject(){
                     
     function handleOnSbmtSubjectCreateFrm(){
         try {
+            let action=id?workflowApi.editSubject:workflowApi.createsubjects;
             const checkedData=loadFormData(formData);
-            workflowApi.createsubjects(checkedData)
+            action(checkedData,id)
             .then(()=>{
                 navigate('/subjects')
               })
@@ -46,9 +47,22 @@ export default function CreateSubject(){
             setWorkflows(data);
            
         }).catch((err)=>{
-            navigate('/workflows');
+     ;
             ctxGlobal.handleError(err);
         });
+        if(id){
+            workflowApi.getSubjectById(id)
+            .then((data)=>{
+                updateSomeFormFields({
+                    subjectName:data.subjectName,
+                    assignedToWorkflow:data.assignedToWorkflow
+                }); 
+            })
+            .catch((err)=>{
+     
+                ctxGlobal.handleError(err);
+            })
+        }
     },[]);    
     return (
         <section id="createWorkflow">
@@ -78,7 +92,7 @@ export default function CreateSubject(){
                     <option key={workflow._id} value={workflow._id}>{workflow.workflowName}</option>)}
                 </select>
                 
-                <button type="submit">Create Subject</button>
+                <button type="submit">Save</button>
                 
                 </form>
             

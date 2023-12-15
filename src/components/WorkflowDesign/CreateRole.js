@@ -1,32 +1,45 @@
-import { useNavigate } from "react-router";
 import workflowServiceFactory from "../../api/services/workflowServiceFactory";
 import { useForm } from "../../hooks/useForm"
 import { useService } from "../../hooks/useService";
 import { loadFormData } from "../../utils/handleFormData"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import styles from './CreateRole.module.css'
 import WorkflowCreateEditNav from "./WorkflowCreateEditNav";
+import { useNavigate, useParams } from "react-router";
 
 export default function CreateRole(){
+    const {id}=useParams();
     const workflowApi=useService(workflowServiceFactory);
-    const navigate=useNavigate();
     const ctxGlobal=useContext(GlobalContext);
+    const navigate=useNavigate();
     const {
         onChangeUserForm,
         onSubmitUserForm,
         formData,
-        updateFormFields,
-        clearFormFileds
+        updateFormFields
     } = useForm({
         roleType:'',
         roleName:''
     },handleCreateRoleFormSbmt)
+    useEffect(()=>{
+        if(id){
+            workflowApi.getRoleById(id)
+            .then((data)=>{
+                updateFormFields({roleName:data.roleName,roleType:data.roleType});
+            })
+            .catch((err)=>{
+                ctxGlobal.handleError(err);
+            })
+        }
+    },[id]);
     function handleCreateRoleFormSbmt(){
 
         try {
         const checkedData=loadFormData(formData);
-        workflowApi.createroles(checkedData)
+        let action=id?workflowApi.editRole:workflowApi.createroles
+        
+        action(checkedData,id)
         .then(()=>{
             navigate('/roles')
           })
@@ -61,7 +74,7 @@ export default function CreateRole(){
                     id="roleName"
                     placeholder="Role name"
                 />
-                <button type="submit">Create Role</button>
+                <button type="submit">Save</button>
             </form>
             </div>
         </section>
