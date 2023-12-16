@@ -20,6 +20,10 @@ import CreateRole from './components/WorkflowDesign/CreateRole';
 import CreateStatus from './components/WorkflowDesign/CreateStatus';
 import CreateWorkflow from './components/WorkflowDesign/CreateWorkflow';
 import CreateSubject from './components/WorkflowDesign/CreateSubject';
+import {RouteGuardLogged } from './components/RouteGuards/RouteGuardLogged';
+import { RouteGuardUser } from './components/RouteGuards/RouteGuardUser';
+import { RouteGuardAdmin } from './components/RouteGuards/RouteGuardAdmin';
+import { RouteGuardWorkflow } from './components/RouteGuards/RouteGuardWorkflow';
 
 
 function App() {
@@ -33,52 +37,129 @@ function App() {
           <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
+
           <Route path='/dashboard' element={
+            <RouteGuardLogged>
             <DashboardContextProvider >
               <Dashboard/>
-            </DashboardContextProvider>}/>
-          <Route path='/dashboard/:id' element={<Details/>}/>
-          <Route path='/comment/create/:id' element={<CreateComment/>}/>
-          <Route path='/edit/:id' element={<Edit/>}/>
-          <Route path='/create' element={<Create/>}/> 
-          <Route path='/admin/:id' element={<EditUser/>}/> 
-          <Route path='/createUser' element={<CreateUser/>}/>
+            </DashboardContextProvider>              
+            </RouteGuardLogged>
+}/>
+          <Route path='/dashboard/:id' element={
+            <RouteGuardUser>
+              <Details/>
+            </RouteGuardUser>
+            
+          
+          }/>
+          <Route path='/comment/create/:id' element={
+            
+            <RouteGuardUser>
+              <CreateComment/>
+             </RouteGuardUser>
+            
+          }/>
+          <Route path='/edit/:id' element={
+            <RouteGuardUser>
+              <Edit/>
+            </RouteGuardUser>
+          }/>
+          <Route path='/create' element={
+            <RouteGuardUser>
+              <Create/>
+            </RouteGuardUser>   
+            }/> 
+
+
+          {/*Admin paths/*/}
+          <Route path='/admin/:id' element={
+            <RouteGuardAdmin>
+              <EditUser/> 
+            </RouteGuardAdmin>
+
+            
+            }/> 
+          <Route path='/createUser' element={
+            <RouteGuardAdmin>
+              <CreateUser/>
+            </RouteGuardAdmin>          
+            }/>
           
           <Route path='/roles' element={            
-    
-            <DashboardContextProvider >
-              <Dashboard/>
-            </DashboardContextProvider>}
-          />
+            <RouteGuardWorkflow>
+              <DashboardContextProvider >
+                <Dashboard />
+              </DashboardContextProvider>
+            </RouteGuardWorkflow>
+          }/>
 
           <Route path='/statuses' element={            
-          
-            <DashboardContextProvider >
-              <Dashboard/>
-            </DashboardContextProvider>}
-          />  
+            <RouteGuardWorkflow>
+              <DashboardContextProvider >
+                <Dashboard/>
+              </DashboardContextProvider> 
+            </RouteGuardWorkflow>
+
+          }/>  
           <Route path='/workflows' element={            
-          
-          <DashboardContextProvider >
-            <Dashboard/>
-          </DashboardContextProvider>}
+             <RouteGuardWorkflow>
+              <DashboardContextProvider >
+                <Dashboard/>
+              </DashboardContextProvider>              
+             </RouteGuardWorkflow>         
+}
         /> 
 
         <Route path='/subjects' element={            
-          
+          <RouteGuardWorkflow>
           <DashboardContextProvider >
             <Dashboard/>
-          </DashboardContextProvider>}
+          </DashboardContextProvider>
+          </RouteGuardWorkflow>
+}
         /> 
-        <Route path='/createroles' element={<CreateRole/>}/>  
-        <Route path='/createstatuses' element={<CreateStatus/>}/>   
-        <Route path='/createworkflows' element={<CreateWorkflow/>}/> 
-        <Route path='/createsubjects' element={<CreateSubject/>}/>  
+        <Route path='/createroles' element={
+          <RouteGuardWorkflow>
+            <CreateRole/>
+          </RouteGuardWorkflow>
+        }/>  
+        <Route path='/createstatuses' element={
+          <RouteGuardWorkflow>
+            <CreateStatus/>
+          </RouteGuardWorkflow>
 
-        <Route path='/roles/:id' element={<CreateRole/>}/>
-        <Route path='/statuses/:id' element={<CreateStatus/>}/> 
-        <Route path='/workflows/:id' element={<CreateWorkflow/>}/>    
-        <Route path='/subjects/:id' element={<CreateSubject/>}/>            
+          }/>   
+        <Route path='/createworkflows' element={
+          <RouteGuardWorkflow>
+            <CreateWorkflow/>
+          </RouteGuardWorkflow>
+          }/> 
+        <Route path='/createsubjects' element={
+          <RouteGuardWorkflow>
+            <CreateSubject/>
+          </RouteGuardWorkflow> 
+          }/>  
+
+        <Route path='/roles/:id' element={
+          <RouteGuardWorkflow>
+          <CreateRole/>
+        </RouteGuardWorkflow>
+          }/>
+        <Route path='/statuses/:id' element={
+          <RouteGuardWorkflow>
+            <CreateStatus/>
+          </RouteGuardWorkflow>
+        }/> 
+        <Route path='/workflows/:id' element={
+          <RouteGuardWorkflow>
+            <CreateWorkflow/>
+          </RouteGuardWorkflow>
+          }/>    
+        <Route path='/subjects/:id' element={
+          <RouteGuardWorkflow>
+            <CreateSubject/>
+          </RouteGuardWorkflow> 
+        }/>            
           </Routes>
           
         

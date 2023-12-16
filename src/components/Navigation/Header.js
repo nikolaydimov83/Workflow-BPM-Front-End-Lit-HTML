@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import Guest from "./Guest";
@@ -10,7 +10,6 @@ import ErrorWrapper from "../Error/ErrorWrapper";
 
 export default function Header(){
     const ctx=useContext(GlobalContext);
-    
 
     return (
         <header className="navi" style={styles}>
