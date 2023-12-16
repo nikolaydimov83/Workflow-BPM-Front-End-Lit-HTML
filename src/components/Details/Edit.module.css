@@ -110,3 +110,8 @@
     text-decoration: underline;
     
   }
+
+  .formLarge .error {
+
+    border: 2px solid red;
+  }

@@ -29,6 +29,7 @@ export default function SearchForm(){
     return(
         <form onSubmit={onSubmitUserForm} className={styles['search-wrapper']}>
         <input
+            className={ctx.fieldStatuses?.searchString?styles['error']:''}
             onChange={onChangeUserForm}
             value={formData.searchString}
             id="#search-input"

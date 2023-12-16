@@ -9,29 +9,33 @@ import styles from './Create.module.css';
 
 export default function Create(){
     const [create,setCreate]=useState({subjects:[]});
+    const [iapplyUpdate,setIapplyUpdate]=useState(false);
     const ctxGlobal=useContext(GlobalContext);
-    const navigate=useNavigate()
+    const navigate=useNavigate();
+    
+    const createFormInitialValues=
+    {
+        iApplyId:'',
+        subjectId:'',
+        deadlineDate:'',
+        clientEGFN:'',
+        finCenter:'',
+        refferingFinCenter:'',
+        clientName:'',
+        product:'',
+        ccy:'',
+        amount:'',
+        description:''
+    }
+
     const {
         onChangeUserForm,
         onSubmitUserForm,
         formData,
         updateFormFields,
         clearFormFileds
-    }=useForm(
-        {
-            iApplyId:'',
-            subjectId:'',
-            deadlineDate:'',
-            clientEGFN:'',
-            finCenter:'',
-            refferingFinCenter:'',
-            clientName:'',
-            product:'',
-            ccy:'',
-            amount:'',
-            description:''
+    }=useForm(createFormInitialValues,onSubmitCreateForm);
 
-        },onSubmitCreateForm);
     const dashAPI=useService(dashboardServiceFactory);
     const globalCtx=useContext(GlobalContext);
     useEffect(()=>{
@@ -46,18 +50,26 @@ export default function Create(){
         .catch((err)=>{
             globalCtx.handleError(err);
         })
+
+        return () => {
+            ctxGlobal.clearFieldStatuses();
+          }
     },[])
     
     function onChangeIAppliId(){
+
+        setIapplyUpdate(true);
         dashAPI.getIapplyData(formData.iApplyId)
         .then((data)=>{
+            
             delete data.iApplyData.__v;
             delete data.iApplyData._id;
             updateFormFields({...formData,...data.iApplyData});
+            setIapplyUpdate(false);
         })
         .catch((err)=>{
             globalCtx.handleError(err)
-            clearFormFileds(['subjectId','description']);
+            clearFormFileds(['subjectId','description','deadlineDate']);
         })
     }
     function onSubmitCreateForm(){
@@ -65,6 +77,7 @@ export default function Create(){
             let checkedData=loadFormData(formData);
             let serverResponseData=dashAPI.createRequest(checkedData)
             .then(()=>{
+              ctxGlobal.clearFieldStatuses();
               navigate('/dashboard/')
             })
             .catch((err)=>{
@@ -83,7 +96,8 @@ export default function Create(){
         <form onSubmit={onSubmitUserForm} className={styles["formLarge"]}>
             <div className={styles["inlineDiv"]}>
                 <label for='iApplyId'>Iapply ID</label>
-                <input className={styles["normal"]}
+                <input 
+                className={ctxGlobal.fieldStatuses?.iApplyId?styles['errorNormal']:styles["normal"]}
                 type="text"
                 name="iApplyId"
                 id="iApplyId"
@@ -94,6 +108,7 @@ export default function Create(){
                 />
                 <label for='subjectName'>Subject</label>
                 <select
+                className={ctxGlobal.fieldStatuses?.subjectId?styles['error']:""}
                 onChange={onChangeUserForm}
                 value={formData?.subjectId}
                 name="subjectId"
@@ -103,7 +118,8 @@ export default function Create(){
                 
                 </select>
                 <label for='deadlineDate'>Краен срок</label>
-                <input className={styles["normal"]}
+                <input
+                className={ctxGlobal.fieldStatuses?.deadlineDate?styles['errorNormal']:styles["normal"]}
                 onChange={onChangeUserForm}
                 value={formData.deadlineDate}
                 type="date"
@@ -112,7 +128,9 @@ export default function Create(){
                 placeholder="Краен срок"
                 />
                 <label for='clientEGFN'>ЕГН/Булстат</label>
-                <input className={styles["normal"]}
+                
+                <input 
+                className={ctxGlobal.fieldStatuses?.clientEGFN?styles['errorNormal']:styles["normal"]}
                 onChange={onChangeUserForm}
                 value={formData.clientEGFN}
                 type="text"
@@ -127,9 +145,9 @@ export default function Create(){
             <label for='finCenter'>Клон/Рефериращ клон</label>
             <div>
             <input 
+                className={ctxGlobal.fieldStatuses?.finCenter?styles['errorSmall']:styles["small"]}
                 onChange={onChangeUserForm}
                 value={formData.finCenter}                
-                className={styles["small"]}
                 type="text"
                 name="finCenter"
                 id="finCenter"
@@ -140,7 +158,7 @@ export default function Create(){
                 <input
                 onChange={onChangeUserForm}
                 value={formData.refferingFinCenter}                
-                className={styles["verySmall"]}
+                className={ctxGlobal.fieldStatuses?.refferingFinCenter?styles['errorVerySmall']:styles["verySmall"]}
                 type="text"
                 name="refferingFinCenter"
                 id="refferingFinCenter"
@@ -152,7 +170,8 @@ export default function Create(){
             </div>  
 
                 <label for='clientName'>Клиент</label>
-                <input className={styles["normal"]}
+                <input 
+                className={ctxGlobal.fieldStatuses?.clientName?styles['errorNormal']:styles["normal"]}
                 onChange={onChangeUserForm}
                 value={formData.clientName}                
                 type="text"
@@ -163,9 +182,10 @@ export default function Create(){
                
                 />
                 <label for='product'>Продукт</label>
-                <input className={styles["normal"]}
+                <input
                 onChange={onChangeUserForm}
-                value={formData.product}                
+                value={formData.product}
+                className={ctxGlobal.fieldStatuses?.product?styles['errorNormal']:styles["normal"]}           
                 type="text"
                 name="product"
                 id="product"
@@ -178,7 +198,7 @@ export default function Create(){
                         <input 
                         onChange={onChangeUserForm}
                         value={formData.ccy}
-                        className={styles["verySmall"]}
+                        className={ctxGlobal.fieldStatuses?.ccy?styles['errorVerySmall']:styles["verySmall"]}
                         type="text"
                         name="ccy"
                         id="ccy"
@@ -186,7 +206,8 @@ export default function Create(){
                         disabled
                     
                         />
-                        <input className={styles["small"]}
+                        <input 
+                        className={ctxGlobal.fieldStatuses?.amount?styles['errorSmall']:styles["small"]}
                         onChange={onChangeUserForm}
                         value={formData.amount}
                         type="number"
@@ -203,6 +224,7 @@ export default function Create(){
 
                 <textarea
                 onChange={onChangeUserForm}
+                className={ctxGlobal.fieldStatuses?.description?styles['error']:""}
                 value={formData.description}
                 type="textarea"
                 name="description"
@@ -211,7 +233,7 @@ export default function Create(){
                 ></textarea>
 
 
-            <button type="submit">Изпрати</button>
+            <button disabled={iapplyUpdate} type="submit">Изпрати</button>
         </form>
         </div>
         </section>

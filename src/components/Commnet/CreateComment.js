@@ -54,6 +54,9 @@ useEffect(()=>{
         navigate('/dashboard/'+id);
         ctxGlobal.handleError(err);
     })
+    return () => {
+      ctxGlobal.clearFieldStatuses();
+    }
 },[id])
     return (
 <section id="create">
@@ -77,7 +80,16 @@ useEffect(()=>{
     
     <form onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
     <h3>Напиши коментар</h3>
-        <textarea value={formData.commentText} onChange={onChangeUserForm} type="textarea" name="commentText" id="commentText" placeholder="Описание"></textarea>
+        <textarea 
+          value={formData.commentText} 
+          onChange={onChangeUserForm} 
+          type="textarea" name="commentText" 
+          id="commentText" 
+          placeholder="Описание"
+          className={ctxGlobal.fieldStatuses?.commentText?styles['error']:''}
+          >
+            
+          </textarea>
         <button type="submit">Изпрати</button>
     </form>
       

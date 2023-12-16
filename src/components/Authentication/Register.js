@@ -17,10 +17,11 @@ export default function Register(){
     const authService=useService(authServiceFactory);
     const ctx=useContext(GlobalContext);
     const navigate=useNavigate();
-    
     useEffect(()=>{
-        ctx.clearFieldStatuses();
-    },[]);
+        return ()=>{
+            ctx.clearFieldStatuses();
+        }
+    },[])
 
     function onRegisterSubmitHandler(){
         try {
@@ -38,6 +39,8 @@ export default function Register(){
         } catch (error) {
             ctx.handleError(error)
         }
+
+
     }
     return (
         <section id="register">

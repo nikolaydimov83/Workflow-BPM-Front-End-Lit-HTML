@@ -14,7 +14,7 @@ export default function Header(){
     return (
         <header className="navi" style={styles}>
         <Link id="logo" to="/"
-          ><img className="logo" id="logo-img" src="./images/logoPost.png" alt=""
+          ><img className="logo" id="logo-img" src="/images/logoPost.png" alt=""
         /></Link>
         
         <nav>

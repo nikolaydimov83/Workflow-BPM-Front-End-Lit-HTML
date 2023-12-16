@@ -24,6 +24,8 @@ import {RouteGuardLogged } from './components/RouteGuards/RouteGuardLogged';
 import { RouteGuardUser } from './components/RouteGuards/RouteGuardUser';
 import { RouteGuardAdmin } from './components/RouteGuards/RouteGuardAdmin';
 import { RouteGuardWorkflow } from './components/RouteGuards/RouteGuardWorkflow';
+import ResetPassRequest from './components/Authentication/ResetPassRequest';
+import ResetPassTokenSubmit from './components/Authentication/ResetPassTokenSubmit';
 
 
 function App() {
@@ -35,8 +37,12 @@ function App() {
         <ErrorWrapper/>
         <Routes>
           <Route path='/' element={<Home/>}/>
+          
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
+          <Route path='/register' element={<Register/>}/>
+          <Route path='/resetPass' element={<ResetPassRequest/>}/>
+          <Route path='/resetPass/:id' element={<ResetPassTokenSubmit/>}/>
 
           <Route path='/dashboard' element={
             <RouteGuardLogged>

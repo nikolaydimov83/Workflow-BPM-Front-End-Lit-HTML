@@ -172,3 +172,34 @@
     border: 2px solid rgb(200,200,200);
    
   }
+  .inlineDiv .error {
+
+    border: 2px solid red;
+  }
+
+  .formLarge .error {
+
+    border: 2px solid red;
+  }
+  .inlineDiv .errorNormal {
+    width: 95%;
+    display: inline;
+    border: 2px solid red;
+  }
+
+  .inlineDiv .errorSmall {
+    width: 95%;
+    display: inline;
+    border: 2px solid red;
+  }
+  .inlineDiv .errorSmall {
+    width: 80%;
+    display: inline;
+    border: 2px solid red;
+  }
+
+  .inlineDiv .errorVerySmall {
+    width: 15%;
+    display: inline;
+    border: 2px solid red;
+  }

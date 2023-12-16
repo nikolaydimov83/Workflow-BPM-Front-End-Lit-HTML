@@ -32,6 +32,10 @@ export default function Edit(){
             navigate('/dashboard/'+id);
             ctxGlobal.handleError(err);
         })
+
+        return () => {
+          ctxGlobal.clearFieldStatuses();
+        }
     },[id]);
 
     const {
@@ -62,33 +66,34 @@ export default function Edit(){
             <h3>Промяна на краен срок</h3>
             <div className={styles["formLarge"]}>
             
-            <div class="comment-request-details">
-                <p class="details-cretae-comment"><span>ФЦ/Рефериращ ФЦ</span>:  
+            <div>
+                <p ><span>ФЦ/Рефериращ ФЦ</span>:  
                 
                 {request.finCenter}/{request.refferingFinCenter?request.refferingFinCenter:`Няма рефериращ`}
                 
                 </p>
-                <p class="details-cretae-comment"><span>Номер I-apply</span>:  {request.iApplyId}</p>
-                <p class="details-cretae-comment"><span>ЕГН/Булстат</span>:   {request.clientEGFN}</p>
-                <p class="details-cretae-comment"><span>Клиент</span>:   {request.clientName}</p>
-                <p class="details-cretae-comment"><span>Продукт</span>:    {request.product}</p>
-                <p class="details-cretae-comment"><span>Сума</span>:  {request.ccy} {request.amount}</p>
-                <p class="details-cretae-comment"><span>Статус</span>:  {request?.status?.statusName}</p>
-                <p class="details-cretae-comment"><span>Изпратен от</span>:  {request.statusSender}</p>
-                <p class="details-cretae-comment"><span>Изпратен на дата</span>:  {request.statusIncomingDate}</p>
-                <p class="details-cretae-comment"><span>Последен коментар</span>:  {request?.lastCommnet?.body}</p>
-                <p class="details-cretae-comment"><span>Краен срок</span>:  {request.deadlineDate} </p> 
+                <p ><span>Номер I-apply</span>:  {request.iApplyId}</p>
+                <p ><span>ЕГН/Булстат</span>:   {request.clientEGFN}</p>
+                <p ><span>Клиент</span>:   {request.clientName}</p>
+                <p ><span>Продукт</span>:    {request.product}</p>
+                <p ><span>Сума</span>:  {request.ccy} {request.amount}</p>
+                <p ><span>Статус</span>:  {request?.status?.statusName}</p>
+                <p ><span>Изпратен от</span>:  {request.statusSender}</p>
+                <p ><span>Изпратен на дата</span>:  {request.statusIncomingDate}</p>
+                <p ><span>Последен коментар</span>:  {request?.lastCommnet?.body}</p>
+                <p ><span>Краен срок</span>:  {request.deadlineDate} </p> 
             </div>
 
                 
                 
-                <form onSubmit={onSubmitUserForm} class="create-comment-form">
+                <form onSubmit={onSubmitUserForm} >
 
                     
                     <label htmlFor="commentText">Коментар</label>   
                     <textarea 
                         onChange={onChangeUserForm}
                         value={formData.commentText}
+                        className={ctxGlobal.fieldStatuses?.commentText?styles['error']:''}
                         type="textarea" 
                         name="commentText" 
                         id="commentText" 
@@ -98,6 +103,7 @@ export default function Edit(){
                         <label htmlFor="newDeadline">Нов краен срок</label> 
                         
                         <input
+                        className={ctxGlobal.fieldStatuses?.newDeadline?styles['error']:''}
                         onChange={onChangeUserForm} 
                         type="date" 
                         name="newDeadline" 

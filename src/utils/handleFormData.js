@@ -34,7 +34,8 @@ const allowedTypes={
     'rolesAllowedToFinishRequest':'string',
     'workflowName':'string',
     'assignedToWorkflow':'string',
-    'subjectName':'string'
+    'subjectName':'string',
+    'resetCode':'string'
 }
 export function loadFormData(data){
     let formData=Object.entries(data);

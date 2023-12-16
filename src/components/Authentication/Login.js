@@ -20,7 +20,9 @@ export default function Login(){
     const navigate=useNavigate()
 
     useEffect(()=>{
-        ctx.clearFieldStatuses();
+        return()=>{
+            ctx.clearFieldStatuses();
+        }
     },[]);
 
     function onSubmitLoginFormHandler(){
@@ -36,6 +38,7 @@ export default function Login(){
         } catch (error) {
             ctx.handleError(error)
         }
+
     }
 
     return (
