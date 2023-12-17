@@ -186,6 +186,9 @@ A request cannot be generated when Subject is not selected - the server will not
 
 Upon successful creation the new request will be assigned with current status equal to the initial status of the workflow that is set to the subject of the request and the user will be send to the /dashboard
 
+## Test Module
+
+For the time being there is one testing module - in App.test.js that test the login form. Run test with npm test script
 
 ## PLEASE READ
 
