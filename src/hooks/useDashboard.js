@@ -9,7 +9,7 @@ export function useDashboard(initialTableStructure){
             result:[],
             searchContextString:''
         });
-
+    const [spinnerActive, setSpinnerActive]=useState(true);
     //state for filter
     const [filterText, setFilterText] = useState('');
   
@@ -48,7 +48,7 @@ export function useDashboard(initialTableStructure){
         setTableStructure(newTableStructure)
     }
     function loadDashboardInfo(apiFunc,inputData){
-        
+        setSpinnerActive(true)
         apiFunc(inputData)
             .then((data)=>{
                 if (!data.result){
@@ -58,7 +58,7 @@ export function useDashboard(initialTableStructure){
                     const items=stringifyDates(data.result)
                     setDashboardState({result:items,searchContextString:data.searchContextString});                    
                 }
-
+                setSpinnerActive(false)
             })
             .catch((err)=>{
                 throw err
@@ -77,7 +77,9 @@ export function useDashboard(initialTableStructure){
             handleFilterChange,
             filterText,
             filteredState,
-            setNewTableStructure
+            setNewTableStructure,
+            spinnerActive,
+            tableStructure
         }
         )
 }
@@ -99,14 +101,14 @@ function getSortedFilteredState(dashboardState, columns, filterText, sortConfig)
     });
 
     // Sort the filtered data based on sortConfig
-    if (sortConfig.column) {
+    /*if (sortConfig.column) {
         filteredData.sort((a, b) => {
             const columnId = sortConfig.column.id;
             return sortConfig.direction === 'asc'
             ? (a[columnId] || '').localeCompare(b[columnId] || '')
             : (b[columnId] || '').localeCompare(a[columnId] || '');
         });
-    }
+    }*/
     
     return filteredData;
 }

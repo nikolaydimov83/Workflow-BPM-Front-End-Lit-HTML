@@ -155,7 +155,7 @@ On the upper right screen the last comment is displayed.
 
 Below them - in the left information initialy retrieved (upon request creation) from the bank's application system is displayed. 
 
-In the center are the possible actions that are available to the comment
+In the center are the possible actions that are available to the request
 
 Смени статус: Will be displayed if the application is pending application for the user. This means that the user role is equal to the role of the current status of the application. If this is the case in the select above this button the possible statuses for choice (set as nextStatuses for the current status will appear). The user choose the status he wish the request to and press "Смени статус"
 

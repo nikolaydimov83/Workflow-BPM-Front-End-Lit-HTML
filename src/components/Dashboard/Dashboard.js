@@ -10,23 +10,32 @@ import styles from './Dashboard.module.css'
 import adminServiceFactory from "../../api/services/adminServiceFactory";
 import workflowServiceFactory from "../../api/services/workflowServiceFactory";
 import DashboardWorkflowNav from "./DashboardWorkflowNav";
+import Spinner from "./Spinner/Spinner";
 
 export default function Dashboard(){
 
     const ctxGlobal=useContext(GlobalContext);
-    const {setNewTableStructure, loadDashboardInfo, getTableStructure,dashboardState, rolesStatusesWorkflowsSubjects}=useContext(DashboardContext)
+    const {
+        setNewTableStructure, 
+        loadDashboardInfo, 
+        getTableStructure,
+        dashboardState, 
+        rolesStatusesWorkflowsSubjects,
+        spinnerActive
+        }=useContext(DashboardContext)
     const dashAPI=useService(dashboardServiceFactory);
     const adminAPI=useService(adminServiceFactory);
     const workflowApi=useService(workflowServiceFactory)
-    
+
 
 
         
     useEffect(()=>{
         let newChosenFunc=chooseApiFunction();
         try {
+   
             const newTableStructure=getTableStructure(rolesStatusesWorkflowsSubjects)
-            loadDashboardInfo(newChosenFunc)
+            loadDashboardInfo(newChosenFunc);
             setNewTableStructure(newTableStructure)
             
         } catch (error) {
@@ -82,7 +91,7 @@ export default function Dashboard(){
         </div>
         <h2>{dashboardState.searchContextString}</h2>
         <div className="tableLarge">
-        <Table/>
+        {spinnerActive?<Spinner/>:<Table/>}
         </div>
     </>
 

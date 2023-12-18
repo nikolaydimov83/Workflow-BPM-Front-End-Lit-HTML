@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useDashboard } from "../hooks/useDashboard";
 import { adminTableStructure,userTableStrucure,workFlowTableStructure } from "../tableStructures/tableStructures";
 import { GlobalContext } from "./GlobalContext";
-import { useWorkflow } from "../hooks/useWorkfow";
 import { useLocation } from "react-router";
 export const  DashboardContext=createContext();
 
@@ -41,8 +40,9 @@ export function DashboardContextProvider({children}){
             handleFilterChange,
             filterText,
             filteredState,
-            setNewTableStructure
-            
+            setNewTableStructure,
+            spinnerActive,
+            tableStructure
             
         }=useDashboard(initialTable);
     
@@ -65,7 +65,9 @@ export function DashboardContextProvider({children}){
         setNewTableStructure,
         getTableStructure,
         rolesStatusesWorkflowsSubjects,
-        setrolesStatusesWorkflowsSubjects
+        setrolesStatusesWorkflowsSubjects,
+        spinnerActive,
+        tableStructure
         }}>
         {children}
     </DashboardContext.Provider>

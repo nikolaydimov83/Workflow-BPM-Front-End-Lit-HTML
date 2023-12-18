@@ -2,8 +2,6 @@ import { createContext, useContext } from "react";
 import { useUser } from "../hooks/useUser";
 import { getUserData } from "../utils/localStorage";
 import { useError } from "../hooks/useError";
-import { useWorkflow } from "../hooks/useWorkfow";
-import { adminTableStructure, userTableStrucure, workFlowTableStructure } from "../tableStructures/tableStructures";
 import { DashboardContext } from "./DashboardContext";
 
 export const  GlobalContext=createContext();

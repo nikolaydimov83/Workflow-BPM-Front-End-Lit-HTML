@@ -14,11 +14,12 @@ export default function Table(){
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow
+        prepareRow,
+        tableStructure
     }=useContext(DashboardContext)
     
     function handleOnClickExcel(e){
-      exportToExcel(filteredState,dashboardContextState)
+      exportToExcel(filteredState,tableStructure)
   }
     return (
       <div>
