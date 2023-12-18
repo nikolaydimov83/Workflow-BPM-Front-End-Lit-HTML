@@ -72,9 +72,9 @@ export default function ResetPassTokenSubmit(){
                 
                 <button type="submit" id="resetPassBtn">Изпрати</button>
                 <p>
-                Не сте регистриран? <Link href="/register">Регистрация</Link>
+                Не сте регистриран? <Link to="/register">Регистрация</Link>
                 </p>
-                <p>Вече сте регистриран? <Link href="/login">Вход</Link></p>
+                <p>Вече сте регистриран? <Link to="/login">Вход</Link></p>
             </form>
             </div>
         </section>

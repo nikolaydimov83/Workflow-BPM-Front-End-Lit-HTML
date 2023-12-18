@@ -1,10 +1,9 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import App from './App';
-import Login from './components/Authentication/Login';
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-
+import App from '../../App';
 
 
 test('Render home screen for not logged user',()=>{
@@ -91,7 +90,7 @@ test('Check login form upon submit with password that doesn\'t match the request
 
 })
 
-test('Check login form upon submit with password that doesn\'t match the requested format',async ()=>{
+test('Check login form upon submit with email that doesn\'t match the requested format',async ()=>{
   render( 
     
     <BrowserRouter>
@@ -119,7 +118,7 @@ test('Check login form upon submit with password that doesn\'t match the request
 
 })
 
-test('Check login form upon submit with password that doesn\'t match the requested format',async ()=>{
+test('Check login form upon submit with username and password that match the format',async ()=>{
   render( 
     
     <BrowserRouter>

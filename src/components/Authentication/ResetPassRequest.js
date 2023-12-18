@@ -42,9 +42,9 @@ export default function ResetPassRequest(){
                 <input onChange={onChangeUserForm} type="text" name="email" id="email" placeholder="email" />
                 <button type="submit">Изпрати</button>
                 <p>
-                Не сте регистриран? <Link href="/register">Регистрирайте се тук</Link>
+                Не сте регистриран? <Link to="/register">Регистрирайте се тук</Link>
                 </p>
-                <p>Вече сте регистриран? <Link href="/login">Вход</Link></p>
+                <p>Вече сте регистриран? <Link to="/login">Вход</Link></p>
             </form>
             </div>
         </section>
