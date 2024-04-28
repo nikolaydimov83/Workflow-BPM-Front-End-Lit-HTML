@@ -108,3 +108,18 @@
     margin-right: auto;
     display: block; /* Ensures each input/select is on a new line */
   }
+
+  .inlineDiv .small{
+    width: 80%;
+    display: inline;
+   
+    }
+  .inlineDiv .verySmall{
+      width: 15%;
+      display: inline;
+      }
+  
+  .inlineDiv .normal{
+      width: 95%;
+      display: inline;
+  }

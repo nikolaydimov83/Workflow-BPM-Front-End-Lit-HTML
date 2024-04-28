@@ -66,6 +66,54 @@ export const userTableStrucure=[
       ),
     }
   ]
+  export const issuesTableStructure=[
+    { 
+      Header: 'I-apply ID',
+      accessor: (row)=>row?.body.iApplyId
+    },
+    { 
+      Header: 'Bulstat/EGN',
+      accessor: (row)=>row?.body.clientEGFN
+    },
+    { 
+      Header: 'Bulstat/EGN New',
+      accessor: (row)=>row?.newBody.clientEGFN
+    },
+    { 
+      Header: 'Is EGN OK',
+      accessor: (row)=>row?.reasons.isEGNCorrect.toString()
+    },
+    { 
+      Header: 'Financial Center',
+      accessor: (row)=>row?.body.finCenter
+    },
+    { 
+      Header: 'Fin Center New',
+      accessor: (row)=>row?.newBody.finCenter
+    },
+    { 
+      Header: 'Is Fin Center OK',
+      accessor: (row)=>row?.reasons.isFinCentCorrect.toString()
+    },
+    { 
+      Header: 'Reffering Center',
+      accessor: (row)=>row?.body.refferingFinCenter
+    },
+    { 
+      Header: 'Reff Center New',
+      accessor: (row)=>row?.newBody.refferingFinCenter
+    },
+    { 
+      Header: 'Is Reff Center OK',
+      accessor: (row)=>row?.reasons.isRefFinCentCorrect.toString()
+    },
+    {
+      Header: 'Action',
+      accessor: (row) => (
+        <Link to={`/iApply/${row.newBody.iApplyId}`}>Покажи</Link>
+      ),
+    }
+  ]
 
   export const workFlowTableStructure={
     roles:[

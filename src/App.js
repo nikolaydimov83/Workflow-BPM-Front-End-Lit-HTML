@@ -26,6 +26,7 @@ import { RouteGuardAdmin } from './components/RouteGuards/RouteGuardAdmin';
 import { RouteGuardWorkflow } from './components/RouteGuards/RouteGuardWorkflow';
 import ResetPassRequest from './components/Authentication/ResetPassRequest';
 import ResetPassTokenSubmit from './components/Authentication/ResetPassTokenSubmit';
+import EditIapplyEntry from './components/Admin/EditIApplyEntry';
 
 
 function App() {
@@ -90,6 +91,21 @@ function App() {
               <CreateUser/>
             </RouteGuardAdmin>          
             }/>
+          <Route path='/transferIssues' element={
+            <RouteGuardAdmin>
+              <DashboardContextProvider >
+                <Dashboard />
+              </DashboardContextProvider>
+            </RouteGuardAdmin>          
+           }/>
+
+          <Route path='/iApply/:id' element={
+            <RouteGuardAdmin>
+              <DashboardContextProvider >
+                <EditIapplyEntry/>
+              </DashboardContextProvider>
+            </RouteGuardAdmin>          
+           }/>             
           
           <Route path='/roles' element={            
             <RouteGuardWorkflow>

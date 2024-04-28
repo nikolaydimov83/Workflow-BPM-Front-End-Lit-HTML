@@ -39,6 +39,8 @@ export default function adminServiceFactory(token){
             return serverResponse;
         },
         editUserFromAdmin:(id,data)=> api.put(`/admin/${id}`,data),
-        createUserFromAdmin:(data)=>  api.post(`/admin`,data)
+        createUserFromAdmin:(data)=>  api.post(`/admin`,data),
+        getWrongDataLog:()=>api.get('/wrongDataLogger'),
+        editIapplyDataAdmin:(id,data)=> api.put(`/iApply/${id}`,data)
     }
 }

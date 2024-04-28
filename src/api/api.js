@@ -1,6 +1,6 @@
 import { clearUserData, getUserData } from "../utils/localStorage";
 
-let baseUrl="https://185.123.188.135:443"
+let baseUrl="https://localhost:3030"
 async function request(userData,url,method,data){
     let options={
         method:method,

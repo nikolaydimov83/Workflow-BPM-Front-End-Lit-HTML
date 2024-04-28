@@ -11,9 +11,10 @@ import adminServiceFactory from "../../api/services/adminServiceFactory";
 import workflowServiceFactory from "../../api/services/workflowServiceFactory";
 import DashboardWorkflowNav from "./DashboardWorkflowNav";
 import Spinner from "./Spinner/Spinner";
+import { useLocation } from "react-router";
 
 export default function Dashboard(){
-
+    let pathname=useLocation().pathname.replace('/','');
     const ctxGlobal=useContext(GlobalContext);
     const {
         setNewTableStructure, 
@@ -57,8 +58,14 @@ export default function Dashboard(){
     },[]);
     function chooseApiFunction(){
         let chosenFunction;
+        
         if (ctxGlobal.user.role==='Admin'){
-            chosenFunction=adminAPI.getAllAdminInfo;
+            if (pathname==='dashboard'){
+                chosenFunction=adminAPI.getAllAdminInfo;
+            }else{
+                chosenFunction=adminAPI.getWrongDataLog;
+            }
+            
         }else if(ctxGlobal.user.role==='Workflow'){
             
             chosenFunction=workflowApi[rolesStatusesWorkflowsSubjects];

@@ -6,6 +6,7 @@ export default function Admin(){
         <div className="admin">
         <Link to="/dashboard">List All Users</Link>         
         <Link to="/createUser" id="createUserActiveDir">Create User</Link>
+        <Link to="/transferIssues">Transfer Log</Link>
         <Logout/>
       </div>
     )
