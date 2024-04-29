@@ -89,11 +89,12 @@ export default function Dashboard(){
            </> 
             }  
 
-            {['Workflow'].includes(ctxGlobal.user.role)?<DashboardWorkflowNav/>:''
-        
-                
-              
-           
+            {['Workflow'].includes(ctxGlobal.user.role)?
+                <DashboardWorkflowNav/>:''
+            }
+
+            {['Workflow'].includes(ctxGlobal.user.role)?
+                <DashboardWorkflowNav/>:''
             }
         </div>
         <h2>{dashboardState.searchContextString}</h2>

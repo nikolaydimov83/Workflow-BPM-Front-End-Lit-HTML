@@ -35,7 +35,8 @@ const allowedTypes={
     'workflowName':'string',
     'assignedToWorkflow':'string',
     'subjectName':'string',
-    'resetCode':'string'
+    'resetCode':'string',
+    'file':'string'
 }
 export function loadFormData(data){
     let formData=Object.entries(data);
