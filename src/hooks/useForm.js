@@ -3,6 +3,7 @@ import { useState } from "react"
 export function useForm(initialValues,submitHandler){
     const [formData,setFormData]=useState(initialValues)
     
+    
     function updateFormFields(data){
       setFormData(data)
     }
@@ -46,7 +47,7 @@ export function useForm(initialValues,submitHandler){
       }
       function onSubmitUserForm(e){
         e.preventDefault()
-        submitHandler(formData)
+        submitHandler(formData,e)
       }
 
     return {

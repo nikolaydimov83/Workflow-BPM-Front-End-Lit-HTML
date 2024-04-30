@@ -42,6 +42,7 @@ export default function adminServiceFactory(token){
         createUserFromAdmin:(data)=>  api.post(`/admin`,data),
         getWrongDataLog:()=>api.get('/wrongDataLogger'),
         editIapplyDataAdmin:(id,data)=> api.put(`/iApply/${id}`,data),
-        sendFileWithUsersToCreate:(formData,fileType,fileSize)=>api.postFile('/files/usersFileUpload',formData,fileType,fileSize)
+        sendFileWithUsersToCreate:(formData,fileType,fileSize)=>api.postFile('/files/usersFileUpload',formData,fileType,fileSize),
+        sendFileWithUsersToEdit:(formData,fileType,fileSize)=>api.postFile('/files/usersFileEdit',formData,fileType,fileSize)
     }
 }

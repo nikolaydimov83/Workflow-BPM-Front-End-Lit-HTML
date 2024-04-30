@@ -93,9 +93,6 @@ export default function Dashboard(){
                 <DashboardWorkflowNav/>:''
             }
 
-            {['Workflow'].includes(ctxGlobal.user.role)?
-                <DashboardWorkflowNav/>:''
-            }
         </div>
         <h2>{dashboardState.searchContextString}</h2>
         <div className="tableLarge">

@@ -37,7 +37,12 @@ try {
     if (response.status===204){
         return []
     }else{
-        return response.json()
+        if (!contentType){
+            return response.json()
+        }else{
+            return response
+        }
+        
     }
 } catch (error) {
 
@@ -55,7 +60,16 @@ export async function post(userData,url,data){
 }
 
 export async function postFile(userData,url,data,fileType, size){
-    return request(userData,url,'POST',data,fileType,size)
+    request(userData,url,'POST',data,fileType,size)
+    const response = await request(userData, url, 'POST', data, fileType, size);
+    const blob = await response.blob();
+    const urlBlob = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = urlBlob;
+    a.download = 'filename.csv'; // Set the desired filename
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(urlBlob);
 }
 
 export async function put(userData,url,data){

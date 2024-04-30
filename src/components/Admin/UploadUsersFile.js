@@ -24,14 +24,13 @@ export default function UploadUsersFile(){
 
                     },handlOnSubmitCreateUsersFromFile);
 
-    function handlOnSubmitCreateUsersFromFile(){
+    function handlOnSubmitCreateUsersFromFile(formData,e){
         try {
             const toProcess = new FormData();
             toProcess.append('file', formData);
-            
-            let serverResponseData=adminApi.sendFileWithUsersToCreate(toProcess,formData.type, formData.size)
+            adminApi[e.target.name](toProcess,formData.type, formData.size)
             .then(()=>{
-              navigate('/dashboard')
+
             })
             .catch((err)=>{
               ctxGlobal.handleError(err);
@@ -48,7 +47,7 @@ export default function UploadUsersFile(){
                 <h2>Създай потребители от файл</h2>
                 <div className={styles.formLarge}>
                 
-                <form onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
+                <form name="sendFileWithUsersToCreate" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
                     <div >
                         <label for='file'>File</label>
                         <input
