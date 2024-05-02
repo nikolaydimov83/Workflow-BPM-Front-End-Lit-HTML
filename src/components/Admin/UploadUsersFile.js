@@ -18,7 +18,6 @@ export default function UploadUsersFile(){
             onChangeUserForm,
             onSubmitUserForm,
             formData,
-            updateFormFields,
            }=useForm(
                     {
 
@@ -43,6 +42,8 @@ export default function UploadUsersFile(){
     }
 
     return (
+        <>
+       
             <section id="create">
                 <h2>Създай потребители от файл</h2>
                 <div className={styles.formLarge}>
@@ -68,5 +69,33 @@ export default function UploadUsersFile(){
                 </form>
                 </div>
             </section>
+
+            <section id="edit">
+                <h2>Промени потребители от файл</h2>
+                <div className={styles.formLarge}>
+                
+                <form name="sendFileWithUsersToEdit" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
+                    <div >
+                        <label for='file'>File</label>
+                        <input
+                        onChange={onChangeUserForm}
+                        value={formData.fileEdit}
+                        type="file"
+                        name="fileEdit"
+                        id="file"
+                        placeholder="Изберете път на файла"
+                        
+                        
+                        />
+
+                        <button type="submit" id="editUsrBtn">Изпрати</button>
+                            
+                    </div>
+
+                </form>
+                </div>
+            </section>
+        </>
+            
     )
 }

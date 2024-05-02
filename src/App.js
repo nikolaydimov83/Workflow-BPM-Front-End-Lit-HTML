@@ -200,5 +200,4 @@ function App() {
 
   );
 }
-//{[{Header:`Създател`,accessor:'requestCreatorEmail'},{Header:'Апликация номер',accessor:'iApplyId'},{Header:'Име на клиента',accessor:'clientName'},{Header:'ЕГН/ЕИК',accessor:'clientEGFN'},{Header:'ФЦ',accessor:"finCenter"},{Header:'Рефериращ',accessor:'refferingFinCenter'},{Header:'Subject',accessor:"subjectId.subjectName"},{Header:'Статус',accessor:'status.statusName'},{Header:'Дата на постъпване',accessor:'statusIncomingDate'},{Header:'Краен срок',accessor:"deadlineDate"}]}
 export default App;
