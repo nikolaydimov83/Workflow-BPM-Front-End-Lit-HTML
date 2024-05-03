@@ -45,9 +45,9 @@ export default function UploadUsersFile(){
         <>
        
             <section id="create">
-                <h2>Създай потребители от файл</h2>
+
                 <div className={styles.formLarge}>
-                
+                <h2>Създай потребители от файл</h2>                
                 <form name="sendFileWithUsersToCreate" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
                     <div >
                         <label for='file'>File</label>
@@ -70,13 +70,12 @@ export default function UploadUsersFile(){
                 </div>
             </section>
 
-            <section id="edit">
+            <section id="edit">       
+              <div className={styles.formLarge}>
                 <h2>Промени потребители от файл</h2>
-                <div className={styles.formLarge}>
-                
                 <form name="sendFileWithUsersToEdit" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
                     <div >
-                        <label for='file'>File</label>
+                        <label for='fileEdit'>File</label>
                         <input
                         onChange={onChangeUserForm}
                         value={formData.fileEdit}
@@ -91,9 +90,35 @@ export default function UploadUsersFile(){
                         <button type="submit" id="editUsrBtn">Изпрати</button>
                             
                     </div>
-
                 </form>
                 </div>
+            </section>            
+
+            <section id="uploadIapply">
+                
+              <div className={styles.formLarge}>
+                
+                <h2>Зареди Iapply данна ръчно</h2>
+                <form name="sendFileIapplyManualUpld" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
+                    <div >
+                        <label for='iapplyEdit'>File</label>
+                        <input
+                        onChange={onChangeUserForm}
+                        value={formData.fileEdit}
+                        type="file"
+                        name="iapplyEdit"
+                        id="file"
+                        placeholder="Изберете път на файла"
+                        
+                        
+                        />
+
+                        <button type="submit" id="iapplyBtn">Изпрати</button>
+                            
+                    </div>
+
+                </form>                
+              </div>
             </section>
         </>
             
