@@ -12,6 +12,8 @@ import workflowServiceFactory from "../../api/services/workflowServiceFactory";
 import DashboardWorkflowNav from "./DashboardWorkflowNav";
 import Spinner from "./Spinner/Spinner";
 import { useLocation } from "react-router";
+import NextButton from "./NextPageButton";
+import PrevButton from "./PrevPageButton";
 
 export default function Dashboard(){
     let pathname=useLocation().pathname.replace('/','');
@@ -22,7 +24,8 @@ export default function Dashboard(){
         getTableStructure,
         dashboardState, 
         rolesStatusesWorkflowsSubjects,
-        spinnerActive
+        spinnerActive,
+        page
         }=useContext(DashboardContext)
     const dashAPI=useService(dashboardServiceFactory);
     const adminAPI=useService(adminServiceFactory);
@@ -36,13 +39,13 @@ export default function Dashboard(){
         try {
    
             const newTableStructure=getTableStructure(rolesStatusesWorkflowsSubjects)
-            loadDashboardInfo(newChosenFunc);
+            loadDashboardInfo(newChosenFunc,page);
             setNewTableStructure(newTableStructure)
             
         } catch (error) {
             ctxGlobal.handleError(error)
         }
-    },[rolesStatusesWorkflowsSubjects])
+    },[rolesStatusesWorkflowsSubjects,page])
     
 
     const chosenFunction=chooseApiFunction();
@@ -50,7 +53,7 @@ export default function Dashboard(){
     useEffect(()=>{
 
         try {
-            loadDashboardInfo(chosenFunction)
+            loadDashboardInfo(chosenFunction,page)
         } catch (error) {
             ctxGlobal.handleError(error)
         }
@@ -92,6 +95,15 @@ export default function Dashboard(){
             {['Workflow'].includes(ctxGlobal.user.role)?
                 <DashboardWorkflowNav/>:''
             }
+            {['Admin'].includes(ctxGlobal.user.role)&&chosenFunction===adminAPI.getWrongDataLog?
+            
+            <>
+            <NextButton/>
+            <PrevButton/>
+            
+       </> :''
+
+            }             
 
         </div>
         <h2>{dashboardState.searchContextString}</h2>

@@ -7,7 +7,8 @@ export function useDashboard(initialTableStructure){
     const [dashboardState,setDashboardState]=useState(
         {
             result:[],
-            searchContextString:''
+            searchContextString:'',
+            collectionLength:0
         });
     const [spinnerActive, setSpinnerActive]=useState(true);
     //state for filter
@@ -56,7 +57,11 @@ export function useDashboard(initialTableStructure){
                     setDashboardState({result:items,searchContextString:''});
                 }else{
                     const items=stringifyDates(data.result)
-                    setDashboardState({result:items,searchContextString:data.searchContextString});                    
+                    let collectionLength=0
+                    if (data.collectionLength){
+                        collectionLength=data.collectionLength;
+                    }
+                    setDashboardState({result:items,searchContextString:data.searchContextString,collectionLength});                    
                 }
                 setSpinnerActive(false)
             })
