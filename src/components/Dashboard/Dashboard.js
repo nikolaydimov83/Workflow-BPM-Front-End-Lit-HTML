@@ -17,6 +17,7 @@ import PrevButton from "./PrevPageButton";
 
 export default function Dashboard(){
     let pathname=useLocation().pathname.replace('/','');
+    const pageLength=500
     const ctxGlobal=useContext(GlobalContext);
     const {
         setNewTableStructure, 
@@ -27,6 +28,7 @@ export default function Dashboard(){
         spinnerActive,
         page
         }=useContext(DashboardContext)
+    const totalPages=Math.ceil(dashboardState.collectionLength/pageLength)
     const dashAPI=useService(dashboardServiceFactory);
     const adminAPI=useService(adminServiceFactory);
     const workflowApi=useService(workflowServiceFactory)
@@ -98,8 +100,10 @@ export default function Dashboard(){
             {['Admin'].includes(ctxGlobal.user.role)&&chosenFunction===adminAPI.getWrongDataLog?
             
             <>
-            <NextButton/>
             <PrevButton/>
+            <p>Page {page} out of {totalPages}</p>
+            <NextButton/>
+            
             
        </> :''
 
