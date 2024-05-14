@@ -60,7 +60,7 @@ export async function post(userData,url,data){
 }
 
 export async function postFile(userData,url,data,fileType, size){
-    request(userData,url,'POST',data,fileType,size)
+    //request(userData,url,'POST',data,fileType,size)
     const response = await request(userData, url, 'POST', data, fileType, size);
     const blob = await response.blob();
     const urlBlob = window.URL.createObjectURL(blob);
