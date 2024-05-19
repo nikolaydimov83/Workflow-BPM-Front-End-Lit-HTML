@@ -26,7 +26,9 @@ export default function Dashboard(){
         dashboardState, 
         rolesStatusesWorkflowsSubjects,
         spinnerActive,
-        page
+        page,
+        userCurrentReport
+
         }=useContext(DashboardContext)
     const totalPages=Math.ceil(dashboardState.collectionLength/pageLength)
     const dashAPI=useService(dashboardServiceFactory);
@@ -77,7 +79,7 @@ export default function Dashboard(){
         }
         
         else{
-            chosenFunction=dashAPI.getAll
+            chosenFunction=dashAPI[userCurrentReport]
         }
         return chosenFunction
     }
@@ -91,6 +93,7 @@ export default function Dashboard(){
            <>
                 <SearchForm/>
                 <ReportButtons/>
+            
            </> 
             }  
 
@@ -111,8 +114,10 @@ export default function Dashboard(){
 
         </div>
         <h2>{dashboardState.searchContextString}</h2>
+   
         <div className="tableLarge">
         {spinnerActive?<Spinner/>:<Table/>}
+        <PrevButton/><p>Page {page} out of {totalPages}</p><NextButton/> 
         </div>
     </>
 

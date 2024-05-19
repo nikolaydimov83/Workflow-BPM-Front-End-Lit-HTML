@@ -5,9 +5,9 @@ export default function dashboardServiceFactory(token){
     return {
         getAll:()=>api.get('/data/catalog'),
         getById:(id)=>api.get('/data/catalog/'+id),
-        getDelayed:()=>api.get(`/reportsController`),
-        getAllActive:()=>api.get(`/reportsController/active`),
-        getClosedAndActive:()=>api.get(`/reportsController/all`),
+        getDelayed:(page)=>api.get(`/reportsController?page=${page}`),
+        getAllActive:(page)=>api.get(`/reportsController/active?page=${page}`),
+        getClosedAndActive:(page)=>api.get(`/reportsController/all?page=${page}`),
         searchRequest:(data)=>api.post('/search/all',data),
 
         changeStatus:(id,data)=>api.post(`/data/changeStatus/${id}`,data),
