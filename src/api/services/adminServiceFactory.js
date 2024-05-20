@@ -4,9 +4,10 @@ export default function adminServiceFactory(token){
     const api=serviceFactory(token);
     return {
 
-        getAllAdminInfo:async ()=>{
+        getAllAdminInfo:async (page)=>{
 
-        let data=await api.get('/admin');
+        let serverResolvedResponse=await api.get('/admin?page='+page);
+        let data=serverResolvedResponse.result;
         let listOfRoles=await api.get(`/workflow/roles`);
         //let dataStringifiedDates=stringifyDates(data.result);
         let enrichedData=[];
@@ -15,12 +16,11 @@ export default function adminServiceFactory(token){
             listOfRoles.forEach((roleFromRoles)=>{
               if (user.role===roleFromRoles._id){
                 user.roleName=roleFromRoles.role;
-                
               }
             })
             return user
           })
-          return {result:enrichedData}
+          return {result:enrichedData,collectionLength:serverResolvedResponse.collectionLength}
         }},
 
         getUserFromAdminById:async (id)=>{

@@ -93,14 +93,14 @@ export default function Dashboard(){
            <>
                 <SearchForm/>
                 <ReportButtons/>
-            
+                
            </> 
             }  
 
             {['Workflow'].includes(ctxGlobal.user.role)?
                 <DashboardWorkflowNav/>:''
             }
-            {['Admin'].includes(ctxGlobal.user.role)&&chosenFunction===adminAPI.getWrongDataLog?
+            {['Admin'].includes(ctxGlobal.user.role)/*&&chosenFunction===adminAPI.getWrongDataLog*/?
             
             <>
             <PrevButton/>
@@ -114,11 +114,12 @@ export default function Dashboard(){
 
         </div>
         <h2>{dashboardState.searchContextString}</h2>
-   
+        <PrevButton/><span>Page {page} out of {totalPages}</span><NextButton/>
         <div className="tableLarge">
         {spinnerActive?<Spinner/>:<Table/>}
-        <PrevButton/><p>Page {page} out of {totalPages}</p><NextButton/> 
+         
         </div>
+        <PrevButton/><span>Page {page} out of {totalPages}</span><NextButton/>
     </>
 
     )

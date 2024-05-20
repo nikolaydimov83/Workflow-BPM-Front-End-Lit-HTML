@@ -5,12 +5,13 @@ import dashboardServiceFactory from "../../api/services/dashboardServiceFactory"
 import styles from './ReportButtons.module.css'
 
 export default function ReportButtons(){
-    const {loadDashboardInfo, page,setUserCurrentReport}=useContext(DashboardContext)
+    const {loadDashboardInfo, page,setUserCurrentReport,setPage}=useContext(DashboardContext)
     const dashAPI =useService(dashboardServiceFactory)
     function handleOnClickDelayedBtn(e){
         const apiFunc=e.target.name
-        setUserCurrentReport(apiFunc)
-        loadDashboardInfo(dashAPI[apiFunc],page)
+        setUserCurrentReport(apiFunc);
+        setPage(1);
+        loadDashboardInfo(dashAPI[apiFunc],page);
     }
     return (
     <>

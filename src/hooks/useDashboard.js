@@ -48,9 +48,9 @@ export function useDashboard(initialTableStructure){
     function setNewTableStructure(newTableStructure){
         setTableStructure(newTableStructure)
     }
-    function loadDashboardInfo(apiFunc,inputData){
+    function loadDashboardInfo(apiFunc,page,inputData){
         setSpinnerActive(true)
-        apiFunc(inputData)
+        apiFunc(page,inputData)
             .then((data)=>{
                 if (!data.result){
                     const items=stringifyDates(data)
@@ -105,15 +105,6 @@ function getSortedFilteredState(dashboardState, columns, filterText, sortConfig)
         });
     });
 
-    // Sort the filtered data based on sortConfig
-    /*if (sortConfig.column) {
-        filteredData.sort((a, b) => {
-            const columnId = sortConfig.column.id;
-            return sortConfig.direction === 'asc'
-            ? (a[columnId] || '').localeCompare(b[columnId] || '')
-            : (b[columnId] || '').localeCompare(a[columnId] || '');
-        });
-    }*/
     
     return filteredData;
 }

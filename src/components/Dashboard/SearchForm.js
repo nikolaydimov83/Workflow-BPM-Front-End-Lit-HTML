@@ -21,7 +21,9 @@ export default function SearchForm(){
     function handleSearchFormSubmit(){
         try {
             const checkedData=loadFormData(formData);
-            ctxDash.loadDashboardInfo(dashApi.searchRequest,checkedData)
+            ctxDash.setPage(1);
+            ctxDash.setUserCurrentReport('searchRequest')
+            ctxDash.loadDashboardInfo(dashApi.searchRequest,ctxDash.page,checkedData)
         } catch (error) {
             ctx.handleError(error)
         }
