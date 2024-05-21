@@ -27,7 +27,8 @@ export default function Dashboard(){
         rolesStatusesWorkflowsSubjects,
         spinnerActive,
         page,
-        userCurrentReport
+        userCurrentReport,
+        userSearchInput
 
         }=useContext(DashboardContext)
     const totalPages=Math.ceil(dashboardState.collectionLength/pageLength)
@@ -43,7 +44,7 @@ export default function Dashboard(){
         try {
    
             const newTableStructure=getTableStructure(rolesStatusesWorkflowsSubjects)
-            loadDashboardInfo(newChosenFunc,page);
+            loadDashboardInfo(newChosenFunc,page,userSearchInput);
             setNewTableStructure(newTableStructure)
             
         } catch (error) {

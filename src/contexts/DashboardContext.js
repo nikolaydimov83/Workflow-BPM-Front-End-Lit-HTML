@@ -12,7 +12,6 @@ export function DashboardContextProvider({children}){
     pathname='roles'
    }
    const [rolesStatusesWorkflowsSubjects, setrolesStatusesWorkflowsSubjects]=useState(pathname);
-   const [userCurrentReport, setUserCurrentReport]=useState('getAll');
    const initialTable=getTableStructure(rolesStatusesWorkflowsSubjects);
    const [page,setPage]=useState(1)
 
@@ -49,6 +48,10 @@ export function DashboardContextProvider({children}){
             setNewTableStructure,
             spinnerActive,
             tableStructure,
+            setUserCurrentReport,
+            userCurrentReport,
+            userSearchInput,
+            setUserSearchInput,
         
             
         }=useDashboard(initialTable);
@@ -78,7 +81,9 @@ export function DashboardContextProvider({children}){
         page,
         setPage,
         userCurrentReport,
-        setUserCurrentReport
+        setUserCurrentReport,            
+        userSearchInput,
+        setUserSearchInput,
         }}>
         {children}
     </DashboardContext.Provider>

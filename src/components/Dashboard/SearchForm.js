@@ -23,6 +23,7 @@ export default function SearchForm(){
             const checkedData=loadFormData(formData);
             ctxDash.setPage(1);
             ctxDash.setUserCurrentReport('searchRequest')
+            ctxDash.setUserSearchInput(checkedData)
             ctxDash.loadDashboardInfo(dashApi.searchRequest,ctxDash.page,checkedData)
         } catch (error) {
             ctx.handleError(error)

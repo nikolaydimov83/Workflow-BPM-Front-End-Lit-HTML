@@ -11,7 +11,8 @@ export function useDashboard(initialTableStructure){
             collectionLength:0
         });
     const [spinnerActive, setSpinnerActive]=useState(true);
-    //state for filter
+    const [userSearchInput,setUserSearchInput]=useState()
+    const [userCurrentReport, setUserCurrentReport]=useState('getAll');
     const [filterText, setFilterText] = useState('');
   
     //state for sort  
@@ -84,7 +85,11 @@ export function useDashboard(initialTableStructure){
             filteredState,
             setNewTableStructure,
             spinnerActive,
-            tableStructure
+            tableStructure,
+            userSearchInput,
+            setUserSearchInput,
+            userCurrentReport,
+            setUserCurrentReport
         }
         )
 }
