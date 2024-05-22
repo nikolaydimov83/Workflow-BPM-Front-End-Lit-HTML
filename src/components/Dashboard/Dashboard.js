@@ -101,26 +101,15 @@ export default function Dashboard(){
             {['Workflow'].includes(ctxGlobal.user.role)?
                 <DashboardWorkflowNav/>:''
             }
-            {['Admin'].includes(ctxGlobal.user.role)/*&&chosenFunction===adminAPI.getWrongDataLog*/?
-            
-            <>
-            <PrevButton/>
-            <p>Page {page} out of {totalPages}</p>
-            <NextButton/>
-            
-            
-       </> :''
-
-            }             
 
         </div>
         <h2>{dashboardState.searchContextString}</h2>
-        <PrevButton/><span>Page {page} out of {totalPages}</span><NextButton/>
+        {spinnerActive?'':<><PrevButton/><span>Page {page} out of {totalPages}</span><NextButton/></>}
         <div className="tableLarge">
         {spinnerActive?<Spinner/>:<Table/>}
          
         </div>
-        <PrevButton/><span>Page {page} out of {totalPages}</span><NextButton/>
+        {spinnerActive?'':<><PrevButton/><span>Page {page} out of {totalPages}</span><NextButton/></>}
     </>
 
     )

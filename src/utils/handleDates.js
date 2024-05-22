@@ -11,6 +11,10 @@ export const stringifyDates=(data)=> {
         if (element.statusIncomingDate){
           element.statusIncomingDate = dateToString(element.statusIncomingDate);
         }
+        if (element.incomingDate){
+          element.incomingDate = dateToString(element.incomingDate);
+        }
+  
         if (element.deadlineDate){
           element.deadlineDate = dateToString(element.deadlineDate);
         }

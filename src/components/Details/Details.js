@@ -13,12 +13,18 @@ import DetailsMainInfo from "./DetailsMainInfo";
 import DetailsIapplyData from "./DetailsIapplyData";
 import DetailsExplanation from "./DetailsExplanation";
 import DetailsComment from "./DetailsComment";
+import HistoryButton from "./HistoryButton";
+import { DetailsContext } from "../../contexts/DetailsContext";
+import HistoryDiv from "./HistoryDiv";
 
 export default function Details(){
     const {id} = useParams();
     const [request,setRequest]=useState({});
+    const [history,setHistory]=useState([{}]);
+    const [historyActive,setHistoryActive]=useState(false);
     const dashApi=useService(dashboardServiceFactory);
     const ctxGlobal=useContext(GlobalContext);
+    const ctxDetails=useContext(DetailsContext)
 
     const navigate=useNavigate();
 
@@ -72,22 +78,19 @@ export default function Details(){
 
     if(request._id){
     return (
-        
-             <section id="details">
-
-                <div className={styles.formLarge}>
-
-                    <DetailsMainInfo request={request}/>
-                    <DetailsIapplyData request={request}/>
-
-
-                    <div className={formStyles["inlineDivDetails"]}>
-                        <h3>Информация за статус на заявката</h3>
-                        <p class="details-property-info"><span>Статус</span>:  {request?.status?.statusName}</p>
-                        <p class="details-property-info"><span>Изпратен от</span>:  {request.statusSender}</p>
-                        <p class="details-property-info"><span>Изпратен на дата</span>:  {request.statusIncomingDate}</p>
-                        
-                        {request.checkUserCanChangeStatus?
+        <>
+            <HistoryButton></HistoryButton>
+            <section id="details" className={styles['section']}>
+              {ctxDetails.historyActive?<HistoryDiv/>:''}
+              <div className={styles.formLarge}>
+                <DetailsMainInfo request={request}/>
+                <DetailsIapplyData request={request}/>
+                  <div className={formStyles["inlineDivDetails"]}>
+                    <h3>Информация за статус на заявката</h3>
+                      <p class="details-property-info"><span>Статус</span>:  {request?.status?.statusName}</p>
+                      <p class="details-property-info"><span>Изпратен от</span>:  {request.statusSender}</p>
+                      <p class="details-property-info"><span>Изпратен на дата</span>:  {request.statusIncomingDate}</p>
+                      {request.checkUserCanChangeStatus?
                         <form onSubmit={onSubmitUserForm}>
                             <label for='nextStatus'>Промени статус на:</label>
                             <select 
@@ -108,11 +111,13 @@ export default function Details(){
 
                     </div>
                     <DetailsExplanation request={request}/>
+                   
                     {request.comments.map((comment)=>
                         <DetailsComment comment={comment}/>
                     )}
             </div>
             </section>
+            </>
                     )
 }
 }

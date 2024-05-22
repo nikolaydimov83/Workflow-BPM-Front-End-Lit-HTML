@@ -2,7 +2,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.05em 3em;
+    padding: 0.05em 1em;
     background: white;
   }
   .notification{

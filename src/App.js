@@ -28,6 +28,7 @@ import ResetPassRequest from './components/Authentication/ResetPassRequest';
 import ResetPassTokenSubmit from './components/Authentication/ResetPassTokenSubmit';
 import EditIapplyEntry from './components/Admin/EditIApplyEntry';
 import UploadUsersFile from './components/Admin/UploadUsersFile';
+import { DetailsContextProvider } from './contexts/DetailsContext';
 
 
 function App() {
@@ -55,7 +56,10 @@ function App() {
 }/>
           <Route path='/dashboard/:id' element={
             <RouteGuardUser>
-              <Details/>
+              <DetailsContextProvider>
+                <Details/> 
+              </DetailsContextProvider>
+              
             </RouteGuardUser>
             
           

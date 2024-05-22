@@ -14,10 +14,9 @@ export default function dashboardServiceFactory(token){
         createComment:(id,data)=>api.post(`/comments/${id}`,data),
         editRequest:(id,data)=>api.put(`/data/edit/${id}`,data),
         createRequest:(data)=>api.post('/data/create',data),
-        
-        
         getSubjects:()=>api.get('/data/create'),
         getIapplyData:(iapplyId)=>api.get(`/iApply/${iapplyId}`),
+        getHistory:(id)=>api.get(`/history/${id}`)
 
         
         

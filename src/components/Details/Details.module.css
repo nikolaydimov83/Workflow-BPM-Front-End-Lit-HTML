@@ -1,8 +1,11 @@
+.section {
+  margin-top: 10px;
+}
 .formLarge {
     background: rgb(233,242,242);
     max-width: 95%;
     margin: auto;
-    margin-top: 15px;
+    margin-top: 5px;
     padding: 15px;
     text-align: center;
     border-radius: 30px;
@@ -19,8 +22,8 @@
   }
   
   .formLarge h1 {
-    margin-block-start: 0.2em;
-    margin-block-end: 0.2em;
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
     font-size: 19px;
     text-align: left;
   }
