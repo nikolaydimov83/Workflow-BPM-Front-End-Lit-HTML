@@ -1,0 +1,126 @@
+
+.formLarge {
+  background: rgb(233, 242, 242);
+  width: 95%;
+  margin: auto;
+  margin-top: 15px;
+  padding: 15px;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center; /* added justify-content: center; for centering horizontally */
+}
+  
+  
+  
+  .formLarge h2{
+    width: 35%;
+    text-align: left;
+  }
+  
+
+
+
+
+
+  .inlineDiv button {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 95%;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: 0;
+    background: #989999;
+
+    border: 0;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 10px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+  }
+  .formLarge button:hover,
+  .formLarge button:active,
+  .formLarge button:focus {
+    background: #737474;
+  }
+  
+
+
+  .inlineDiv {
+    align-items: center;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    width: 40%;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    
+    background-color: white;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.24);
+   
+    margin: auto;
+
+  }
+
+  .inlineDiv label {
+    font-family: "Roboto", sans-serif;
+    padding-bottom: 15px;
+    outline: 0;
+    width: 90%;
+    height: 15px;
+    border: 0;
+    margin-top: 15px;
+    margin-bottom: 15px; /* Adjusted margin for better spacing */
+    padding: 3px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: medium;
+    text-align: center; /* Centered the label horizontally */
+    font-weight: bolder;
+  }
+  
+
+  .inlineDiv input,
+  .inlineDiv select {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    width: 95%;
+    height: 50px;
+    border: 0;
+    
+    padding: 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: center;
+    background-color: white;
+    border: 2px solid rgb(200, 200, 200);
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* Ensures each input/select is on a new line */
+  }
+
+  .inlineDiv .small{
+    width: 80%;
+    display: inline;
+   
+    }
+  .inlineDiv .verySmall{
+      width: 15%;
+      display: inline;
+      }
+  
+  .inlineDiv .normal{
+      width: 95%;
+      display: inline;
+  }

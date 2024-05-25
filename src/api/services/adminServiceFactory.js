@@ -45,6 +45,7 @@ export default function adminServiceFactory(token){
         sendFileWithUsersToCreate:(formData,fileType,fileSize)=>api.postFile('/files/usersFileUpload',formData,fileType,fileSize),
         sendFileWithUsersToEdit:(formData,fileType,fileSize)=>api.postFile('/files/usersFileEdit',formData,fileType,fileSize),
         sendFileIapplyManualUpld:(formData,fileType,fileSize)=>api.postFile('/files/manuallyUploadIapplyData',formData,fileType,fileSize),
-        sendFileTransferRequests:(formData,fileType,fileSize)=>api.postFile('/files/migrateRequests',formData,fileType,fileSize)
+        sendFileTransferRequests:(formData,fileType,fileSize)=>api.postFile('/files/migrateRequests',formData,fileType,fileSize),
+        sendFileChangeOwners:(formData,fileType,fileSize)=>api.postFile('/files/changeOwners',formData,fileType,fileSize),
     }
 }

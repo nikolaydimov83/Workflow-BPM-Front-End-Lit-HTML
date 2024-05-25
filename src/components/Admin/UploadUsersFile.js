@@ -4,16 +4,13 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { useContext, useEffect, useState } from "react";
 import { useService } from "../../hooks/useService";
 import { useForm } from "../../hooks/useForm";
-import { loadFormData } from "../../utils/handleFormData";
-import { serviceFactory } from "../../api/api";
-import styles from './Admin.module.css';
+import styles from './UploadUsersFile.module.css';
+import Spinner from "../Dashboard/Spinner/Spinner";
 
 export default function UploadUsersFile(){
     const adminApi=useService(adminServiceFactory);
-    const api=useService(serviceFactory);
     const ctxGlobal=useContext(GlobalContext);
-    const [roles,setRoles]=useState([]);
-    const navigate=useNavigate();
+    const [isBusy,setIsBusy]=useState(false);
     const {        
             onChangeUserForm,
             onSubmitUserForm,
@@ -25,25 +22,30 @@ export default function UploadUsersFile(){
 
     function handlOnSubmitCreateUsersFromFile(formData,e){
         try {
+          setIsBusy(true);
             const toProcess = new FormData();
             toProcess.append('file', formData);
             adminApi[e.target.name](toProcess,formData.type, formData.size)
             .then(()=>{
-
+              setIsBusy(false);
             })
             .catch((err)=>{
               ctxGlobal.handleError(err);
+              setIsBusy(false);
             })
             
           
           } catch (error) {
             ctxGlobal.handleError(error);
+            setIsBusy(false);
           }
     }
 
     return (
         <>
        
+            {isBusy?<Spinner/>:''}
+            <>
             <section id="create">
 
                 <div className={styles.formLarge}>
@@ -144,6 +146,29 @@ export default function UploadUsersFile(){
                   </form>                
                 </div>
               </section>
+              <section id="uploadChangeRequestsOwner">
+                
+                <div className={styles.formLarge}>
+                  
+                  <h2>Change Requests Owners</h2>
+                  <form name="sendFileChangeOwners" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
+                      <div >
+                          <label for='transferFile'>File</label>
+                          <input
+                          onChange={onChangeUserForm}
+                          value={formData.fileEdit}
+                          type="file"
+                          name="transferFile"
+                          id="file"
+                          placeholder="Изберете път на файла"
+                          />
+                          <button type="submit" id="transferBtn">Изпрати</button>
+                              
+                      </div>
+  
+                  </form>                
+                </div>
+              </section></>
         </>
             
     )
