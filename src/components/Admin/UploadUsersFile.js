@@ -168,7 +168,31 @@ export default function UploadUsersFile(){
   
                   </form>                
                 </div>
-              </section></>
+              </section>
+              <section id="uploadChangeRequestsBranches">
+                
+                <div className={styles.formLarge}>
+                  
+                  <h2>Change Requests Owners</h2>
+                  <form name="sendFileChangeBranches" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
+                      <div >
+                          <label for='transferFile'>File</label>
+                          <input
+                          onChange={onChangeUserForm}
+                          value={formData.fileEdit}
+                          type="file"
+                          name="transferFile"
+                          id="file"
+                          placeholder="Изберете път на файла"
+                          />
+                          <button type="submit" id="transferBtn">Изпрати</button>
+                              
+                      </div>
+  
+                  </form>                
+                </div>
+              </section>
+              </>
         </>
             
     )
