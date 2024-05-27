@@ -173,7 +173,7 @@ export default function UploadUsersFile(){
                 
                 <div className={styles.formLarge}>
                   
-                  <h2>Change Requests Owners</h2>
+                  <h2>Change Requests Branches</h2>
                   <form name="sendFileChangeBranches" onSubmit={onSubmitUserForm} className={styles["inlineDiv"]}>
                       <div >
                           <label for='transferFile'>File</label>
