@@ -1,4 +1,4 @@
-import { useState,useMemo } from "react";
+import { useState,useMemo, useEffect } from "react";
 import { stringifyDates } from "../utils/handleDates";
 import { useTable, useSortBy, useFilters } from 'react-table'
 
@@ -12,7 +12,12 @@ export function useDashboard(initialTableStructure){
         });
     const [spinnerActive, setSpinnerActive]=useState(true);
     const [userSearchInput,setUserSearchInput]=useState()
-    const [userCurrentReport, setUserCurrentReport]=useState('getAll');
+    const [userCurrentReport, setUserCurrentReport] = useState(() => {
+        return sessionStorage.getItem('userCurrentReport') || 'getAll';
+    });
+    useEffect(() => {
+        sessionStorage.setItem('userCurrentReport', userCurrentReport);
+    }, [userCurrentReport]);
     const [filterText, setFilterText] = useState('');
   
     //state for sort  
