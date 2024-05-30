@@ -8,7 +8,12 @@ export default function dashboardServiceFactory(token){
         getDelayed:(page)=>api.get(`/reportsController?page=${page}`),
         getAllActive:(page)=>api.get(`/reportsController/active?page=${page}`),
         getClosedAndActive:(page)=>api.get(`/reportsController/all?page=${page}`),
-        searchRequest:(page,data)=>api.post('/search/all?page='+page,data),
+        searchRequest:(page,data)=>{
+            if (!data){
+                data=JSON.parse(sessionStorage.getItem('searchString'));
+            }
+            return api.post('/search/all?page='+page,data)
+        },
 
         changeStatus:(id,data)=>api.post(`/data/changeStatus/${id}`,data),
         createComment:(id,data)=>api.post(`/comments/${id}`,data),
@@ -22,3 +27,4 @@ export default function dashboardServiceFactory(token){
         
     }
 }
+
