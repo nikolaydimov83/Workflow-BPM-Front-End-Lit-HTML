@@ -41,8 +41,11 @@ export default function Details(){
                 lastCommnet=data.comments[0]
               }
             setRequest({...data,lastCommnet});
-            
-            updateFormFields({nextStatus:data.status.nextStatuses[0]._id})
+            let statusId=''
+            if (data.status.nextStatuses.length>0){
+                statusId=data.status.nextStatuses[0]._id
+            }
+            updateFormFields({nextStatus:statusId})
 
             
         }).catch((err)=>{
