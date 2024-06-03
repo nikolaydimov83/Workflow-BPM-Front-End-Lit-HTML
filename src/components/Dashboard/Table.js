@@ -9,7 +9,6 @@ export default function Table(){
         handleFilterChange,
         filterText,
         filteredState,
-        dashboardContextState,
         getTableProps,
         getTableBodyProps,
         headerGroups,
@@ -19,7 +18,7 @@ export default function Table(){
     }=useContext(DashboardContext)
     
     function handleOnClickExcel(e){
-      exportToExcel(filteredState,tableStructure)
+      exportToExcel(filteredState,tableStructure);
   }
     return (
       <div>
