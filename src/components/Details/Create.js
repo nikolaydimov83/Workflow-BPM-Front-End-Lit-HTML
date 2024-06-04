@@ -70,7 +70,7 @@ export default function Create(){
         .catch((err)=>{
             globalCtx.handleError(err)
             clearFormFileds(['subjectId','description','deadlineDate']);
-        })
+        });
     }
     function onSubmitCreateForm(){
         try {
