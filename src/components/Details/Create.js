@@ -78,7 +78,7 @@ export default function Create(){
             let serverResponseData=dashAPI.createRequest(checkedData)
             .then(()=>{
               ctxGlobal.clearFieldStatuses();
-              navigate('/dashboard/')
+              navigate('/dashboard/');
             })
             .catch((err)=>{
               ctxGlobal.handleError(err);
