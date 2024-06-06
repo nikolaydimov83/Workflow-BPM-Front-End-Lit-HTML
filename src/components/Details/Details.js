@@ -24,7 +24,7 @@ export default function Details(){
     const [historyActive,setHistoryActive]=useState(false);
     const dashApi=useService(dashboardServiceFactory);
     const ctxGlobal=useContext(GlobalContext);
-    const ctxDetails=useContext(DetailsContext)
+    const ctxDetails=useContext(DetailsContext);
 
     const navigate=useNavigate();
 
