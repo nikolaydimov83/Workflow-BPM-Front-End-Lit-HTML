@@ -45,7 +45,7 @@ export default function Details(){
             if (data.status.nextStatuses.length>0){
                 statusId=data.status.nextStatuses[0]._id
             }
-            updateFormFields({nextStatus:statusId})
+            updateFormFields({nextStatus:statusId});
 
             
         }).catch((err)=>{
