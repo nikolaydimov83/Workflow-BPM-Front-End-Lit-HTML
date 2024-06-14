@@ -8,8 +8,8 @@ import styles from './HistoryButton.module.css'
 
 
 export default function HistoryButton(){
-    const detailsCtx=useContext(DetailsContext)
-    const dashAPI =useService(dashboardServiceFactory)
+    const detailsCtx=useContext(DetailsContext);
+    const dashAPI =useService(dashboardServiceFactory);
     async function handleOnClickHistoryBtn(e){
         const history=await dashAPI.getHistory(detailsCtx.id)
         const processedHistory=stringifyDates(history)        
