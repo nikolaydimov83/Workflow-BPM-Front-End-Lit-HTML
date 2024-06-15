@@ -5,7 +5,7 @@ import styles from "./HistoryDiv.module.css"
 export default function HistoryDiv(){
     const ctxDetails=useContext(DetailsContext)
     function closeDetails(){
-        ctxDetails.setHistoryActive(false)
+        ctxDetails.setHistoryActive(false);
     }
     return (
         <>
