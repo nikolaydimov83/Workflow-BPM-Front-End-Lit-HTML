@@ -8,7 +8,6 @@ export default function ErrorWrapper(){
     return (
         <div className={ctx.errMessages.length>0?styles["notification-wrapper"]:styles["display-none"]}>
             {ctx.errMessages.map((message,index)=>{
-                console.log(message)
                 return <ErrorItem key={index} message={message}/>
                 })}
         </div>
