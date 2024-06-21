@@ -22,7 +22,7 @@ export default function Edit(){
               dataStringifiedDates=dataStringifiedDates[0];
               let lastCommnet;
               if(data.comments.length){
-                lastCommnet=data.comments[0]
+                lastCommnet=data.comments[0];
               }
             setRequest({...data,lastCommnet});
             
