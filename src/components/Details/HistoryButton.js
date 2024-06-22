@@ -14,7 +14,7 @@ export default function HistoryButton(){
         const history=await dashAPI.getHistory(detailsCtx.id)
         const processedHistory=stringifyDates(history)        
         await detailsCtx.setHistoryArray(processedHistory)
-        await detailsCtx.setHistoryActive(true)
+        await detailsCtx.setHistoryActive(true);
 
         console.log(history);
     }
