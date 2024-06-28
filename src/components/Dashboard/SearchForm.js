@@ -25,7 +25,7 @@ export default function SearchForm(){
             ctxDash.setUserCurrentReport('searchRequest');
             ctxDash.setUserSearchInput(checkedData);
             sessionStorage.setItem('searchString',JSON.stringify(checkedData));
-            ctxDash.loadDashboardInfo(dashApi.searchRequest,ctxDash.page,checkedData)
+            ctxDash.loadDashboardInfo(dashApi.searchRequest,ctxDash.page,checkedData);
         } catch (error) {
             ctx.handleError(error)
         }
