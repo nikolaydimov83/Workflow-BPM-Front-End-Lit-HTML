@@ -9,7 +9,7 @@ import styles from './SearchForm.module.css'
 
 export default function SearchForm(){
     const dashApi=useService(dashboardServiceFactory);
-    const ctx=useContext(GlobalContext)
+    const ctx=useContext(GlobalContext);
     const ctxDash=useContext(DashboardContext)
     const 
     { 
