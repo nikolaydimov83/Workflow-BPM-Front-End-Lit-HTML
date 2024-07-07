@@ -13,7 +13,7 @@ export  default function Logout(){
     function onclickLogoutHandler(e){
         e.preventDefault()
         auth.logout().catch((err)=>{
-            ctx.handleError(err)
+            ctx.handleError(err);
         })
         ctx.logoutUser();
         navigate('/')
