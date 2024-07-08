@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Header from './components/Navigation/Header';
 import { AuthContextProvider, GlobalContext } from './contexts/GlobalContext';
