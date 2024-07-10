@@ -14,7 +14,7 @@ export default function EditIapplyEntry(){
     const adminApi=useService(adminServiceFactory)
     const ctxGlobal=useContext(GlobalContext);
     const navigate=useNavigate();
-    const [iApplyData, setIApplyData]=useState({})
+    const [iApplyData, setIApplyData]=useState({});
     const {        
             onChangeUserForm,
             onSubmitUserForm,
