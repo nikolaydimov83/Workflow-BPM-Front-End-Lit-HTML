@@ -16,7 +16,7 @@ export  default function Logout(){
             ctx.handleError(err);
         })
         ctx.logoutUser();
-        navigate('/')
+        navigate('/');
     }
 
     return (
