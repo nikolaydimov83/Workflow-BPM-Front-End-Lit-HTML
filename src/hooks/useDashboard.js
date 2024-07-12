@@ -59,7 +59,7 @@ export function useDashboard(initialTableStructure){
         apiFunc(page,inputData)
             .then((data)=>{
                 if (!data.result){
-                    const items=stringifyDates(data)
+                    const items=stringifyDates(data);
                     setDashboardState({result:items,searchContextString:''});
                 }else{
                     const items=stringifyDates(data.result)
