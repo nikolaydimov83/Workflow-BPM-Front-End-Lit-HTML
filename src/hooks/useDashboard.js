@@ -62,7 +62,7 @@ export function useDashboard(initialTableStructure){
                     const items=stringifyDates(data);
                     setDashboardState({result:items,searchContextString:''});
                 }else{
-                    const items=stringifyDates(data.result)
+                    const items=stringifyDates(data.result);
                     let collectionLength=0
                     if (data.collectionLength){
                         collectionLength=data.collectionLength;
