@@ -3,7 +3,7 @@ import { useState } from "react"
 export function useError(){
     const [errMessages,setErrorMessages]=useState([]);
     const [fieldStatuses,setFieldStatuses]=useState();
-    let messages=[]
+    let messages=[];
     function handleError(error){
         if(!Array.isArray(error.message)){
            messages=[error.message]
