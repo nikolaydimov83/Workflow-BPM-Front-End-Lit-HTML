@@ -26,7 +26,7 @@ export function useError(){
 
     }
     function clearFieldStatuses(){
-        setFieldStatuses(null)
+        setFieldStatuses(null);
     }
 
 return {errMessages,fieldStatuses,handleError,clearFieldStatuses}
