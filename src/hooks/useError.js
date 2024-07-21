@@ -17,7 +17,7 @@ export function useError(){
             delete error.message;
             delete error.frontEndFormChecker
         }
-        setFieldStatuses(error)
+        setFieldStatuses(error);
 
         setTimeout(()=>{
         setErrorMessages([])
