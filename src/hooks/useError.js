@@ -10,7 +10,7 @@ export function useError(){
         }else{
             messages=error.message
         }
-        setErrorMessages(messages)
+        setErrorMessages(messages);
         
   
         if(error.frontEndFormChecker){
