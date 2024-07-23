@@ -15,7 +15,7 @@ export function useError(){
   
         if(error.frontEndFormChecker){
             delete error.message;
-            delete error.frontEndFormChecker
+            delete error.frontEndFormChecker;
         }
         setFieldStatuses(error);
 
