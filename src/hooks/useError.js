@@ -21,7 +21,7 @@ export function useError(){
 
         setTimeout(()=>{
         setErrorMessages([])
-        },5000)
+        },5000);
         
 
     }
